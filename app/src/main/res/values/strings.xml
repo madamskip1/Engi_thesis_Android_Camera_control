@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">KartyKamer</string>
+    <string name="backCameraButtonText">Tylna kamera</string>
+</resources>
