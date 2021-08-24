@@ -28,15 +28,13 @@ public class NativeTest extends CameraActivity implements CameraBridgeViewBase.C
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
-            switch (status) {
-                case LoaderCallbackInterface.SUCCESS:
-                {
-                    mOpenCvBackCamerView.enableView();
-                } break;
-                default:
-                {
-                    super.onManagerConnected(status);
-                } break;
+            if (status == LoaderCallbackInterface.SUCCESS)
+            {
+                mOpenCvBackCamerView.enableView();
+            }
+            else
+            {
+                super.onManagerConnected(status);
             }
         }
     };
@@ -51,7 +49,8 @@ public class NativeTest extends CameraActivity implements CameraBridgeViewBase.C
 
 
         mOpenCvBackCamerView = (CameraBridgeViewBase) findViewById(R.id.nativeCamera);
-        mOpenCvBackCamerView.setCameraIndex(0);
+        mOpenCvBackCamerView.setCameraIndex(CameraBridgeViewBase.CAMERA_ID_FRONT);
+        //mOpenCvBackCamerView.setCameraIndex(CameraBridgeViewBase.CAMERA_ID_BACK);
         mOpenCvBackCamerView.setVisibility(SurfaceView.VISIBLE);
         mOpenCvBackCamerView.setCvCameraViewListener(this);
     }

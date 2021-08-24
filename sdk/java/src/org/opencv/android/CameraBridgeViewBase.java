@@ -11,9 +11,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -56,6 +58,8 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
     public static final int CAMERA_ID_FRONT = 98;
     public static final int RGBA = 1;
     public static final int GRAY = 2;
+
+    private final Matrix mMatrix = new Matrix();
 
     public CameraBridgeViewBase(Context context, int cameraId) {
         super(context);
@@ -426,6 +430,10 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
             Canvas canvas = getHolder().lockCanvas();
             if (canvas != null) {
                 canvas.drawColor(0, android.graphics.PorterDuff.Mode.CLEAR);
+
+                int saveCount = canvas.save();
+                canvas.setMatrix(mMatrix);
+
                 if (BuildConfig.DEBUG)
                     Log.d(TAG, "mStretch value: " + mScale);
 
@@ -442,6 +450,8 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
                          (canvas.getWidth() - mCacheBitmap.getWidth()) / 2 + mCacheBitmap.getWidth(),
                          (canvas.getHeight() - mCacheBitmap.getHeight()) / 2 + mCacheBitmap.getHeight()), null);
                 }
+
+                canvas.restoreToCount(saveCount);
 
                 if (mFpsMeter != null) {
                     mFpsMeter.measure();
@@ -515,5 +525,52 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
         }
 
         return new Size(calcWidth, calcHeight);
+    }
+
+    private void updateMatrix()
+    {
+        float mw = this.getWidth();
+        float mh = this.getHeight();
+        float hw = this.getWidth() / 2.0f;
+        float hh = this.getHeight() / 2.0f;
+        float cw  = (float) Resources.getSystem().getDisplayMetrics().widthPixels;
+        float ch  = (float) Resources.getSystem().getDisplayMetrics().heightPixels;
+        float scale = cw / (float)mh;
+        float scale2 = ch / (float)mw;
+
+        if(scale2 > scale){
+            scale = scale2;
+        }
+
+        boolean isFrontCamera = mCameraIndex == CAMERA_ID_FRONT;
+        mMatrix.reset();
+
+        if (isFrontCamera) {
+            mMatrix.preScale(-1, 1, hw, hh); //MH - this will mirror the camera
+        }
+
+        mMatrix.preTranslate(hw, hh);
+
+        if (isFrontCamera){
+            mMatrix.preRotate(270);
+        } else {
+            mMatrix.preRotate(90);
+        }
+
+        mMatrix.preTranslate(-hw, -hh);
+        mMatrix.preScale(scale,scale,hw,hh);
+    }
+
+    @Override
+    public void layout(int l, int t, int r, int b) {
+        super.layout(l, t, r, b);
+        updateMatrix();
+    }
+
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        updateMatrix();
     }
 }
