@@ -11,19 +11,28 @@ import androidx.camera.view.PreviewView;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
 
+import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Camera;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.OrientationEventListener;
+import android.view.Surface;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.common.util.concurrent.ListenableFuture;
 
+import java.nio.ByteBuffer;
 import java.util.concurrent.ExecutionException;
 
 public class CameraX_test extends AppCompatActivity {
 
     private PreviewView previewView;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
+    private CameraXToOpenCV cameraXToOpenCV;
     private TextView textView;
 
     @Override
@@ -34,6 +43,7 @@ public class CameraX_test extends AppCompatActivity {
         previewView = (PreviewView) findViewById(R.id.previewView);
         cameraProviderFuture = ProcessCameraProvider.getInstance(this);
         textView = (TextView) findViewById(R.id.orientation);
+        cameraXToOpenCV = new CameraXToOpenCV();
 
         cameraProviderFuture.addListener(new Runnable() {
             @Override
@@ -57,9 +67,16 @@ public class CameraX_test extends AppCompatActivity {
         imageAnalyzer.setAnalyzer(ContextCompat.getMainExecutor(this), new ImageAnalysis.Analyzer() {
             @Override
             public void analyze(@NonNull ImageProxy image) {
-                //////////// TU dostajemy zdjecie
-                Log.d("DUPA", "Dostalismy jakies zdjecie");
+                int degrees = image.getImageInfo().getRotationDegrees();
 
+                cameraXToOpenCV.setFrame(image);
+
+                Bitmap bitmap = cameraXToOpenCV.grayBitmap();
+                Log.d("DUPA", "Utworzyono bitmap");
+
+                ImageView imgView = (ImageView) findViewById(R.id.cameraxtestopencv);
+                //imgView.setRotation((float) 270);
+                imgView.setImageBitmap(bitmap);
                 image.close();
             }
         });
@@ -68,6 +85,19 @@ public class CameraX_test extends AppCompatActivity {
             @Override
             public void onOrientationChanged(int orientation) {
                 textView.setText(Integer.toString(orientation));
+                int surfaceRotation = -1;
+
+                if (orientation >= 315 || orientation < 45)
+                    surfaceRotation = Surface.ROTATION_0;
+                else if (orientation >= 225 || orientation < 315)
+                    surfaceRotation = Surface.ROTATION_90;
+                else if (orientation >= 135 || orientation < 225)
+                    surfaceRotation = Surface.ROTATION_180;
+                else {
+                    surfaceRotation = Surface.ROTATION_270;
+                }
+                Log.e("DUPA", "ROTATION SET: " + surfaceRotation);
+                //imageAnalyzer.setTargetRotation(surfaceRotation);
             }
         };
 
@@ -79,6 +109,6 @@ public class CameraX_test extends AppCompatActivity {
 
         preview.setSurfaceProvider(previewView.getSurfaceProvider());
 
-        cameraProvider.bindToLifecycle((LifecycleOwner) this, cameraSelector, imageAnalyzer, preview);
+        cameraProvider.bindToLifecycle((LifecycleOwner) this, cameraSelector, imageAnalyzer);
     }
 }

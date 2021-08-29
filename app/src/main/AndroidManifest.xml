@@ -19,7 +19,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.KartyKamer">
+        android:theme="@style/Theme.KartyKamer"
+        android:name=".App">
+
         <activity
             android:name=".CameraX_test"
             android:exported="true" />
