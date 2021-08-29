@@ -20,14 +20,21 @@ message(STATUS "ANDROID_ABI=${ANDROID_ABI}")
 find_package(OpenCV REQUIRED COMPONENTS ${ANDROID_OPENCV_COMPONENTS})
 
 add_library( # Sets the name of the library.
-             kartykamer
+        kartykamer
 
-             # Sets the library as a shared library.
-             SHARED
+        # Sets the library as a shared library.
+        SHARED
 
-             # Provides a relative path to your source file(s).
-             kartykamer.cpp
+        # Provides a relative path to your source file(s).
+        kartykamer.cpp
         testmethods.cpp)
+
+add_library(facedetectors_haar
+        SHARED
+
+        facedetectors/HaarCascadeDetectorNative.cpp
+        facedetectors/HaarCascadeDetector.h
+        facedetectors/HaarCascadeDetector.cpp)
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
@@ -47,12 +54,13 @@ find_library( # Sets the name of the path variable.
 # build script, prebuilt third-party libraries, or system libraries.
 
 target_link_libraries( # Specifies the target library.
-                       kartykamer
+        kartykamer
+        facedetectors_haar
 
 
-
-                       # Links the target library to the log library
-                       # included in the NDK.
-                       ${log-lib})
+        # Links the target library to the log library
+        # included in the NDK.
+        ${log-lib})
 
 target_link_libraries(${PROJECT_NAME} ${ANDROID_OPENCV_COMPONENTS})
+target_link_libraries(facedetectors_haar ${ANDROID_OPENCV_COMPONENTS})

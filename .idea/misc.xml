@@ -3,7 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Programowanie/Engi_thesis_Android_Camera_control/app/src/main/res/layout/activity_main.xml" value="0.16168478260869565" />
+        <entry key="..\:/Programowanie/Engi_thesis_Android_Camera_control/app/src/main/res/layout/activity_camerax_test.xml" value="0.1" />
+        <entry key="..\:/Programowanie/Engi_thesis_Android_Camera_control/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Programowanie/Engi_thesis_Android_Camera_control/app/src/main/res/layout/activity_select_face_detector.xml" value="0.20572916666666666" />
+        <entry key="..\:/Programowanie/Engi_thesis_Android_Camera_control/app/src/main/res/layout/face_detectors_layout.xml" value="0.36666666666666664" />
+        <entry key="..\:/Programowanie/Engi_thesis_Android_Camera_control/app/src/main/res/xml/haarcascade_frontalface_default.xml" value="0.36666666666666664" />
       </map>
     </option>
   </component>

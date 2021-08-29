@@ -4,15 +4,11 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
 
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="false" />
+    <uses-feature android:name="android.hardware.camera.any" />
     <uses-feature
         android:name="android.hardware.camera.autofocus"
         android:required="false" />
-    <uses-feature
-        android:name="android.hardware.camera.front"
-        android:required="false" />
+    <uses-feature android:name="android.hardware.camera.front" />
     <uses-feature
         android:name="android.hardware.camera.front.autofocus"
         android:required="false" />
@@ -25,9 +21,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KartyKamer">
         <activity
+            android:name=".CameraX_test"
+            android:exported="true" />
+        <activity
+            android:name=".SelectFaceDetector"
+            android:exported="true" />
+        <activity
             android:name=".NativeTest"
             android:exported="true" />
-        <activity android:name=".BackCamera" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,6 +36,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".facedetectors.HaarCascadeFaceDetector" />
     </application>
 
 </manifest>
