@@ -26,6 +26,7 @@ public class CameraCore {
     private AppCompatActivity activity;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     private CameraXToOpenCV cameraXToOpenCV;
+    ImageProxyToMatConverter proxyConverter = new ImageProxyToMatConverter();
     private ImageView imgView = null;
 
     public CameraCore(AppCompatActivity context) {
@@ -66,10 +67,10 @@ public class CameraCore {
         imageAnalyzer.setAnalyzer(ContextCompat.getMainExecutor(activity), new ImageAnalysis.Analyzer() {
             @Override
             public void analyze(@NonNull ImageProxy image) {
-                cameraXToOpenCV.setFrame(image);
+                proxyConverter.setFrame(image);
 
                 if (imgView != null) {
-                    Bitmap bitmap = cameraXToOpenCV.grayBitmap();
+                    Bitmap bitmap = proxyConverter.rgbaBitmap();
                     imgView.setImageBitmap(bitmap);
                 }
                 image.close();
