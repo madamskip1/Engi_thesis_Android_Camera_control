@@ -1,11 +1,7 @@
 package com.example.kartykamer;
 
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +13,9 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.example.kartykamer.facedetectors.FaceDetector;
+import com.example.kartykamer.facedetectors.CascadeFaceDetector;
 import com.example.kartykamer.facedetectors.HaarCascadeFaceDetector;
+import com.example.kartykamer.facedetectors.LbpCascadeFaceDetector;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import org.opencv.android.OpenCVLoader;
@@ -41,7 +39,7 @@ public class CameraCore {
         activity = context;
         cameraProviderFuture = ProcessCameraProvider.getInstance(activity);
         cameraXToOpenCV = new CameraXToOpenCV();
-        faceDetector = new HaarCascadeFaceDetector();
+        faceDetector = new LbpCascadeFaceDetector();
     }
 
     ;
