@@ -30,7 +30,6 @@ import java.util.concurrent.ExecutionException;
 
 public class CameraX_test extends AppCompatActivity {
 
-    private PreviewView previewView;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     private CameraXToOpenCV cameraXToOpenCV;
     private TextView textView;
@@ -38,9 +37,8 @@ public class CameraX_test extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_camerax_test);
+        setContentView(R.layout.camera_image_view);
 
-        previewView = (PreviewView) findViewById(R.id.previewView);
         cameraProviderFuture = ProcessCameraProvider.getInstance(this);
         textView = (TextView) findViewById(R.id.orientation);
         cameraXToOpenCV = new CameraXToOpenCV();
@@ -74,7 +72,7 @@ public class CameraX_test extends AppCompatActivity {
                 Bitmap bitmap = cameraXToOpenCV.grayBitmap();
                 Log.d("DUPA", "Utworzyono bitmap");
 
-                ImageView imgView = (ImageView) findViewById(R.id.cameraxtestopencv);
+                ImageView imgView = (ImageView) findViewById(R.id.camera_preview);
                 //imgView.setRotation((float) 270);
                 imgView.setImageBitmap(bitmap);
                 image.close();
@@ -102,12 +100,10 @@ public class CameraX_test extends AppCompatActivity {
         };
 
         orientationListener.enable();
-        Preview preview = new Preview.Builder().build();
         CameraSelector cameraSelector = new CameraSelector.Builder()
                 .requireLensFacing(CameraSelector.LENS_FACING_FRONT)
                 .build();
 
-        preview.setSurfaceProvider(previewView.getSurfaceProvider());
 
         cameraProvider.bindToLifecycle((LifecycleOwner) this, cameraSelector, imageAnalyzer);
     }

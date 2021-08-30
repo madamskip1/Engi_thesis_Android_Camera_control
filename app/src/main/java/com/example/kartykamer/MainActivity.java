@@ -14,19 +14,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-
-    public void goTestNative(View view) {
-        Intent nativeTest = new Intent(this, NativeTest.class);
-        startActivity(nativeTest);
-    }
-
     public void goChoiceFaceDetector(View view) {
         Intent selectFaceDetectorIntent = new Intent(this, SelectFaceDetector.class);
         startActivity(selectFaceDetectorIntent);
     }
 
-    public void goCamerX(View view) {
-        Intent goCamerX = new Intent(this, CameraX_test.class);
-        startActivity(goCamerX);
+    public void goCameraX(View view) {
+        Intent goCameraX = new Intent(this, CameraX_test.class);
+        startActivity(goCameraX);
     }
 }

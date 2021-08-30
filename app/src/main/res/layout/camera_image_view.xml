@@ -3,20 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".NativeTest">
+    android:layout_height="match_parent">
 
-    <TextView
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/sample_text"
-        />
-
-    <org.opencv.android.JavaCameraView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:visibility="gone"
-        android:id="@+id/nativeCamera"
-        tools:ignore="MissingConstraints" />
+        android:id="@+id/camera_preview" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
