@@ -29,7 +29,6 @@ public class CameraCore {
     private static final String TAG = "CameraCore";
     private AppCompatActivity activity;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
-    private CameraXToOpenCV cameraXToOpenCV;
     ImageProxyToMatConverter proxyConverter = new ImageProxyToMatConverter();
     private ImageView imgView = null;
     private FaceDetector faceDetector;
@@ -38,7 +37,6 @@ public class CameraCore {
         OpenCVLoader.initDebug();
         activity = context;
         cameraProviderFuture = ProcessCameraProvider.getInstance(activity);
-        cameraXToOpenCV = new CameraXToOpenCV();
         faceDetector = new LbpCascadeFaceDetector();
     }
 
