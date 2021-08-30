@@ -86,7 +86,7 @@ public class ImageProxyToMatConverter {
     }
 
 
-    private Bitmap createBitmap(Mat mat) {
+    public Bitmap createBitmap(Mat mat) {
         Bitmap bm = Bitmap.createBitmap(mat.cols(), mat.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(mat, bm);
 

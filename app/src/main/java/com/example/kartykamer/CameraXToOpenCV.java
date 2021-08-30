@@ -1,23 +1,17 @@
 package com.example.kartykamer;
 
 import android.annotation.SuppressLint;
-import android.app.Application;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
 import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.media.Image;
-import android.os.Bundle;
 import android.util.Log;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.ImageProxy;
 
-import org.opencv.android.BaseLoaderCallback;
-import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
@@ -30,7 +24,6 @@ import org.opencv.objdetect.CascadeClassifier;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,8 +32,9 @@ import java.nio.ByteBuffer;
 public class CameraXToOpenCV {
     private static final String TAG = "CameraXToOpenCV";
     Image frame;
-    Mat matGray = null;
-    int degrees;
+    Mat grayMat = null;
+    Mat rgbaMat = null;
+
     private File mCascadeFile;
     private CascadeClassifier classifier;
 
@@ -95,39 +89,77 @@ public class CameraXToOpenCV {
     @SuppressLint("UnsafeOptInUsageError")
     public void setFrame(ImageProxy imageProxy) {
         frame = imageProxy.getImage();
-        degrees = imageProxy.getImageInfo().getRotationDegrees();
-        Log.e(TAG, "Zdjecie obrocone: " + degrees);
+        grayMat = null;
+        rgbaMat = null;
     }
 
     public Mat gray() {
+        if (grayMat != null) {
+            return grayMat;
+        }
+
         Image.Plane[] planes = frame.getPlanes();
         int w = frame.getWidth();
         int h = frame.getHeight();
-        assert (planes[0].getPixelStride() == 1);
 
         ByteBuffer y_plane = planes[0].getBuffer();
         int y_plane_step = planes[0].getRowStride();
-        matGray = new Mat(h, w, CvType.CV_8UC1, y_plane, y_plane_step);
+        grayMat = new Mat(h, w, CvType.CV_8UC1, y_plane, y_plane_step);
 
-        Core.rotate(matGray, matGray, Core.ROTATE_90_COUNTERCLOCKWISE);
-        Core.flip(matGray, matGray, 1);
+        rotateAndFlip(grayMat);
 
         Log.d(TAG, "gray done");
-        return matGray;
+        return grayMat;
+    }
+
+    public Mat rgba() {
+        if (rgbaMat != null) {
+            return rgbaMat;
+        }
+        rgbaMat = new Mat();
+
+        Image.Plane[] planes = frame.getPlanes();
+        int w = frame.getWidth();
+        int h = frame.getHeight();
+
+        ByteBuffer y_plane = planes[0].getBuffer();
+        int y_plane_step = planes[0].getRowStride();
+        ByteBuffer uv_plane1 = planes[1].getBuffer();
+        int uv_plane1_step = planes[1].getRowStride();
+        ByteBuffer uv_plane2 = planes[2].getBuffer();
+        int uv_plane2_step = planes[2].getRowStride();
+        Mat y_mat = new Mat(h, w, CvType.CV_8UC1, y_plane, y_plane_step);
+        Mat uv_mat1 = new Mat(h / 2, w / 2, CvType.CV_8UC2, uv_plane1, uv_plane1_step);
+        Mat uv_mat2 = new Mat(h / 2, w / 2, CvType.CV_8UC2, uv_plane2, uv_plane2_step);
+        long addr_diff = uv_mat2.dataAddr() - uv_mat1.dataAddr();
+        if (addr_diff > 0) {
+            Imgproc.cvtColorTwoPlane(y_mat, uv_mat1, rgbaMat, Imgproc.COLOR_YUV2RGBA_NV12);
+        } else {
+            Imgproc.cvtColorTwoPlane(y_mat, uv_mat2, rgbaMat, Imgproc.COLOR_YUV2RGBA_NV21);
+        }
+
+        rotateAndFlip(rgbaMat);
+
+        return rgbaMat;
+    }
+
+    public Bitmap rgbaBitmap() {
+        rgba();
+        return createBitmap(rgbaMat);
     }
 
     public Bitmap grayBitmap() {
         gray();
         MatOfRect faces = new MatOfRect();
-        classifier.detectMultiScale(matGray, faces);
+        classifier.detectMultiScale(grayMat, faces);
         Log.e(TAG, "Znalezione twarze: " + faces.size());
 
         org.opencv.core.Rect[] facesArray = faces.toArray();
         Log.d(TAG, "ZNaleziono twarzy: " + facesArray.length);
         for (int i = 0; i < facesArray.length; i++)
-            Imgproc.rectangle(matGray, facesArray[i].tl(), facesArray[i].br(), new Scalar(255, 0, 0), 3);
+            Imgproc.rectangle(grayMat, facesArray[i].tl(), facesArray[i].br(), new Scalar(255, 0, 0), 3);
 
-        return createBitmap(matGray);
+        return createBitmap(grayMat);
     }
 
     private Bitmap createBitmap(Mat mat) {
@@ -161,16 +193,8 @@ public class CameraXToOpenCV {
         return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
     }
 
-
-    public int getRotation() {
-        if (degrees == 270)
-            return Core.ROTATE_90_COUNTERCLOCKWISE;
-        else if (degrees == 0)
-            return Core.ROTATE_90_CLOCKWISE;
-        else if (degrees == 90)
-            return Core.ROTATE_90_CLOCKWISE;
-        else
-            return Core.ROTATE_180;
+    private void rotateAndFlip(Mat matToRotate) {
+        Core.rotate(matToRotate, matToRotate, Core.ROTATE_90_COUNTERCLOCKWISE);
+        Core.flip(matToRotate, matToRotate, 1);
     }
-
 }

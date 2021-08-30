@@ -16,7 +16,13 @@ import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
 
+import com.example.kartykamer.facedetectors.FaceDetector;
+import com.example.kartykamer.facedetectors.HaarCascadeFaceDetector;
 import com.google.common.util.concurrent.ListenableFuture;
+
+import org.opencv.android.OpenCVLoader;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfRect;
 
 import java.util.concurrent.ExecutionException;
 
@@ -28,11 +34,14 @@ public class CameraCore {
     private CameraXToOpenCV cameraXToOpenCV;
     ImageProxyToMatConverter proxyConverter = new ImageProxyToMatConverter();
     private ImageView imgView = null;
+    private FaceDetector faceDetector;
 
     public CameraCore(AppCompatActivity context) {
+        OpenCVLoader.initDebug();
         activity = context;
         cameraProviderFuture = ProcessCameraProvider.getInstance(activity);
         cameraXToOpenCV = new CameraXToOpenCV();
+        faceDetector = new HaarCascadeFaceDetector();
     }
 
     ;
@@ -68,9 +77,13 @@ public class CameraCore {
             @Override
             public void analyze(@NonNull ImageProxy image) {
                 proxyConverter.setFrame(image);
+                Mat mat = proxyConverter.gray();
+                MatOfRect faces = faceDetector.detect(mat);
+
+                faceDetector.drawFaceSquare(mat, faces);
 
                 if (imgView != null) {
-                    Bitmap bitmap = proxyConverter.rgbaBitmap();
+                    Bitmap bitmap = proxyConverter.createBitmap(mat);
                     imgView.setImageBitmap(bitmap);
                 }
                 image.close();
