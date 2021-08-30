@@ -16,7 +16,6 @@ public class SelectFaceDetector extends AppCompatActivity {
     }
 
     public void goHaarCascade(View view) {
-        Intent haarCascade = new Intent(this, HaarCascadeFaceDetector.class);
-        startActivity(haarCascade);
+
     }
 }

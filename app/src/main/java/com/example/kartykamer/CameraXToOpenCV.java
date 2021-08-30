@@ -109,9 +109,7 @@ public class CameraXToOpenCV {
         int y_plane_step = planes[0].getRowStride();
         matGray = new Mat(h, w, CvType.CV_8UC1, y_plane, y_plane_step);
 
-        int rotation = getRotation();
-        if (rotation != -1)
-            Core.rotate(matGray, matGray, rotation);
+        Core.rotate(matGray, matGray, Core.ROTATE_90_COUNTERCLOCKWISE);
         Core.flip(matGray, matGray, 1);
 
         Log.d(TAG, "gray done");
