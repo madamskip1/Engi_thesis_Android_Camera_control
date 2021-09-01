@@ -43,6 +43,7 @@ public class CameraX_test extends AppCompatActivity {
         cameraCore = new CameraCore(this);
         cameraCore.setImageView(imgView);
         cameraCore.start();
+
     }
 
     /*
