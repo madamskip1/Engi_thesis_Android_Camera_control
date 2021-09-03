@@ -1,0 +1,4 @@
+*gapi.a filter=lfs diff=lfs merge=lfs -text
+*dnn.a filter=lfs diff=lfs merge=lfs -text
+liblibprotobuf.a filter=lfs diff=lfs merge=lfs -text
+*liblibprotobuf.a filter=lfs diff=lfs merge=lfs -text
