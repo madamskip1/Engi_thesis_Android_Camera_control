@@ -406,7 +406,6 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
 
         if (mListener != null) {
             modified = mListener.onCameraFrame(frame);
-            return;
         } else {
             modified = frame.rgba();
         }
@@ -427,7 +426,6 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
             Canvas canvas = getHolder().lockCanvas();
             if (canvas != null) {
                 canvas.drawColor(0, android.graphics.PorterDuff.Mode.CLEAR);
-
                 if (BuildConfig.DEBUG)
                     Log.d(TAG, "mStretch value: " + mScale);
 
@@ -444,7 +442,6 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
                          (canvas.getWidth() - mCacheBitmap.getWidth()) / 2 + mCacheBitmap.getWidth(),
                          (canvas.getHeight() - mCacheBitmap.getHeight()) / 2 + mCacheBitmap.getHeight()), null);
                 }
-
 
                 if (mFpsMeter != null) {
                     mFpsMeter.measure();
