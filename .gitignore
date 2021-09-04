@@ -1,3 +1,5 @@
+/sdk/*
+
 *.iml
 .gradle
 /local.properties
