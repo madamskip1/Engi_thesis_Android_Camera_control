@@ -25,12 +25,13 @@ import android.view.Surface;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.kartykamer.interfaces.FPSView;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.nio.ByteBuffer;
 import java.util.concurrent.ExecutionException;
 
-public class CameraX_test extends AppCompatActivity {
+public class CameraX_test extends AppCompatActivity implements FPSView {
     ImageView imgView;
     CameraCore cameraCore;
 
@@ -42,8 +43,18 @@ public class CameraX_test extends AppCompatActivity {
         imgView = (ImageView) findViewById(R.id.camera_preview);
         cameraCore = new CameraCore(this);
         cameraCore.setImageView(imgView);
+        cameraCore.setFpsView(this);
         cameraCore.start();
+    }
 
+    public void setFPSText(double curFPS, double movAvgFPS, double avgFPS) {
+        TextView curFPSTextView = (TextView) findViewById(R.id.cur_fps_text);
+        TextView movAvgFPSTextView = (TextView) findViewById(R.id.move_avg_fps_text);
+        TextView avgFPSTextView = (TextView) findViewById(R.id.avg_fps_text);
+
+        curFPSTextView.setText(Double.toString(curFPS));
+        movAvgFPSTextView.setText(Double.toString(movAvgFPS));
+        avgFPSTextView.setText(Double.toString(avgFPS));
 
     }
 

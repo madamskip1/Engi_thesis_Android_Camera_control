@@ -2,6 +2,7 @@ package com.example.kartykamer;
 
 import android.graphics.Bitmap;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,11 +17,13 @@ import com.example.kartykamer.facedetectors.FaceDetector;
 import com.example.kartykamer.facedetectors.CascadeFaceDetector;
 import com.example.kartykamer.facedetectors.HaarCascadeFaceDetector;
 import com.example.kartykamer.facedetectors.LbpCascadeFaceDetector;
+import com.example.kartykamer.interfaces.FPSView;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
+import org.opencv.text.Text;
 
 import java.util.concurrent.ExecutionException;
 
@@ -32,6 +35,7 @@ public class CameraCore {
     ImageProxyToMatConverter proxyConverter = new ImageProxyToMatConverter();
     private ImageView imgView = null;
     private FaceDetector faceDetector;
+    private FPSView fpsView = null;
 
     public CameraCore(AppCompatActivity context) {
         OpenCVLoader.initDebug();
@@ -48,6 +52,10 @@ public class CameraCore {
      */
     public void setImageView(ImageView imageView) {
         imgView = imageView;
+    }
+
+    public void setFpsView(FPSView view) {
+        fpsView = view;
     }
 
     public void start() {
@@ -72,11 +80,17 @@ public class CameraCore {
         imageAnalyzer.setAnalyzer(ContextCompat.getMainExecutor(activity), new ImageAnalysis.Analyzer() {
             @Override
             public void analyze(@NonNull ImageProxy image) {
+                long currentTime = System.currentTimeMillis();
+
                 proxyConverter.setFrame(image);
                 Mat mat = proxyConverter.gray();
                 MatOfRect faces = faceDetector.detect(mat);
 
                 faceDetector.drawFaceSquare(mat, faces);
+
+                if (fpsView != null) {
+                    fpsView.setFPSText(2.0, 3.0, 4.0);
+                }
 
                 if (imgView != null) {
                     Bitmap bitmap = proxyConverter.createBitmap(mat);
@@ -85,6 +99,7 @@ public class CameraCore {
                 image.close();
             }
         });
+
 
         CameraSelector cameraSelector = new CameraSelector.Builder()
                 .requireLensFacing(CameraSelector.LENS_FACING_FRONT)
