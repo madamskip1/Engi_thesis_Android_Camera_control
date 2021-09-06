@@ -47,18 +47,12 @@ public class CameraX_test extends AppCompatActivity implements FPSView {
         cameraCore.start();
     }
 
-    public void setFPSText(double curFPS, double movAvgFPS, double avgFPS) {
+    public void setFPSText(double curFPS, double avgFPS) {
         TextView curFPSTextView = (TextView) findViewById(R.id.cur_fps_text);
-        TextView movAvgFPSTextView = (TextView) findViewById(R.id.move_avg_fps_text);
         TextView avgFPSTextView = (TextView) findViewById(R.id.avg_fps_text);
 
-        curFPSTextView.setText(Double.toString(curFPS));
-        movAvgFPSTextView.setText(Double.toString(movAvgFPS));
-        avgFPSTextView.setText(Double.toString(avgFPS));
+        curFPSTextView.setText(String.format("%.2f", curFPS));
+        avgFPSTextView.setText(String.format("%.2f", avgFPS));
 
     }
-
-    /*
-
-     */
 }

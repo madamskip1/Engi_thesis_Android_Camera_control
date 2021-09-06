@@ -25,6 +25,7 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.text.Text;
 
+import java.util.ArrayDeque;
 import java.util.concurrent.ExecutionException;
 
 public class CameraCore {
@@ -43,8 +44,6 @@ public class CameraCore {
         cameraProviderFuture = ProcessCameraProvider.getInstance(activity);
         faceDetector = new LbpCascadeFaceDetector();
     }
-
-    ;
 
     /*
         Finalnie nie bedzie wyswietlania - wtedy usunac trzeba
@@ -78,9 +77,16 @@ public class CameraCore {
                 .build();
 
         imageAnalyzer.setAnalyzer(ContextCompat.getMainExecutor(activity), new ImageAnalysis.Analyzer() {
+            private Long firstTimestamp = new Long(-1);
+            private Long previousTimestamp = System.currentTimeMillis();//new Long(-1);
+            private double frameCounter = 0.0;
+
             @Override
             public void analyze(@NonNull ImageProxy image) {
-                long currentTime = System.currentTimeMillis();
+
+                if (fpsView != null) {
+                    calcFPS();
+                }
 
                 proxyConverter.setFrame(image);
                 Mat mat = proxyConverter.gray();
@@ -88,15 +94,27 @@ public class CameraCore {
 
                 faceDetector.drawFaceSquare(mat, faces);
 
-                if (fpsView != null) {
-                    fpsView.setFPSText(2.0, 3.0, 4.0);
-                }
 
                 if (imgView != null) {
                     Bitmap bitmap = proxyConverter.createBitmap(mat);
                     imgView.setImageBitmap(bitmap);
                 }
                 image.close();
+            }
+
+            private void calcFPS() {
+                frameCounter++;
+                Long currentTime = System.currentTimeMillis();
+
+                if (firstTimestamp == -1) {
+                    firstTimestamp = currentTime;
+                }
+
+                double curFPS = 1.0 / (currentTime - previousTimestamp) * 1000.0;
+                double avgFPS = frameCounter / (currentTime - firstTimestamp) * 1000.0;
+
+                fpsView.setFPSText(curFPS, avgFPS);
+                previousTimestamp = currentTime;
             }
         });
 
