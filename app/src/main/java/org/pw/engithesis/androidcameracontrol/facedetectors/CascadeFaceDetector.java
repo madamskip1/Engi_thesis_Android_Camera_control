@@ -1,14 +1,11 @@
 package org.pw.engithesis.androidcameracontrol.facedetectors;
 
 import android.content.Context;
-import android.util.Log;
-
-import org.pw.engithesis.androidcameracontrol.App;
-import org.pw.engithesis.androidcameracontrol.R;
 
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.objdetect.CascadeClassifier;
+import org.pw.engithesis.androidcameracontrol.App;
 
 import java.io.File;
 import java.io.FileOutputStream;

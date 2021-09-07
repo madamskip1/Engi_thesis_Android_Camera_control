@@ -1,13 +1,11 @@
 package org.pw.engithesis.androidcameracontrol;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
-import android.graphics.Camera;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.pw.engithesis.androidcameracontrol.interfaces.FPSView;
 

@@ -2,7 +2,6 @@ package org.pw.engithesis.androidcameracontrol;
 
 import android.graphics.Bitmap;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,20 +12,15 @@ import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
 
-import org.pw.engithesis.androidcameracontrol.facedetectors.FaceDetector;
-import org.pw.engithesis.androidcameracontrol.facedetectors.CascadeFaceDetector;
-import org.pw.engithesis.androidcameracontrol.facedetectors.HaarCascadeFaceDetector;
-import org.pw.engithesis.androidcameracontrol.facedetectors.LbpCascadeFaceDetector;
-import org.pw.engithesis.androidcameracontrol.interfaces.FPSView;
-
 import com.google.common.util.concurrent.ListenableFuture;
 
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
-import org.opencv.text.Text;
+import org.pw.engithesis.androidcameracontrol.facedetectors.FaceDetector;
+import org.pw.engithesis.androidcameracontrol.facedetectors.LbpCascadeFaceDetector;
+import org.pw.engithesis.androidcameracontrol.interfaces.FPSView;
 
-import java.util.ArrayDeque;
 import java.util.concurrent.ExecutionException;
 
 public class CameraCore {
@@ -78,7 +72,7 @@ public class CameraCore {
                 .build();
 
         imageAnalyzer.setAnalyzer(ContextCompat.getMainExecutor(activity), new ImageAnalysis.Analyzer() {
-            private Long firstTimestamp = new Long(-1);
+            private Long firstTimestamp = Long.valueOf(-1);
             private Long previousTimestamp = System.currentTimeMillis();//new Long(-1);
             private double frameCounter = 0.0;
 
