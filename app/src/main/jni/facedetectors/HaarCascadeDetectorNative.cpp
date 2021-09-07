@@ -6,7 +6,7 @@
 
 extern "C"
 JNIEXPORT jlong JNICALL
-Java_com_example_kartykamer_facedetectors_HaarCascadeNativeBridge_nativeCreateDetector(JNIEnv *env,
+Java_org_pw_engithesis_androidcameracontrol_facedetectors_HaarCascadeNativeBridge_nativeCreateDetector(JNIEnv *env,
                                                                                        jclass clazz,
                                                                                        jstring cascade_path,
                                                                                        jint min_face_size) {
@@ -18,7 +18,7 @@ Java_com_example_kartykamer_facedetectors_HaarCascadeNativeBridge_nativeCreateDe
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_example_kartykamer_facedetectors_HaarCascadeNativeBridge_nativeReleaseDetector(JNIEnv *env,
+Java_org_pw_engithesis_androidcameracontrol_facedetectors_HaarCascadeNativeBridge_nativeReleaseDetector(JNIEnv *env,
                                                                                         jclass clazz,
                                                                                         jlong native_address) {
     // TODO: implement nativeReleaseDetector()
@@ -26,7 +26,7 @@ Java_com_example_kartykamer_facedetectors_HaarCascadeNativeBridge_nativeReleaseD
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_example_kartykamer_facedetectors_HaarCascadeNativeBridge_nativeDetectFace(JNIEnv *env,
+Java_org_pw_engithesis_androidcameracontrol_facedetectors_HaarCascadeNativeBridge_nativeDetectFace(JNIEnv *env,
                                                                                    jclass clazz,
                                                                                    jlong native_address,
                                                                                    jlong gray_frame,
@@ -35,7 +35,7 @@ Java_com_example_kartykamer_facedetectors_HaarCascadeNativeBridge_nativeDetectFa
 }
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_example_kartykamer_facedetectors_HaarCascadeNativeBridge_test(JNIEnv *env, jclass clazz,
+Java_org_pw_engithesis_androidcameracontrol_facedetectors_HaarCascadeNativeBridge_test(JNIEnv *env, jclass clazz,
                                                                        jlong gray_frame_address,
                                                                        jlong classifierAddress,
                                                                        jlong result_faces_address) {

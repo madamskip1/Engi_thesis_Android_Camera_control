@@ -1,4 +1,4 @@
-package com.example.kartykamer;
+package org.pw.engithesis.androidcameracontrol;
 
 import android.app.Application;
 import android.content.Context;

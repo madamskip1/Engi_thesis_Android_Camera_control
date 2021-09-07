@@ -6,13 +6,13 @@
 //
 // In MainActivity.java:
 //    static {
-//       System.loadLibrary("kartykamer");
+//       System.loadLibrary("androidcameracontrol");
 //    }
 //
 // Or, in MainActivity.kt:
 //    companion object {
 //      init {
-//         System.loadLibrary("kartykamer")
+//         System.loadLibrary("androidcameracontrol")
 //      }
 //    }
 

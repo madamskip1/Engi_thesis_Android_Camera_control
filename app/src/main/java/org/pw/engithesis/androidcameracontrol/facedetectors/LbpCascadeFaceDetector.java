@@ -1,6 +1,6 @@
-package com.example.kartykamer.facedetectors;
+package org.pw.engithesis.androidcameracontrol.facedetectors;
 
-import com.example.kartykamer.R;
+import org.pw.engithesis.androidcameracontrol.R;
 
 public class LbpCascadeFaceDetector extends CascadeFaceDetector {
     public LbpCascadeFaceDetector() {

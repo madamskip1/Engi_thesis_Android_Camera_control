@@ -1,10 +1,10 @@
-package com.example.kartykamer.facedetectors;
+package org.pw.engithesis.androidcameracontrol.facedetectors;
 
 import android.content.Context;
 import android.util.Log;
 
-import com.example.kartykamer.App;
-import com.example.kartykamer.R;
+import org.pw.engithesis.androidcameracontrol.App;
+import org.pw.engithesis.androidcameracontrol.R;
 
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;

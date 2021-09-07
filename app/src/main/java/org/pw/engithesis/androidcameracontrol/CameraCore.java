@@ -1,4 +1,4 @@
-package com.example.kartykamer;
+package org.pw.engithesis.androidcameracontrol;
 
 import android.graphics.Bitmap;
 import android.widget.ImageView;
@@ -13,11 +13,12 @@ import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.example.kartykamer.facedetectors.FaceDetector;
-import com.example.kartykamer.facedetectors.CascadeFaceDetector;
-import com.example.kartykamer.facedetectors.HaarCascadeFaceDetector;
-import com.example.kartykamer.facedetectors.LbpCascadeFaceDetector;
-import com.example.kartykamer.interfaces.FPSView;
+import org.pw.engithesis.androidcameracontrol.facedetectors.FaceDetector;
+import org.pw.engithesis.androidcameracontrol.facedetectors.CascadeFaceDetector;
+import org.pw.engithesis.androidcameracontrol.facedetectors.HaarCascadeFaceDetector;
+import org.pw.engithesis.androidcameracontrol.facedetectors.LbpCascadeFaceDetector;
+import org.pw.engithesis.androidcameracontrol.interfaces.FPSView;
+
 import com.google.common.util.concurrent.ListenableFuture;
 
 import org.opencv.android.OpenCVLoader;

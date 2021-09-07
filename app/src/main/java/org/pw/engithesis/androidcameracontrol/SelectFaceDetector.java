@@ -1,4 +1,4 @@
-package com.example.kartykamer;
+package org.pw.engithesis.androidcameracontrol;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.kartykamer.interfaces.FPSView;
+import org.pw.engithesis.androidcameracontrol.interfaces.FPSView;
 
 
 public class SelectFaceDetector extends AppCompatActivity implements FPSView {

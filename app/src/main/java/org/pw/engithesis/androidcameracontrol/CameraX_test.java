@@ -1,4 +1,4 @@
-package com.example.kartykamer;
+package org.pw.engithesis.androidcameracontrol;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,7 +25,8 @@ import android.view.Surface;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.kartykamer.interfaces.FPSView;
+import org.pw.engithesis.androidcameracontrol.interfaces.FPSView;
+
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.nio.ByteBuffer;

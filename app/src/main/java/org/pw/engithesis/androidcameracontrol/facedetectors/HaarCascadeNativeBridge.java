@@ -1,4 +1,4 @@
-package com.example.kartykamer.facedetectors;
+package org.pw.engithesis.androidcameracontrol.facedetectors;
 
 import android.util.Log;
 

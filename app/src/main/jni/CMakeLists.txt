@@ -8,7 +8,7 @@ cmake_minimum_required(VERSION 3.10.2)
 
 # Declares and names the project.
 
-project("kartykamer")
+project("androidcameracontrol")
 
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
@@ -20,13 +20,13 @@ message(STATUS "ANDROID_ABI=${ANDROID_ABI}")
 find_package(OpenCV REQUIRED COMPONENTS ${ANDROID_OPENCV_COMPONENTS})
 
 add_library( # Sets the name of the library.
-        kartykamer
+        androidcameracontrol
 
         # Sets the library as a shared library.
         SHARED
 
         # Provides a relative path to your source file(s).
-        kartykamer.cpp
+        androidcameracontrol.cpp
         testmethods.cpp)
 
 add_library(facedetectors_haar
@@ -54,7 +54,7 @@ find_library( # Sets the name of the path variable.
 # build script, prebuilt third-party libraries, or system libraries.
 
 target_link_libraries( # Specifies the target library.
-        kartykamer
+        androidcameracontrol
         facedetectors_haar
 
 

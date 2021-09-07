@@ -7,9 +7,9 @@
 
 extern "C"
 {
-JNIEXPORT jstring JNICALL Java_com_example_kartykamer_NativeTest_testString(JNIEnv*, jobject thiz);
+JNIEXPORT jstring JNICALL Java_org_pw_engithesis_androidcameracontrol_NativeTest_testString(JNIEnv*, jobject thiz);
 
-JNIEXPORT jstring JNICALL Java_com_example_kartykamer_NativeTest_testString(JNIEnv* env,
+JNIEXPORT jstring JNICALL Java_org_pw_engithesis_androidcameracontrol_NativeTest_testString(JNIEnv* env,
                                                                             jobject thiz) {
     jstring str = env->NewStringUTF("Test");
     return str;
@@ -20,9 +20,9 @@ JNIEXPORT jstring JNICALL Java_com_example_kartykamer_NativeTest_testString(JNIE
 
 extern "C"
 {
-JNIEXPORT void JNICALL Java_com_example_kartykamer_NativeTest_testMat(JNIEnv*, jobject, jlong);
+JNIEXPORT void JNICALL Java_org_pw_engithesis_androidcameracontrol_NativeTest_testMat(JNIEnv*, jobject, jlong);
 
-JNIEXPORT void JNICALL Java_com_example_kartykamer_NativeTest_testMat(JNIEnv* env, jobject, jlong matTest) {
+JNIEXPORT void JNICALL Java_org_pw_engithesis_androidcameracontrol_NativeTest_testMat(JNIEnv* env, jobject, jlong matTest) {
     cv::Mat &mat = *(cv::Mat *) matTest;
 
     cv::Canny(mat, mat, 0, 0, 3);

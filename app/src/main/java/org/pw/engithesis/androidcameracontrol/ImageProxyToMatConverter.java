@@ -1,4 +1,4 @@
-package com.example.kartykamer;
+package org.pw.engithesis.androidcameracontrol;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
