@@ -13,6 +13,7 @@ public abstract class FaceDetector {
             Rect face = facesArray[i];
             Imgproc.rectangle(mat, face.tl(), face.br(), new Scalar(255, 0, 0), 3);
         }
+
     }
 
     public abstract MatOfRect detect(Mat mat);
