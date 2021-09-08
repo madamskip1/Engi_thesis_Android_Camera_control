@@ -76,6 +76,32 @@ public class ImageProxyToMatConverter {
         return rgbaMat;
     }
 
+    public Mat rgb()
+    {
+        byte[] nv21;
+        ByteBuffer yBuffer = frame.getPlanes()[0].getBuffer();
+        ByteBuffer uBuffer = frame.getPlanes()[1].getBuffer();
+        ByteBuffer vBuffer = frame.getPlanes()[2].getBuffer();
+
+        int ySize = yBuffer.remaining();
+        int uSize = uBuffer.remaining();
+        int vSize = vBuffer.remaining();
+
+        nv21 = new byte[ySize + uSize + vSize];
+
+        //U and V are swapped
+        yBuffer.get(nv21, 0, ySize);
+        vBuffer.get(nv21, ySize, vSize);
+        uBuffer.get(nv21, ySize + vSize, uSize);
+
+        Mat mYuv = new Mat(frame.getHeight() + frame.getHeight() / 2, frame.getWidth(), CvType.CV_8UC1);
+        mYuv.put(0, 0, nv21);
+        Mat mRGB = new Mat();
+        Imgproc.cvtColor(mYuv, mRGB, Imgproc.COLOR_YUV2RGB_NV21, 3);
+
+        rotateAndFlip(mRGB);
+        return mRGB;
+    }
 
     public Bitmap rgbaBitmap() {
         return createBitmap(rgba());
