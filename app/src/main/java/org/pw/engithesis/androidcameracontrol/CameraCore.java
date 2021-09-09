@@ -1,5 +1,6 @@
 package org.pw.engithesis.androidcameracontrol;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
 
@@ -16,11 +17,19 @@ import com.google.common.util.concurrent.ListenableFuture;
 
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.MatOfRect;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
+import org.opencv.face.Face;
+import org.opencv.face.Facemark;
+import org.opencv.imgproc.Imgproc;
 import org.pw.engithesis.androidcameracontrol.facedetectors.FaceDetector;
-import org.pw.engithesis.androidcameracontrol.facedetectors.LbpCascadeFaceDetector;
+import org.pw.engithesis.androidcameracontrol.facedetectors.HaarCascadeFaceDetector;
 import org.pw.engithesis.androidcameracontrol.interfaces.FPSView;
+import org.pw.engithesis.androidcameracontrol.interfaces.ResourceManager;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class CameraCore {
@@ -32,12 +41,16 @@ public class CameraCore {
     private ImageView imgView = null;
     private FaceDetector faceDetector;
     private FPSView fpsView = null;
+    private Facemark facemark;
 
     public CameraCore(AppCompatActivity context) {
         OpenCVLoader.initDebug();
         activity = context;
         cameraProviderFuture = ProcessCameraProvider.getInstance(activity);
-        faceDetector = new LbpCascadeFaceDetector();
+        faceDetector = new HaarCascadeFaceDetector();
+        facemark = Face.createFacemarkLBF();
+        ResourceManager resourceManager = new ResourceManager(R.raw.lbfmodel, "lbfmodel.yaml");
+        facemark.loadModel(resourceManager.getResourcePath());
     }
 
     /*
@@ -67,7 +80,7 @@ public class CameraCore {
     }
 
     private void bindImageAnalysis(ProcessCameraProvider cameraProvider) {
-        ImageAnalysis imageAnalyzer = new ImageAnalysis.Builder()
+        @SuppressLint("RestrictedApi") ImageAnalysis imageAnalyzer = new ImageAnalysis.Builder()
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build();
 
@@ -84,8 +97,21 @@ public class CameraCore {
                 }
 
                 proxyConverter.setFrame(image);
-                Mat mat = proxyConverter.gray();
+                Mat mat = proxyConverter.rgb();
                 MatOfRect faces = faceDetector.detect(mat);
+
+                ArrayList<MatOfPoint2f> landmarks = new ArrayList<MatOfPoint2f>();
+                facemark.fit(mat, faces, landmarks);
+
+                for (int i=0; i<landmarks.size(); i++) {
+                    MatOfPoint2f lm = landmarks.get(i);
+                    for (int j=0; j<lm.rows(); j++) {
+                        double [] dp = lm.get(j,0);
+                        Point p = new Point(dp[0], dp[1]);
+                        Imgproc.circle(mat,p,2,new Scalar(222),1);
+                    }
+                }
+
 
                 faceDetector.drawFaceSquare(mat, faces);
 
@@ -96,6 +122,8 @@ public class CameraCore {
                 }
                 image.close();
             }
+
+
 
             private void calcFPS() {
                 frameCounter++;
