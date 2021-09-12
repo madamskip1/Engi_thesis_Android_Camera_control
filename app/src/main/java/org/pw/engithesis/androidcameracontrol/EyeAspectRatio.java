@@ -1,22 +1,22 @@
 package org.pw.engithesis.androidcameracontrol;
 
-import org.opencv.core.MatOfPoint2f;
+import org.opencv.core.Point;
 
 public class EyeAspectRatio {
 
-    public double getEAR(MatOfPoint2f eye) {
-        double distVerticalA = getDistance(eye.get(1, 0), eye.get(5, 0));
-        double distVerticalB = getDistance(eye.get(2, 0), eye.get(4, 0));
-        double distHorizontal = getDistance(eye.get(0, 0), eye.get(3, 0));
+    public double calcEAR(Point[] eye) {
+        double distVerticalA = getDistance(eye[1], eye[5]);
+        double distVerticalB = getDistance(eye[2], eye[4]);
+        double distHorizontal = getDistance(eye[0], eye[3]);
 
         double EAR = (distVerticalA + distVerticalB) / (2.0 * distHorizontal);
 
         return EAR;
     }
 
-    private double getDistance(double[] pointA, double[] pointB) {
-        double distX = Math.abs(pointA[0] - pointB[0]);
-        double distY = Math.abs(pointA[1] - pointB[1]);
+    private double getDistance(Point pointA, Point pointB) {
+        double distX = Math.abs(pointA.x - pointB.y);
+        double distY = Math.abs(pointA.x - pointB.y);
 
         return Math.hypot(distX, distY);
     }
