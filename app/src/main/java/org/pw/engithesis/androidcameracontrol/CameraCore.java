@@ -25,7 +25,7 @@ import org.opencv.face.Face;
 import org.opencv.face.Facemark;
 import org.opencv.imgproc.Imgproc;
 import org.pw.engithesis.androidcameracontrol.facedetectors.FaceDetector;
-import org.pw.engithesis.androidcameracontrol.facedetectors.HaarCascadeFaceDetector;
+import org.pw.engithesis.androidcameracontrol.facedetectors.LbpCascadeFaceDetector;
 import org.pw.engithesis.androidcameracontrol.interfaces.FPSView;
 import org.pw.engithesis.androidcameracontrol.interfaces.ResourceManager;
 
@@ -40,17 +40,18 @@ public class CameraCore {
     ImageProxyToMatConverter proxyConverter = new ImageProxyToMatConverter();
     private ImageView imgView = null;
     private FaceDetector faceDetector;
-    private FPSView fpsView = null;
     private Facemark facemark;
+    private FPSCounter fpsCounter;
 
     public CameraCore(AppCompatActivity context) {
         OpenCVLoader.initDebug();
         activity = context;
         cameraProviderFuture = ProcessCameraProvider.getInstance(activity);
-        faceDetector = new HaarCascadeFaceDetector();
+        faceDetector = new LbpCascadeFaceDetector();
         facemark = Face.createFacemarkLBF();
         ResourceManager resourceManager = new ResourceManager(R.raw.lbfmodel, "lbfmodel.yaml");
         facemark.loadModel(resourceManager.getResourcePath());
+        fpsCounter = new FPSCounter();
     }
 
     /*
@@ -61,8 +62,8 @@ public class CameraCore {
         imgView = imageView;
     }
 
-    public void setFpsView(FPSView view) {
-        fpsView = view;
+    public FPSCounter getFpsCounter() {
+        return fpsCounter;
     }
 
     public void start() {
@@ -85,15 +86,12 @@ public class CameraCore {
                 .build();
 
         imageAnalyzer.setAnalyzer(ContextCompat.getMainExecutor(activity), new ImageAnalysis.Analyzer() {
-            private Long firstTimestamp = Long.valueOf(-1);
-            private Long previousTimestamp = System.currentTimeMillis();//new Long(-1);
-            private double frameCounter = 0.0;
 
             @Override
             public void analyze(@NonNull ImageProxy image) {
 
-                if (fpsView != null) {
-                    calcFPS();
+                if (fpsCounter != null) {
+                    fpsCounter.tick();
                 }
 
                 proxyConverter.setFrame(image);
@@ -103,7 +101,7 @@ public class CameraCore {
                 ArrayList<MatOfPoint2f> landmarks = new ArrayList<MatOfPoint2f>();
                 facemark.fit(mat, faces, landmarks);
 
-                for (int i=0; i<landmarks.size(); i++) {
+                for (int i = 0; i < landmarks.size(); i++) {
                     MatOfPoint2f lm = landmarks.get(i);
                     for (int j=0; j<lm.rows(); j++) {
                         double [] dp = lm.get(j,0);
@@ -111,7 +109,6 @@ public class CameraCore {
                         Imgproc.circle(mat,p,2,new Scalar(222),1);
                     }
                 }
-
 
                 faceDetector.drawFaceSquare(mat, faces);
 
@@ -121,23 +118,6 @@ public class CameraCore {
                     imgView.setImageBitmap(bitmap);
                 }
                 image.close();
-            }
-
-
-
-            private void calcFPS() {
-                frameCounter++;
-                Long currentTime = System.currentTimeMillis();
-
-                if (firstTimestamp == -1) {
-                    firstTimestamp = currentTime;
-                }
-
-                double curFPS = 1.0 / (currentTime - previousTimestamp) * 1000.0;
-                double avgFPS = frameCounter / (currentTime - firstTimestamp) * 1000.0;
-
-                fpsView.setFPSText(curFPS, avgFPS);
-                previousTimestamp = currentTime;
             }
         });
 

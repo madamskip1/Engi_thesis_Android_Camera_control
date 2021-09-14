@@ -24,7 +24,7 @@ public class SelectFaceDetector extends AppCompatActivity implements FPSView {
         imgView = (ImageView) findViewById(R.id.camera_preview);
         CameraCore cameraCore = new CameraCore(this);
         cameraCore.setImageView(imgView);
-        cameraCore.setFpsView(this);
+     /*   cameraCore.setFpsView(this);*/
         cameraCore.start();
     }
 
