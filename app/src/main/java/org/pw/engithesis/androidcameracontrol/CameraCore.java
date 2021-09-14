@@ -1,14 +1,11 @@
 package org.pw.engithesis.androidcameracontrol;
 
-import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageAnalysis;
-import androidx.camera.core.ImageProxy;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
@@ -26,7 +23,6 @@ import org.opencv.face.Facemark;
 import org.opencv.imgproc.Imgproc;
 import org.pw.engithesis.androidcameracontrol.facedetectors.FaceDetector;
 import org.pw.engithesis.androidcameracontrol.facedetectors.LbpCascadeFaceDetector;
-import org.pw.engithesis.androidcameracontrol.interfaces.FPSView;
 import org.pw.engithesis.androidcameracontrol.interfaces.ResourceManager;
 
 import java.util.ArrayList;
@@ -34,14 +30,14 @@ import java.util.concurrent.ExecutionException;
 
 public class CameraCore {
 
-    private static final String TAG = "CameraCore";
-    private AppCompatActivity activity;
-    private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
+    private final AppCompatActivity activity;
+    private final ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     ImageProxyToMatConverter proxyConverter = new ImageProxyToMatConverter();
     private ImageView imgView = null;
     private FaceDetector faceDetector;
     private Facemark facemark;
     private FPSCounter fpsCounter;
+
 
     public CameraCore(AppCompatActivity context) {
         OpenCVLoader.initDebug();
@@ -67,65 +63,75 @@ public class CameraCore {
     }
 
     public void start() {
-        cameraProviderFuture.addListener(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
-                    bindImageAnalysis(cameraProvider);
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, ContextCompat.getMainExecutor(activity));
+        cameraProviderFuture.addListener(prepareCamerProviderRunnable(), ContextCompat.getMainExecutor(activity));
     }
 
     private void bindImageAnalysis(ProcessCameraProvider cameraProvider) {
-        @SuppressLint("RestrictedApi") ImageAnalysis imageAnalyzer = new ImageAnalysis.Builder()
+        ImageAnalysis imageAnalysis = prepareImageAnalysis();
+        CameraSelector cameraSelector = prepareCameraSelector();
+
+        cameraProvider.bindToLifecycle((LifecycleOwner) activity, cameraSelector, imageAnalysis);
+    }
+
+    private Runnable prepareCamerProviderRunnable() {
+        return () -> {
+            try {
+                ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
+                bindImageAnalysis(cameraProvider);
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        };
+    }
+
+
+    private CameraSelector prepareCameraSelector() {
+        return new CameraSelector.Builder()
+                .requireLensFacing(CameraSelector.LENS_FACING_FRONT)
+                .build();
+    }
+
+    private ImageAnalysis prepareImageAnalysis() {
+        ImageAnalysis imageAnalysis = new ImageAnalysis.Builder()
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build();
 
-        imageAnalyzer.setAnalyzer(ContextCompat.getMainExecutor(activity), new ImageAnalysis.Analyzer() {
+        imageAnalysis.setAnalyzer(ContextCompat.getMainExecutor(activity), prepareAnalyzer());
 
-            @Override
-            public void analyze(@NonNull ImageProxy image) {
-
-                if (fpsCounter != null) {
-                    fpsCounter.tick();
-                }
-
-                proxyConverter.setFrame(image);
-                Mat mat = proxyConverter.rgb();
-                MatOfRect faces = faceDetector.detect(mat);
-
-                ArrayList<MatOfPoint2f> landmarks = new ArrayList<MatOfPoint2f>();
-                facemark.fit(mat, faces, landmarks);
-
-                for (int i = 0; i < landmarks.size(); i++) {
-                    MatOfPoint2f lm = landmarks.get(i);
-                    for (int j=0; j<lm.rows(); j++) {
-                        double [] dp = lm.get(j,0);
-                        Point p = new Point(dp[0], dp[1]);
-                        Imgproc.circle(mat,p,2,new Scalar(222),1);
-                    }
-                }
-
-                faceDetector.drawFaceSquare(mat, faces);
+        return imageAnalysis;
+    }
 
 
-                if (imgView != null) {
-                    Bitmap bitmap = proxyConverter.createBitmap(mat);
-                    imgView.setImageBitmap(bitmap);
-                }
-                image.close();
+    private ImageAnalysis.Analyzer prepareAnalyzer() {
+        return image -> {
+            if (fpsCounter != null) {
+                fpsCounter.tick();
             }
-        });
+
+            proxyConverter.setFrame(image);
+            Mat mat = proxyConverter.rgb();
+            MatOfRect faces = faceDetector.detect(mat);
+
+            ArrayList<MatOfPoint2f> landmarks = new ArrayList<>();
+            facemark.fit(mat, faces, landmarks);
+
+            for (int i = 0; i < landmarks.size(); i++) {
+                MatOfPoint2f lm = landmarks.get(i);
+                for (int j = 0; j < lm.rows(); j++) {
+                    double[] dp = lm.get(j, 0);
+                    Point p = new Point(dp[0], dp[1]);
+                    Imgproc.circle(mat, p, 2, new Scalar(222), 1);
+                }
+            }
+
+            faceDetector.drawFaceSquare(mat, faces);
 
 
-        CameraSelector cameraSelector = new CameraSelector.Builder()
-                .requireLensFacing(CameraSelector.LENS_FACING_FRONT)
-                .build();
-
-        cameraProvider.bindToLifecycle((LifecycleOwner) activity, cameraSelector, imageAnalyzer);
+            if (imgView != null) {
+                Bitmap bitmap = proxyConverter.createBitmap(mat);
+                imgView.setImageBitmap(bitmap);
+            }
+            image.close();
+        };
     }
 }
