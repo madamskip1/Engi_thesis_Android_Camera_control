@@ -10,7 +10,7 @@ import org.opencv.core.Size;
 import org.opencv.dnn.Dnn;
 import org.opencv.dnn.Net;
 import org.pw.engithesis.androidcameracontrol.R;
-import org.pw.engithesis.androidcameracontrol.interfaces.ResourceManager;
+import org.pw.engithesis.androidcameracontrol.RawResourceManager;
 
 import java.util.ArrayList;
 
@@ -19,10 +19,10 @@ public class DnnCaffeFaceDetector extends FaceDetector {
 
     public DnnCaffeFaceDetector()
     {
-        ResourceManager proto = new ResourceManager(R.raw.deploy, "deploy.protoxt");
-        ResourceManager model = new ResourceManager(R.raw.res10_300x300_ssd_iter_140000_fp16, "res10_300x300_ssd_iter_140000_fp16.caffemodel");
+        RawResourceManager proto = new RawResourceManager(R.raw.deploy, "deploy.protoxt");
+        RawResourceManager model = new RawResourceManager(R.raw.res10_300x300_ssd_iter_140000_fp16, "res10_300x300_ssd_iter_140000_fp16.caffemodel");
 
-        dnnNet = Dnn.readNetFromCaffe(proto.getResourcePath(), model.getResourcePath());
+        dnnNet = Dnn.readNetFromCaffe(proto.getPath(), model.getPath());
     }
 
     @Override

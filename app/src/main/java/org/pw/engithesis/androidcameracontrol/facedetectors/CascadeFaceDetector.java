@@ -3,7 +3,7 @@ package org.pw.engithesis.androidcameracontrol.facedetectors;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.objdetect.CascadeClassifier;
-import org.pw.engithesis.androidcameracontrol.interfaces.ResourceManager;
+import org.pw.engithesis.androidcameracontrol.RawResourceManager;
 
 public class CascadeFaceDetector extends FaceDetector {
     private CascadeClassifier classifier;
@@ -25,8 +25,8 @@ public class CascadeFaceDetector extends FaceDetector {
     }
 
     private void loadClassifier() {
-        ResourceManager classifierResource = new ResourceManager(resourceID, resourceName);
+        RawResourceManager classifierResource = new RawResourceManager(resourceID, resourceName);
 
-        classifier = new CascadeClassifier(classifierResource.getResourcePath());
+        classifier = new CascadeClassifier(classifierResource.getPath());
     }
 }

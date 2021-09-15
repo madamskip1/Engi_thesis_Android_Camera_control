@@ -23,7 +23,6 @@ import org.opencv.face.Facemark;
 import org.opencv.imgproc.Imgproc;
 import org.pw.engithesis.androidcameracontrol.facedetectors.FaceDetector;
 import org.pw.engithesis.androidcameracontrol.facedetectors.LbpCascadeFaceDetector;
-import org.pw.engithesis.androidcameracontrol.interfaces.ResourceManager;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -45,9 +44,10 @@ public class CameraCore {
         cameraProviderFuture = ProcessCameraProvider.getInstance(activity);
         faceDetector = new LbpCascadeFaceDetector();
         facemark = Face.createFacemarkLBF();
-        ResourceManager resourceManager = new ResourceManager(R.raw.lbfmodel, "lbfmodel.yaml");
-        facemark.loadModel(resourceManager.getResourcePath());
+        RawResourceManager rawResourceManager = new RawResourceManager(R.raw.lbfmodel, "lbfmodel.yaml");
+        facemark.loadModel(rawResourceManager.getPath());
         fpsCounter = new FPSCounter();
+
     }
 
     /*
@@ -63,7 +63,7 @@ public class CameraCore {
     }
 
     public void start() {
-        cameraProviderFuture.addListener(prepareCamerProviderRunnable(), ContextCompat.getMainExecutor(activity));
+        cameraProviderFuture.addListener(prepareCameraProviderRunnable(), ContextCompat.getMainExecutor(activity));
     }
 
     private void bindImageAnalysis(ProcessCameraProvider cameraProvider) {
@@ -73,7 +73,7 @@ public class CameraCore {
         cameraProvider.bindToLifecycle((LifecycleOwner) activity, cameraSelector, imageAnalysis);
     }
 
-    private Runnable prepareCamerProviderRunnable() {
+    private Runnable prepareCameraProviderRunnable() {
         return () -> {
             try {
                 ProcessCameraProvider cameraProvider = cameraProviderFuture.get();

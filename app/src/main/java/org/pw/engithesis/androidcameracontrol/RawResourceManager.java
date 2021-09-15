@@ -1,28 +1,26 @@
-package org.pw.engithesis.androidcameracontrol.interfaces;
+package org.pw.engithesis.androidcameracontrol;
 
 import android.content.Context;
-
-import org.pw.engithesis.androidcameracontrol.App;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class ResourceManager {
+public class RawResourceManager {
     private int _resourceID = -1;
     private String _resourceName;
     private File resourceFile;
 
-    public ResourceManager(int resourceID, String resourceName)
+    public RawResourceManager(int resourceID, String resourceName)
     {
         _resourceID = resourceID;
         _resourceName = resourceName;
     }
 
-    private ResourceManager() {}
+    private RawResourceManager() {}
 
-    public File getResourceFile() {
+    public File getFile() {
         if (resourceFile != null) {
             return resourceFile;
         }
@@ -52,8 +50,8 @@ public class ResourceManager {
         return resourceFile;
     }
 
-    public String getResourcePath()
+    public String getPath()
     {
-        return getResourceFile().getAbsolutePath();
+        return getFile().getAbsolutePath();
     }
 }
