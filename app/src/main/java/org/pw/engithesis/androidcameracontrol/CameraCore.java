@@ -16,11 +16,6 @@ import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.MatOfRect;
-import org.opencv.core.Point;
-import org.opencv.core.Scalar;
-import org.opencv.face.Face;
-import org.opencv.face.Facemark;
-import org.opencv.imgproc.Imgproc;
 import org.pw.engithesis.androidcameracontrol.facedetectors.FaceDetector;
 import org.pw.engithesis.androidcameracontrol.facedetectors.LbpCascadeFaceDetector;
 
@@ -34,8 +29,8 @@ public class CameraCore {
     ImageProxyToMatConverter proxyConverter = new ImageProxyToMatConverter();
     private ImageView imgView = null;
     private FaceDetector faceDetector;
-    private Facemark facemark;
     private FPSCounter fpsCounter;
+    private FacemarkDetector facemarkLBF;
 
 
     public CameraCore(AppCompatActivity context) {
@@ -43,11 +38,9 @@ public class CameraCore {
         activity = context;
         cameraProviderFuture = ProcessCameraProvider.getInstance(activity);
         faceDetector = new LbpCascadeFaceDetector();
-        facemark = Face.createFacemarkLBF();
-        RawResourceManager rawResourceManager = new RawResourceManager(R.raw.lbfmodel, "lbfmodel.yaml");
-        facemark.loadModel(rawResourceManager.getPath());
         fpsCounter = new FPSCounter();
 
+        facemarkLBF = new FacemarkDetector();
     }
 
     /*
@@ -112,17 +105,9 @@ public class CameraCore {
             Mat mat = proxyConverter.rgb();
             MatOfRect faces = faceDetector.detect(mat);
 
-            ArrayList<MatOfPoint2f> landmarks = new ArrayList<>();
-            facemark.fit(mat, faces, landmarks);
+            ArrayList<MatOfPoint2f> landmarks = facemarkLBF.detect(mat, faces);
+            facemarkLBF.drawLandmarks(mat, landmarks);
 
-            for (int i = 0; i < landmarks.size(); i++) {
-                MatOfPoint2f lm = landmarks.get(i);
-                for (int j = 0; j < lm.rows(); j++) {
-                    double[] dp = lm.get(j, 0);
-                    Point p = new Point(dp[0], dp[1]);
-                    Imgproc.circle(mat, p, 2, new Scalar(222), 1);
-                }
-            }
 
             faceDetector.drawFaceSquare(mat, faces);
 
