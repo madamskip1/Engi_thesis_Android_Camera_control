@@ -30,6 +30,13 @@
             android:onClick="goCameraX"
             android:text="Button" />
 
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ButtonDrawable"
+            android:onClick="goDrawable"/>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -23,4 +23,10 @@ public class MainActivity extends AppCompatActivity {
         Intent goCameraX = new Intent(this, CameraX_test.class);
         startActivity(goCameraX);
     }
+
+    public void goDrawable(View view)
+    {
+        Intent goDrawable = new Intent(this ,DrawableTest.class);
+        startActivity(goDrawable);
+    }
 }
