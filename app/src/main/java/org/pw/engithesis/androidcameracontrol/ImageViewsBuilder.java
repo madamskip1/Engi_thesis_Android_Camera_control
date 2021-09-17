@@ -33,14 +33,14 @@ public class ImageViewsBuilder {
         int height = bitmap.getHeight();
         int width = bitmap.getWidth();
         int screenWidth = getScreenWidth();
-        screenWidth *= 0.9;
+        //screenWidth *= 0.9;
 
         double ratio = (double)screenWidth / width;
         width = screenWidth;
         height *= ratio;
 
         ImageView imageView = new ImageView(ctx);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(height, width);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
         params.bottomMargin = 20;
         imageView.setLayoutParams(params);
 

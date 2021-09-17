@@ -1,7 +1,10 @@
 package org.pw.engithesis.androidcameracontrol;
 
+import android.util.Log;
+
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
+import org.pw.engithesis.androidcameracontrol.interfaces.Observable;
 
 /*
  *
@@ -12,11 +15,14 @@ import org.opencv.core.Point;
  *
  */
 
-public class EyeBlinkDetector {
+public class EyeBlinkDetector extends Observable {
     public static final int LEFT_EYE = 0;
     public static final int RIGHT_EYE = 1;
 
     public static double BLINK_THRESHOLD = 0.3;
+
+    public double leftEyeEAR;
+    public double rightEyeEAR;
 
     private EyeAspectRatio earCalculator;
 
@@ -28,10 +34,13 @@ public class EyeBlinkDetector {
         Point[] leftEye = getLeftEye(faceLandmarks);
         Point[] rightEye = getRightEye(faceLandmarks);
 
-        double leftEyeEAR = earCalculator.calcEAR(leftEye);
-        double rightEyeEAR = earCalculator.calcEAR(rightEye);
+        leftEyeEAR = earCalculator.calcEAR(leftEye);
+        rightEyeEAR = earCalculator.calcEAR(rightEye);
+        Log.e("fm", "ear: " + this.leftEyeEAR + ", " + this.rightEyeEAR);
 
-        // TODO: Predykcja czy bylo mrugniecie
+       // TODO: Predykcja czy bylo mrugniecie
+
+        notifyUpdate();
     }
 
     private Point[] getLeftEye(MatOfPoint2f faceLandmarks) {

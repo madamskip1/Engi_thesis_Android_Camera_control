@@ -35,9 +35,12 @@ public class FacemarkDetector {
             MatOfPoint2f lm = landmarks.get(i);
 
             for (int j = 0; j < lm.rows(); j++) {
-                double[] dp = lm.get(j, 0);
-                Point p = new Point(dp[0], dp[1]);
-                Imgproc.circle(mat, p, 2, new Scalar(0, 200, 0), 1);
+                if (j >= 36 && j <48) {
+                    double[] dp = lm.get(j, 0);
+                    Point p = new Point(dp[0], dp[1]);
+                    Imgproc.circle(mat, p, 2, new Scalar(0, 200, 0), 1);
+                }
+
             }
         }
     }
