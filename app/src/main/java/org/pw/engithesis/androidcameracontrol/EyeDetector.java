@@ -10,7 +10,7 @@ import org.opencv.objdetect.CascadeClassifier;
 
 public class EyeDetector {
     private final CascadeClassifier classifier;
-    private static final double cropTop = 0.2;
+    private static final double cropTop = 0.1;
     private static final double cropBottom = 0.45;
     private static final double cropLeft = 0.1;
     private static final double cropRight = 0.1;
