@@ -6,6 +6,8 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.pw.engithesis.androidcameracontrol.tests.SelectTest;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -24,9 +26,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(goCameraX);
     }
 
-    public void goDrawable(View view)
-    {
-        Intent goDrawable = new Intent(this ,DrawableTest.class);
+    public void goDrawable(View view) {
+        Intent goDrawable = new Intent(this, DrawableTest.class);
         startActivity(goDrawable);
+    }
+
+    public void goSelectTest(View view) {
+        Intent selectTestIntent = new Intent(this, SelectTest.class);
+        startActivity(selectTestIntent);
     }
 }

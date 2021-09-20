@@ -35,7 +35,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="ButtonDrawable"
-            android:onClick="goDrawable"/>
+            android:onClick="goDrawable" />
+
+        <Button
+            android:id="@+id/button7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select Tests"
+            android:onClick="goSelectTest" />
 
     </LinearLayout>
 
