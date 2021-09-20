@@ -1,38 +1,33 @@
 package org.pw.engithesis.androidcameracontrol;
 
-import android.graphics.Bitmap;
-import android.util.Log;
-
-import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.pw.engithesis.androidcameracontrol.interfaces.ImageThresholding;
 
 public class EyePupilDetector {
-    private ImageViewsBuilder viewsBuilder;
     byte[] eyePixels;
 
-    public void detect(Mat eye, ImageViewsBuilder viewsBuilder) {
-        this.viewsBuilder = viewsBuilder;
+    public Point detect(Mat face, Rect eyeRect) {
+        /*
+         * TODO refactor:
+         *  - remove few Mat
+         *  - extract functions
+         */
 
-
+        Mat eye = face.submat(eyeRect);
         Mat grayEye = new Mat();
         Imgproc.cvtColor(eye, grayEye, Imgproc.COLOR_RGB2GRAY);
-        addBM(grayEye);
-        eyePixels = new byte[(int) grayEye.total()];
-        grayEye.get(0, 0, eyePixels);
+        eyePixels = matToByteArray(grayEye);
 
         CDFLuminanceThresholding cdf = new CDFLuminanceThresholding();
-        Mat thresholdEye = cdf.thresholdNewMat(grayEye);
+        Mat binaryEye = cdf.thresholdNewMat(grayEye);
 
         Mat erodeKernel = Imgproc.getStructuringElement(Imgproc.MORPH_ERODE, new Size(2, 2));
         Mat erodeMat = new Mat();
-        Imgproc.erode(thresholdEye, erodeMat, erodeKernel);
-        addBM(erodeMat);
+        Imgproc.erode(binaryEye, erodeMat, erodeKernel);
 
         Point darkestPixel = getDarkestPixel(erodeMat);
         double avgIntensity = calcAvgIntensity(darkestPixel, eye.width(), eye.height());
@@ -42,47 +37,26 @@ public class EyePupilDetector {
 
         Mat erodedPMI = new Mat();
         Imgproc.erode(PMIMat, erodedPMI, erodeKernel);
-        addBM(erodedPMI);
 
-        ImageThresholding imageThresholding = new ImageThresholding() {
-            @Override
-            protected byte filterFunction(byte pixel) {
-                int pixelValue = pixel & 0xFF;
+        ImageThresholding imageThresholding = prepareThresholdFunction(avgIntensity);
+        imageThresholding.threhsoldRef(PMIMat);
 
-                if (pixelValue < avgIntensity) {
-                    return (byte) 255;
-                }
+        Point eyePupil = calcGravityCenter(PMIMat);
+        eyePupil.x += PMIRect.x + eyeRect.x;
+        eyePupil.y += PMIRect.y + eyeRect.y;
 
-                return 0;
-            }
-        };
-
-        Mat ThresholdedPMI = imageThresholding.thresholdNewMat(PMIMat);
-
-        Point pupil = calcGravityCenter(ThresholdedPMI);
-        pupil.x += PMIRect.x;
-        pupil.y += PMIRect.y;
-        Mat eyeWithPupil = eye.clone();
-        Imgproc.circle(eyeWithPupil, pupil, 2, new Scalar(255, 200, 0), 1);
-        addBM(eyeWithPupil);
-    }
-
-    private void addBM(Mat mat) {
-        Bitmap tempBM = Bitmap.createBitmap(mat.cols(), mat.rows(), Bitmap.Config.ARGB_8888);
-        Utils.matToBitmap(mat, tempBM);
-        viewsBuilder.addImage(tempBM);
+        return eyePupil;
     }
 
     private Point getDarkestPixel(Mat erodedMat) {
         int length = (int) erodedMat.total();
-        byte[] erodedPixels = new byte[length];
-        erodedMat.get(0, 0, erodedPixels);
+        byte[] erodedPixels = matToByteArray(erodedMat);
 
         int darkestPixelIndex = 0;
         int darkestPixelLuminance = 255;
 
         for (int i = 0; i < length; i++) {
-            if (erodedPixels[i] == (byte) 255) // is white on eroded mat
+            if (erodedPixels[i] == -1) // is white on eroded mat
             {
                 int value = eyePixels[i] & 0xFF;
                 if (value < darkestPixelLuminance) {
@@ -92,7 +66,6 @@ public class EyePupilDetector {
             }
         }
 
-        Log.e("daa", "index" + darkestPixelIndex + " width" + erodedMat.width());
         return indexToPoint(darkestPixelIndex, erodedMat.width());
     }
 
@@ -104,14 +77,10 @@ public class EyePupilDetector {
     }
 
     private double calcAvgIntensity(Point anchor, int width, int height) {
-        int top = (int) anchor.y - 4;
-        top = (top >= 0 ? top : 0);
-        int bottom = (int) anchor.y + 5;
-        bottom = (bottom < height ? bottom : height - 1);
-        int left = (int) anchor.x - 4;
-        left = (left >= 0 ? left : 0);
-        int right = (int) anchor.x + 5;
-        right = (right < width ? right : width - 1);
+        int top = Utility.clamp((int) anchor.y - 4, 0, height - 1);
+        int bottom = Utility.clamp((int) anchor.y + 5, 0, height - 1);
+        int left = Utility.clamp((int) anchor.x - 4, 0, width - 1);
+        int right = Utility.clamp((int) anchor.x + 5, 0, width - 1);
 
         double avgIntensity = 0.0;
 
@@ -129,17 +98,13 @@ public class EyePupilDetector {
     }
 
     private Rect getPMIRect(int x, int y, int width, int height) {
-        int rectLeft = x - 7;
-        rectLeft = (rectLeft >= 0 ? rectLeft : 0);
+        width -= 1;
+        height -= 1;
 
-        int rectTop = y - 7;
-        rectTop = (rectTop >= 0 ? rectTop : 0);
-
-        int rectRight = x + 7;
-        rectRight = (rectRight < width ? rectRight : width - 1);
-
-        int rectBottom = y + 7;
-        rectBottom = (rectBottom < height ? rectBottom : height - 1);
+        int rectLeft = Utility.clamp(x - 7, 0, width);
+        int rectTop = Utility.clamp(y - 7, 0, height);
+        int rectRight = Utility.clamp(x + 7, 0, width);
+        int rectBottom = Utility.clamp(y + 7, 0, height);
 
         int rectWidth = rectRight - rectLeft;
         int rectHeight = rectBottom - rectTop;
@@ -150,8 +115,8 @@ public class EyePupilDetector {
     private Point calcGravityCenter(Mat mat) {
         int pixelNum = (int) mat.total();
         int width = mat.width();
-        byte[] pixels = new byte[pixelNum];
-        mat.get(0, 0, pixels);
+        byte[] pixels = matToByteArray(mat);
+
         int rowSum = 0;
         int colSum = 0;
         int whitePixelCount = 0;
@@ -168,4 +133,24 @@ public class EyePupilDetector {
         return new Point(rowSum / whitePixelCount, colSum / whitePixelCount);
     }
 
+    private byte[] matToByteArray(Mat mat) {
+        byte[] temp = new byte[(int) mat.total() * mat.channels()];
+        mat.get(0, 0, temp);
+        return temp;
+    }
+
+    private ImageThresholding prepareThresholdFunction(double avgIntensity) {
+        return new ImageThresholding() {
+            @Override
+            protected byte filterFunction(byte pixel) {
+                int pixelValue = pixel & 0xFF;
+
+                if (pixelValue < avgIntensity) {
+                    return (byte) 255;
+                }
+
+                return 0;
+            }
+        };
+    }
 }
