@@ -15,7 +15,7 @@ import org.opencv.imgproc.Imgproc;
 import org.pw.engithesis.androidcameracontrol.DrawableResourceManager;
 import org.pw.engithesis.androidcameracontrol.EyeDetector;
 import org.pw.engithesis.androidcameracontrol.EyePupilDetector;
-import org.pw.engithesis.androidcameracontrol.ImageViewsBuilder;
+import org.pw.engithesis.androidcameracontrol.ViewsBuilder;
 import org.pw.engithesis.androidcameracontrol.R;
 import org.pw.engithesis.androidcameracontrol.facedetectors.HaarCascadeFaceDetector;
 
@@ -27,7 +27,8 @@ public class EyePupilDetectionImageTest {
             R.drawable.portrait_test_4,
             R.drawable.portrait_test_5,
             R.drawable.portrait_test_6,
-            R.drawable.portrait_test_7
+            R.drawable.portrait_test_7,
+            R.drawable.portrait_test_8
     };
 
     private Context ctx;
@@ -46,9 +47,11 @@ public class EyePupilDetectionImageTest {
     }
 
     public void createView() {
-        ImageViewsBuilder viewsBuilder = new ImageViewsBuilder(ctx, parentView);
+        ViewsBuilder viewsBuilder = new ViewsBuilder(ctx, parentView);
 
         for (int imageID = 0; imageID < imagesToTest.length; imageID++) {
+            viewsBuilder.newSection();
+
             Mat imageMat = getImageMat(imagesToTest[imageID]);
             Rect[] faces = getFaceRect(imageMat);
 
@@ -57,16 +60,19 @@ public class EyePupilDetectionImageTest {
                 for (int eye = 0; eye < eyes.length; eye++) {
                     Point pupil = pupilDetector.detect(imageMat, eyes[eye]);
                     Imgproc.circle(imageMat, pupil, 1, new Scalar(0, 200, 0), 2);
+                    viewsBuilder.addText("Pupil. x: " + pupil.x + ", " + pupil.y);
+
                 }
             }
 
             addImageToView(imageMat, viewsBuilder);
+            viewsBuilder.closeSection();
         }
 
         viewsBuilder.build();
     }
 
-    private void addImageToView(Mat mat, ImageViewsBuilder viewsBuilder) {
+    private void addImageToView(Mat mat, ViewsBuilder viewsBuilder) {
         Bitmap temp = Bitmap.createBitmap(mat.cols(), mat.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(mat, temp);
 

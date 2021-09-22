@@ -23,7 +23,7 @@ public class DrawableTest extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawable_test);
 
-        ImageViewsBuilder imageViewsBuilder = new ImageViewsBuilder(this, findViewById(R.id.activity_drawable));
+        ViewsBuilder viewsBuilder = new ViewsBuilder(this, findViewById(R.id.activity_drawable));
         DrawableResourceManager drawableResourceManager = new DrawableResourceManager(R.drawable.test);
 
         Mat testMat = drawableResourceManager.getRGBMat();
@@ -44,10 +44,10 @@ public class DrawableTest extends AppCompatActivity {
         Bitmap bm = Bitmap.createBitmap(testMat.cols(), testMat.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(testMat, bm);
 
-        imageViewsBuilder.addImage(bm);
-        imageViewsBuilder.addImage(bm);
-        imageViewsBuilder.addImage(bm);
-        imageViewsBuilder.addImage(bm);
-        imageViewsBuilder.build();
+        viewsBuilder.addImage(bm);
+        viewsBuilder.addImage(bm);
+        viewsBuilder.addImage(bm);
+        viewsBuilder.addImage(bm);
+        viewsBuilder.build();
     }
 }
