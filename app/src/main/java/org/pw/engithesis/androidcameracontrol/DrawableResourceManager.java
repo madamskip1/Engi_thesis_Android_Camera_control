@@ -1,8 +1,8 @@
 package org.pw.engithesis.androidcameracontrol;
 
 import org.opencv.android.Utils;
-import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.IOException;
@@ -23,7 +23,7 @@ public class DrawableResourceManager {
         {
             try
             {
-                BGRMat = Utils.loadResource(App.getContext(), _resourceID, CvType.CV_8UC4);
+                BGRMat = Utils.loadResource(App.getContext(), _resourceID, Imgcodecs.IMREAD_UNCHANGED);
             }
             catch (IOException e)
             {
