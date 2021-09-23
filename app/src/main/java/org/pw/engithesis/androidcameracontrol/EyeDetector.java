@@ -1,14 +1,14 @@
 package org.pw.engithesis.androidcameracontrol;
 
-import android.graphics.Bitmap;
-
-import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
 import org.opencv.objdetect.CascadeClassifier;
 
 public class EyeDetector {
+    public static final int RIGHT_EYE_INDEX = 0;
+    public static final int LEFT_EYE_INDEX = 1;
+
     private final CascadeClassifier classifier;
     private static final double cropTop = 0.1;
     private static final double cropBottom = 0.45;
@@ -21,26 +21,60 @@ public class EyeDetector {
     }
 
     public MatOfRect detect(Mat mat, Rect face) {
-
-        int newX = face.x + (int) (face.width * cropLeft);
-        int newY = face.y + (int) (face.height * cropTop);
-        int newWidth = (int) (face.width * (1.0 - cropRight - cropLeft));
-        int newHeight = (int) (face.height * (1.0 - cropBottom - cropTop));
-
-        Rect eyesRegion = new Rect(newX, newY, newWidth, newHeight);
+        Rect eyesRegion = getEyesRegionRect(face);
         Mat croppedFace = mat.submat(eyesRegion);
 
         MatOfRect eyes = new MatOfRect();
         classifier.detectMultiScale(croppedFace, eyes);
 
-        Rect[] eyesArray = eyes.toArray();
-        int eyesSize = eyesArray.length;
+        Rect[] orderedEyesArray = sortEyes(face, eyes.toArray());
 
-        for (int i = 0; i < eyesSize; i++) {
-            eyesArray[i].y += newY;
-            eyesArray[i].x += newX;
+        return new MatOfRect(orderedEyesArray);
+    }
+
+    private Rect getEyesRegionRect(Rect face) {
+        int eyesRegionX = face.x + (int) (face.width * cropLeft);
+        int eyesRegionY = face.y + (int) (face.height * cropTop);
+        int eyesRegionWidth = (int) (face.width * (1.0 - cropRight - cropLeft));
+        int eyesRegionHeight = (int) (face.height * (1.0 - cropBottom - cropTop));
+
+        return new Rect(eyesRegionX, eyesRegionY, eyesRegionWidth, eyesRegionHeight);
+    }
+
+
+    private int predictEyeSide(Rect face, Rect eye) {
+        int faceCenterX = getCenterX(face);
+        int eyeCenterX = getCenterX(eye);
+
+        if (eyeCenterX < faceCenterX) {
+            return RIGHT_EYE_INDEX;
+        } else {
+            return LEFT_EYE_INDEX;
+        }
+    }
+
+    private int getCenterX(Rect rect) {
+        return (rect.x + rect.width) / 2;
+    }
+
+    private Rect[] sortEyes(Rect face, Rect[] eyes) {
+        int eyesSize = eyes.length;
+
+        if (eyesSize == 0) {
+            return null;
         }
 
-        return new MatOfRect(eyesArray);
+        for (Rect rect : eyes) {
+            rect.y += rect.y;
+            rect.x += rect.x;
+        }
+
+        Rect[] orderedEyesArray = new Rect[2];
+
+        int eyeSide = predictEyeSide(face, eyes[0]);
+        orderedEyesArray[eyeSide] = eyes[0];
+        orderedEyesArray[eyeSide == 1 ? 0 : 1] = (eyesSize == 2 ? eyes[1] : null);
+
+        return orderedEyesArray;
     }
 }
