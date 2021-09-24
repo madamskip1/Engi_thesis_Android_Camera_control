@@ -21,7 +21,7 @@ import org.pw.engithesis.androidcameracontrol.ViewsBuilder;
 import org.pw.engithesis.androidcameracontrol.facedetectors.HaarCascadeFaceDetector;
 
 
-public class EyePupilDetectionImageTest {
+public class EyePupilDetectionImageTest extends ImageTest {
     private class EyePupilImageTestStruct {
         public int imgID;
         public Point[] eyes;
@@ -32,7 +32,7 @@ public class EyePupilDetectionImageTest {
         }
     }
 
-    private EyePupilImageTestStruct[] imagesToTest = {
+    private final EyePupilImageTestStruct[] imagesToTest = {
             new EyePupilImageTestStruct(R.drawable.portrait_test_1, new Point[]{new Point(361, 222), new Point(523, 214)}),
             new EyePupilImageTestStruct(R.drawable.portrait_test_2, new Point[]{new Point(217, 410), new Point(373, 416)}),
             new EyePupilImageTestStruct(R.drawable.portrait_test_3, new Point[]{new Point(272, 135), new Point(319, 136)}),
@@ -43,21 +43,18 @@ public class EyePupilDetectionImageTest {
             new EyePupilImageTestStruct(R.drawable.portrait_test_8, new Point[]{null, new Point(906, 354)}),
     };
 
-    private Context ctx;
-    private ScrollView parentView;
-    private HaarCascadeFaceDetector faceDetector;
-    private EyeDetector eyeDetector;
-    private EyePupilDetector pupilDetector;
+    private final HaarCascadeFaceDetector faceDetector;
+    private final EyeDetector eyeDetector;
+    private final EyePupilDetector pupilDetector;
 
     public EyePupilDetectionImageTest(Context ctx, ScrollView parent) {
-        OpenCVLoader.initDebug();
-        this.ctx = ctx;
-        parentView = parent;
+        super(ctx, parent);
         faceDetector = new HaarCascadeFaceDetector();
         eyeDetector = new EyeDetector();
         pupilDetector = new EyePupilDetector();
     }
 
+    @Override
     public void createView() {
         ViewsBuilder viewsBuilder = new ViewsBuilder(ctx, parentView);
 
@@ -92,25 +89,11 @@ public class EyePupilDetectionImageTest {
             addImageToView(imageMat, viewsBuilder);
             addImageToView(outputMat, viewsBuilder);
 
-
-            double eyesReionAvgDiagonalLength;
             eyeDetectionStats(expectedPupils, detectedPupils, viewsBuilder);
             viewsBuilder.closeSection();
         }
 
         viewsBuilder.build();
-    }
-
-    private void addImageToView(Mat mat, ViewsBuilder viewsBuilder) {
-        Bitmap temp = Bitmap.createBitmap(mat.cols(), mat.rows(), Bitmap.Config.ARGB_8888);
-        Utils.matToBitmap(mat, temp);
-
-        viewsBuilder.addImage(temp);
-    }
-
-    private Mat getImageMat(int imageID) {
-        DrawableResourceManager drawableResourceManager = new DrawableResourceManager(imageID);
-        return drawableResourceManager.getRGBMat();
     }
 
     private Rect[] getFaceRect(Mat mat) {
@@ -123,7 +106,7 @@ public class EyePupilDetectionImageTest {
         return eyes.toArray();
     }
 
-    private void eyeDetectionStats(Point[] expectedPupils, Point[] detectedPupils, /* double imgSize, */ ViewsBuilder viewsBuilder) {
+    private void eyeDetectionStats(Point[] expectedPupils, Point[] detectedPupils, ViewsBuilder viewsBuilder) {
         for (int i = 0; i < expectedPupils.length; i++) {
             String str = "";
             str += (i == EyeDetector.RIGHT_EYE_INDEX ? "Right eye: " : "Left eye: ");
