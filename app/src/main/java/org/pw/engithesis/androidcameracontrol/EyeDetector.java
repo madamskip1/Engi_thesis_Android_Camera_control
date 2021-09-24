@@ -2,10 +2,8 @@ package org.pw.engithesis.androidcameracontrol;
 
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
-import org.opencv.core.Point;
 import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
-import org.opencv.imgproc.Imgproc;
+
 import org.opencv.objdetect.CascadeClassifier;
 
 public class EyeDetector {
@@ -29,9 +27,6 @@ public class EyeDetector {
 
         MatOfRect eyes = new MatOfRect();
         classifier.detectMultiScale(croppedFace, eyes);
-        int ctr = getCenterX(face);
-        Imgproc.circle(mat, new Point(ctr, mat.height() / 2), 5, new Scalar(200, 200, 200), 5);
-
         Rect[] orderedEyesArray = sortEyes(face, eyesRegion, eyes.toArray());
 
         return new MatOfRect(orderedEyesArray);
@@ -65,14 +60,17 @@ public class EyeDetector {
     private Rect[] sortEyes(Rect face, Rect eyesRegion, Rect[] eyes) {
         int eyesSize = eyes.length;
 
-        if (eyesSize == 0 || eyesSize > 2) {
-
-            return null;
+        if (eyesSize == 0) {
+            return new Rect[]{null, null};
         }
 
         for (Rect rect : eyes) {
             rect.y += eyesRegion.y;
             rect.x += eyesRegion.x;
+        }
+
+        if (eyesSize > 2) {
+            return eyes;
         }
 
         Rect[] orderedEyesArray = new Rect[2];

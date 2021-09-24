@@ -20,4 +20,10 @@ public class SelectTest extends AppCompatActivity {
         EyePupilDetectionImageTest test = new EyePupilDetectionImageTest(this, findViewById(R.id.testing_layout_root));
         test.createView();
     }
+
+    public void goEARImage(View view) {
+        setContentView(R.layout.testing_layout);
+        EARImageTest earImageTest = new EARImageTest(this, findViewById(R.id.testing_layout_root));
+        earImageTest.createView();
+    }
 }
