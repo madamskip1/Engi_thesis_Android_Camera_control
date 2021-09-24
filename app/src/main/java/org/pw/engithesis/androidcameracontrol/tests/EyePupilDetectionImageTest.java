@@ -1,18 +1,14 @@
 package org.pw.engithesis.androidcameracontrol.tests;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.widget.ScrollView;
 
-import org.opencv.android.OpenCVLoader;
-import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
-import org.pw.engithesis.androidcameracontrol.DrawableResourceManager;
 import org.pw.engithesis.androidcameracontrol.EyeDetector;
 import org.pw.engithesis.androidcameracontrol.EyePupilDetector;
 import org.pw.engithesis.androidcameracontrol.R;
@@ -41,6 +37,8 @@ public class EyePupilDetectionImageTest extends ImageTest {
             new EyePupilImageTestStruct(R.drawable.portrait_test_6, new Point[]{new Point(207, 262), new Point(367, 257)}),
             new EyePupilImageTestStruct(R.drawable.portrait_test_7, new Point[]{new Point(278, 198), new Point(338, 201)}),
             new EyePupilImageTestStruct(R.drawable.portrait_test_8, new Point[]{null, new Point(906, 354)}),
+            new EyePupilImageTestStruct(R.drawable.portrait_test_9, new Point[]{new Point(276, 395), null}),
+            new EyePupilImageTestStruct(R.drawable.portrait_test_10, new Point[]{null, null})
     };
 
     private final HaarCascadeFaceDetector faceDetector;
@@ -86,7 +84,6 @@ public class EyePupilDetectionImageTest extends ImageTest {
                 }
             }
 
-            addImageToView(imageMat, viewsBuilder);
             addImageToView(outputMat, viewsBuilder);
 
             eyeDetectionStats(expectedPupils, detectedPupils, viewsBuilder);
@@ -102,8 +99,7 @@ public class EyePupilDetectionImageTest extends ImageTest {
     }
 
     private Rect[] getEyesRect(Mat mat, Rect face) {
-        MatOfRect eyes = eyeDetector.detect(mat, face);
-        return eyes.toArray();
+        return eyeDetector.detect(mat, face);
     }
 
     private void eyeDetectionStats(Point[] expectedPupils, Point[] detectedPupils, ViewsBuilder viewsBuilder) {

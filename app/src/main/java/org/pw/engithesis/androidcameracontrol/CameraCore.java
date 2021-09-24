@@ -14,12 +14,11 @@ import com.google.common.util.concurrent.ListenableFuture;
 
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.MatOfRect;
+import org.opencv.core.Rect;
 import org.pw.engithesis.androidcameracontrol.facedetectors.FaceDetector;
 import org.pw.engithesis.androidcameracontrol.facedetectors.LbpCascadeFaceDetector;
 
-import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class CameraCore {
@@ -28,8 +27,9 @@ public class CameraCore {
     private final ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     ImageProxyToMatConverter proxyConverter = new ImageProxyToMatConverter();
     private ImageView imgView = null;
-    private FaceDetector faceDetector;
-    private FPSCounter fpsCounter;
+    private final FaceDetector faceDetector;
+    private final EyeDetector eyeDetector;
+    private final FPSCounter fpsCounter;
     private FacemarkDetector facemarkLBF;
 
 
@@ -39,8 +39,9 @@ public class CameraCore {
         cameraProviderFuture = ProcessCameraProvider.getInstance(activity);
         faceDetector = new LbpCascadeFaceDetector();
         fpsCounter = new FPSCounter();
+        eyeDetector = new EyeDetector();
 
-        facemarkLBF = new FacemarkDetector();
+        //   facemarkLBF = new FacemarkDetector();
     }
 
     /*
@@ -103,17 +104,23 @@ public class CameraCore {
 
             proxyConverter.setFrame(image);
             Mat mat = proxyConverter.rgb();
+            Mat outputMat = mat.clone();
             MatOfRect faces = faceDetector.detect(mat);
 
-            ArrayList<MatOfPoint2f> landmarks = facemarkLBF.detect(mat, faces);
-            facemarkLBF.drawLandmarks(mat, landmarks);
+            // ArrayList<MatOfPoint2f> landmarks = facemarkLBF.detect(mat, faces);
+            // facemarkLBF.drawLandmarks(mat, landmarks);
+            Rect[] facesArray = faces.toArray();
+            faceDetector.drawFaceSquare(outputMat, faces);
+
+            if (facesArray.length >= 1) {
+                Rect[] eyes = eyeDetector.detect(mat, facesArray[0]);
+                Utility.drawRects(outputMat, eyes);
 
 
-            faceDetector.drawFaceSquare(mat, faces);
-
+            }
 
             if (imgView != null) {
-                Bitmap bitmap = proxyConverter.createBitmap(mat);
+                Bitmap bitmap = proxyConverter.createBitmap(outputMat);
                 imgView.setImageBitmap(bitmap);
             }
             image.close();

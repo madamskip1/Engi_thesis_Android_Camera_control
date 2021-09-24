@@ -21,7 +21,7 @@ public class EyeDetector {
         classifier = new CascadeClassifier(haarModel.getPath());
     }
 
-    public MatOfRect detect(Mat mat, Rect face) {
+    public Rect[] detect(Mat mat, Rect face) {
         Rect eyesRegion = getEyesRegionRect(face);
         Mat croppedFace = mat.submat(eyesRegion);
 
@@ -29,7 +29,7 @@ public class EyeDetector {
         classifier.detectMultiScale(croppedFace, eyes);
         Rect[] orderedEyesArray = sortEyes(face, eyesRegion, eyes.toArray());
 
-        return new MatOfRect(orderedEyesArray);
+        return orderedEyesArray;
     }
 
     private Rect getEyesRegionRect(Rect face) {
