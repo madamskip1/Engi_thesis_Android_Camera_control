@@ -77,10 +77,11 @@ public class EyePupilDetectionImageTest extends ImageTest {
             }
 
             if (faces.length >= 1) {
-                for (int eye = 0; eye < detectedEyes.length; eye++) {
-                    Point pupil = pupilDetector.detect(imageMat, detectedEyes[eye]);
-                    detectedPupils[eye] = pupil;
-                    Imgproc.circle(outputMat, pupil, 2, new Scalar(0, 255, 0), 2);
+                pupilDetector.detectPupils(imageMat, detectedEyes);
+                detectedPupils = pupilDetector.pupils;
+
+                for (int i = 0; i < detectedPupils.length; i++) {
+                    Imgproc.circle(outputMat, detectedPupils[i], 2, new Scalar(0, 255, 0), 2);
                 }
             }
 

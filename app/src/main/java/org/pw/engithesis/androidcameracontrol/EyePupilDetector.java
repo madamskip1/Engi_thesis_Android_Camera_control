@@ -6,21 +6,35 @@ import org.opencv.core.Rect;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.pw.engithesis.androidcameracontrol.interfaces.ImageThresholding;
+import org.pw.engithesis.androidcameracontrol.interfaces.Observable;
 
-public class EyePupilDetector {
-    byte[] eyePixels;
+public class EyePupilDetector extends Observable {
+    public Point[] pupils;
 
-    public Point detect(Mat face, Rect eyeRect) {
-        /*
-         * TODO refactor:
-         *  - remove few Mat
-         *  - extract functions
-         */
+    private byte[] grayEyePixels;
 
+    public void detectPupils(Mat face, Rect[] eyesRects) {
+        pupils = null;
+        int eyesNum = eyesRects.length;
+        pupils = new Point[eyesNum];
+
+        for (int i = 0; i < eyesNum; i++) {
+            if (eyesRects == null) {
+                pupils[i] = null;
+            } else {
+                pupils[i] = detect(face, eyesRects[i]);
+            }
+        }
+
+        notifyUpdate();
+    }
+
+    private Point detect(Mat face, Rect eyeRect) {
         Mat eye = face.submat(eyeRect);
         Mat grayEye = new Mat();
         Imgproc.cvtColor(eye, grayEye, Imgproc.COLOR_RGB2GRAY);
-        eyePixels = matToByteArray(grayEye);
+
+        grayEyePixels = matToByteArray(grayEye);
 
         CDFLuminanceThresholding cdf = new CDFLuminanceThresholding();
         Mat binaryEye = cdf.thresholdNewMat(grayEye);
@@ -58,7 +72,7 @@ public class EyePupilDetector {
         for (int i = 0; i < length; i++) {
             if (erodedPixels[i] == -1) // is white on eroded mat
             {
-                int value = eyePixels[i] & 0xFF;
+                int value = grayEyePixels[i] & 0xFF;
                 if (value < darkestPixelLuminance) {
                     darkestPixelLuminance = value;
                     darkestPixelIndex = i;
@@ -87,7 +101,7 @@ public class EyePupilDetector {
         for (int y = top; y <= bottom; y++) {
             for (int x = left; x <= right; x++) {
                 int index = y * width + x;
-                int pixelValue = eyePixels[index] & 0xFF;
+                int pixelValue = grayEyePixels[index] & 0xFF;
                 avgIntensity += pixelValue;
             }
         }

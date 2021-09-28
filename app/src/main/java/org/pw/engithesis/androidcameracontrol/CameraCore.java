@@ -15,7 +15,10 @@ import com.google.common.util.concurrent.ListenableFuture;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
+import org.opencv.core.Point;
 import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 import org.pw.engithesis.androidcameracontrol.facedetectors.FaceDetector;
 import org.pw.engithesis.androidcameracontrol.facedetectors.LbpCascadeFaceDetector;
 
@@ -30,6 +33,7 @@ public class CameraCore {
     private final FaceDetector faceDetector;
     private final EyeDetector eyeDetector;
     private final FPSCounter fpsCounter;
+    private final EyePupilDetector pupilDetector;
     private FacemarkDetector facemarkLBF;
 
 
@@ -40,6 +44,8 @@ public class CameraCore {
         faceDetector = new LbpCascadeFaceDetector();
         fpsCounter = new FPSCounter();
         eyeDetector = new EyeDetector();
+        pupilDetector = new EyePupilDetector();
+
 
         //   facemarkLBF = new FacemarkDetector();
     }
@@ -116,7 +122,14 @@ public class CameraCore {
                 Rect[] eyes = eyeDetector.detect(mat, facesArray[0]);
                 Utility.drawRects(outputMat, eyes);
 
+                pupilDetector.detectPupils(mat, eyes);
+                Point[] pupils = pupilDetector.pupils;
 
+                for (Point pupil : pupils) {
+                    if (pupil != null) {
+                        Imgproc.circle(outputMat, pupil, 2, new Scalar(222, 0, 0), 2);
+                    }
+                }
             }
 
             if (imgView != null) {
