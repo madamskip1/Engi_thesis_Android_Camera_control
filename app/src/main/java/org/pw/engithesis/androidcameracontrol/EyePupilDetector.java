@@ -19,7 +19,7 @@ public class EyePupilDetector extends Observable {
         pupils = new Point[eyesNum];
 
         for (int i = 0; i < eyesNum; i++) {
-            if (eyesRects == null) {
+            if (eyesRects[i] == null) {
                 pupils[i] = null;
             } else {
                 pupils[i] = detect(face, eyesRects[i]);

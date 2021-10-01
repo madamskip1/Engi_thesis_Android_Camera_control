@@ -21,12 +21,16 @@ public class Utility {
         return Math.hypot(distX, distY);
     }
 
-    public static void drawRects(Mat mat, Rect[] rects) {
+    public static void drawRects(Mat mat, Rect[] rects, Scalar color) {
         for (Rect rect : rects) {
             if (rect != null) {
-                Imgproc.rectangle(mat, rect.tl(), rect.br(), new Scalar(255, 0, 0), 3);
+                Imgproc.rectangle(mat, rect.tl(), rect.br(), color, 3);
             }
         }
+    }
+
+    public static void drawRects(Mat mat, Rect[] rects) {
+        drawRects(mat, rects, new Scalar(255, 0, 0));
     }
 
 }

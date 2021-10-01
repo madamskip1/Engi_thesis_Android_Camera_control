@@ -38,7 +38,6 @@ public class EyePupilDetectionImageTest extends ImageTest {
             new EyePupilImageTestStruct(R.drawable.portrait_test_7, new Point[]{new Point(278, 198), new Point(338, 201)}),
             new EyePupilImageTestStruct(R.drawable.portrait_test_8, new Point[]{null, new Point(906, 354)}),
             new EyePupilImageTestStruct(R.drawable.portrait_test_9, new Point[]{new Point(276, 395), null}),
-            new EyePupilImageTestStruct(R.drawable.portrait_test_10, new Point[]{null, null})
     };
 
     private final HaarCascadeFaceDetector faceDetector;
