@@ -3,8 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Programowanie/Engi_thesis_Android_Camera_control/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.3769230769230769" />
+        <entry key="..\:/Programowanie/Engi_thesis_Android_Camera_control/app/src/main/res/drawable/ic_launcher_background.xml" value="0.3769230769230769" />
+        <entry key="..\:/Programowanie/Engi_thesis_Android_Camera_control/app/src/main/res/drawable/qwe.xml" value="0.3769230769230769" />
         <entry key="..\:/Programowanie/Engi_thesis_Android_Camera_control/app/src/main/res/layout/activity_drawable_test.xml" value="0.1" />
-        <entry key="..\:/Programowanie/Engi_thesis_Android_Camera_control/app/src/main/res/layout/activity_main.xml" value="0.19429347826086957" />
+        <entry key="..\:/Programowanie/Engi_thesis_Android_Camera_control/app/src/main/res/layout/activity_main.xml" value="0.5" />
         <entry key="..\:/Programowanie/Engi_thesis_Android_Camera_control/app/src/main/res/layout/activity_select_test.xml" value="0.1" />
       </map>
     </option>

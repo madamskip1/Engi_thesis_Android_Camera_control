@@ -33,7 +33,9 @@
         <activity
             android:name=".SelectFaceDetector"
             android:exported="true" />
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/Theme.AndroidCameraControl.SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
