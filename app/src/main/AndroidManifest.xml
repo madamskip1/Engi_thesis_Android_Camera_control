@@ -22,7 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidCameraControl">
         <activity
-            android:name=".tests.SelectTest"
+            android:name=".tests.SelectImageTest"
             android:exported="true" />
         <activity
             android:name=".DrawableTest"

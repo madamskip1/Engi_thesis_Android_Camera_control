@@ -3,37 +3,30 @@ package org.pw.engithesis.androidcameracontrol;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.pw.engithesis.androidcameracontrol.tests.SelectTest;
+import org.pw.engithesis.androidcameracontrol.tests.SelectImageTest;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.Theme_AndroidCameraControl);
+        setTheme(R.style.Theme_AndroidCameraControl_NoTitleBar);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
 
-    public void goChoiceFaceDetector(View view) {
-        Intent selectFaceDetectorIntent = new Intent(this, SelectFaceDetector.class);
-        startActivity(selectFaceDetectorIntent);
+
+    public void goLiveFront(View view) {
+        Intent goLiveFront = new Intent(this, CameraX_test.class);
+        startActivity(goLiveFront);
     }
 
-    public void goCameraX(View view) {
-        Intent goCameraX = new Intent(this, CameraX_test.class);
-        startActivity(goCameraX);
+    public void goSelectImageTest(View view) {
+        Intent selectImageTestIntent = new Intent(this, SelectImageTest.class);
+        startActivity(selectImageTestIntent);
     }
 
-    public void goDrawable(View view) {
-        Intent goDrawable = new Intent(this, DrawableTest.class);
-        startActivity(goDrawable);
-    }
-
-    public void goSelectTest(View view) {
-        Intent selectTestIntent = new Intent(this, SelectTest.class);
-        startActivity(selectTestIntent);
-    }
 }

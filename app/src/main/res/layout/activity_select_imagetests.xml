@@ -4,28 +4,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".tests.SelectTest">
+    tools:context=".tests.SelectImageTest">
 
     <LinearLayout
-        android:layout_width="410dp"
-        android:layout_height="731dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="56dp"
         android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="1dp"
-        tools:ignore="MissingConstraints">
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp">
 
         <Button
-            android:id="@+id/button8"
+            android:id="@+id/slectImageTests_FaceDetector"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Eye Pupil Image"
-            android:onClick="goEyePupilImage" />
+            android:onClick="goFaceDetector"
+            android:text="Face Detector" />
+
+        <Button
+            android:id="@+id/selectImageTests_EyePupil"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="goEyePupilDetector"
+            android:text="Eye Pupil Detector" />
 
         <Button
             android:id="@+id/button9"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="EAR"
-            android:onClick="goEARImage" />
+            android:onClick="goEARImage"
+            android:text="EAR" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
