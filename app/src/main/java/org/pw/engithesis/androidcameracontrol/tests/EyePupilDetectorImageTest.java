@@ -17,8 +17,8 @@ import org.pw.engithesis.androidcameracontrol.ViewsBuilder;
 import org.pw.engithesis.androidcameracontrol.facedetectors.HaarCascadeFaceDetector;
 
 
-public class EyePupilDetectionImageTest extends ImageTest {
-    private class EyePupilImageTestStruct {
+public class EyePupilDetectorImageTest extends ImageTest {
+    private static class EyePupilImageTestStruct {
         public int imgID;
         public Point[] eyes;
 
@@ -44,7 +44,7 @@ public class EyePupilDetectionImageTest extends ImageTest {
     private final EyeDetector eyeDetector;
     private final EyePupilDetector pupilDetector;
 
-    public EyePupilDetectionImageTest(Context ctx, ScrollView parent) {
+    public EyePupilDetectorImageTest(Context ctx, ScrollView parent) {
         super(ctx, parent);
         faceDetector = new HaarCascadeFaceDetector();
         eyeDetector = new EyeDetector();
@@ -55,23 +55,21 @@ public class EyePupilDetectionImageTest extends ImageTest {
     public void createView() {
         ViewsBuilder viewsBuilder = new ViewsBuilder(ctx, parentView);
 
-        for (int image = 0; image < imagesToTest.length; image++) {
+        for (EyePupilImageTestStruct image : imagesToTest) {
             viewsBuilder.newSection();
 
-            EyePupilImageTestStruct imageTestStruct = imagesToTest[image];
-
-            Mat imageMat = getImageMat(imageTestStruct.imgID);
+            Mat imageMat = getImageMat(image.imgID);
             Mat outputMat = imageMat.clone();
 
             Rect[] faces = getFaceRect(imageMat);
             Rect[] detectedEyes = getEyesRect(imageMat, faces[0]);
 
-            Point[] expectedPupils = imageTestStruct.eyes;
+            Point[] expectedPupils = image.eyes;
             Point[] detectedPupils = new Point[detectedEyes.length];
 
-            for (int i = 0; i < expectedPupils.length; i++) {
-                if (expectedPupils[i] != null) {
-                    Imgproc.circle(outputMat, expectedPupils[i], 2, new Scalar(255, 0, 0), 2);
+            for (Point expectedPupil : expectedPupils) {
+                if (expectedPupil != null) {
+                    Imgproc.circle(outputMat, expectedPupil, 2, new Scalar(255, 0, 0), 2);
                 }
             }
 
@@ -79,8 +77,8 @@ public class EyePupilDetectionImageTest extends ImageTest {
                 pupilDetector.detectPupils(imageMat, detectedEyes);
                 detectedPupils = pupilDetector.pupils;
 
-                for (int i = 0; i < detectedPupils.length; i++) {
-                    Imgproc.circle(outputMat, detectedPupils[i], 2, new Scalar(0, 255, 0), 2);
+                for (Point detectedPupil : detectedPupils) {
+                    Imgproc.circle(outputMat, detectedPupil, 2, new Scalar(0, 255, 0), 2);
                 }
             }
 

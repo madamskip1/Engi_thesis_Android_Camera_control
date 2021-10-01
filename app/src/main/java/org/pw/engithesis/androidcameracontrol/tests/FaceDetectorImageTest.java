@@ -15,13 +15,13 @@ import org.pw.engithesis.androidcameracontrol.facedetectors.HaarCascadeFaceDetec
 public class FaceDetectorImageTest extends ImageTest {
     private static class FaceDetectorImageTestStruct {
         public int imgID;
-        public Rect minFace;
-        public Rect maxFace;
+        public Rect minFaceRect;
+        public Rect maxFaceRect;
 
-        public FaceDetectorImageTestStruct(int id, Rect minFace, Rect maxFace) {
+        public FaceDetectorImageTestStruct(int id, Rect minFaceRect, Rect maxFaceRect) {
             imgID = id;
-            this.minFace = minFace;
-            this.maxFace = maxFace;
+            this.minFaceRect = minFaceRect;
+            this.maxFaceRect = maxFaceRect;
         }
     }
 
@@ -55,7 +55,7 @@ public class FaceDetectorImageTest extends ImageTest {
             MatOfRect matOfRect = faceDetector.detect(imageMat);
             Rect[] faces = matOfRect.toArray();
             Utility.drawRects(imageMat, faces);
-            Utility.drawRects(imageMat, new Rect[]{imageToTest.minFace, imageToTest.maxFace}, new Scalar(60, 130, 255));
+            Utility.drawRects(imageMat, new Rect[]{imageToTest.minFaceRect, imageToTest.maxFaceRect}, new Scalar(60, 130, 255));
 
             addImageToView(imageMat, viewsBuilder);
         }

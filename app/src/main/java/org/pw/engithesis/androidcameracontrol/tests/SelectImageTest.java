@@ -1,15 +1,11 @@
 package org.pw.engithesis.androidcameracontrol.tests;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
-import org.pw.engithesis.androidcameracontrol.R;
+import androidx.appcompat.app.AppCompatActivity;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+import org.pw.engithesis.androidcameracontrol.R;
 
 public class SelectImageTest extends AppCompatActivity {
 
@@ -23,7 +19,7 @@ public class SelectImageTest extends AppCompatActivity {
     public void goEyePupilDetector(View view) {
         setTitle("Eye Pupil Detector Image Test");
         setContentView(R.layout.testing_layout);
-        EyePupilDetectionImageTest test = new EyePupilDetectionImageTest(this, findViewById(R.id.testing_layout_root));
+        EyePupilDetectorImageTest test = new EyePupilDetectorImageTest(this, findViewById(R.id.testing_layout_root));
         test.createView();
     }
 
