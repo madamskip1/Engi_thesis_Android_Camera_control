@@ -81,10 +81,10 @@ public class EyeDetectorImageTest extends ImageTest {
 
             Mat imageMat = getImageMat(image.imgID);
             Mat outputMat = imageMat.clone();
-            Rect[] faces = faceDetector.detect(imageMat);
+            Rect face = faceDetector.detect(imageMat);
 
 
-            for (Rect face : faces) {
+            if (face != null) {
                 Rect[] eyes = eyeDetector.detect(imageMat, face);
                 Utility.drawRects(outputMat, eyes);
             }

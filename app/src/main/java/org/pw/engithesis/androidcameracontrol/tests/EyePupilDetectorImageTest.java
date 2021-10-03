@@ -60,8 +60,8 @@ public class EyePupilDetectorImageTest extends ImageTest {
             Mat imageMat = getImageMat(image.imgID);
             Mat outputMat = imageMat.clone();
 
-            Rect[] faces = getFaceRect(imageMat);
-            Rect[] detectedEyes = getEyesRect(imageMat, faces[0]);
+            Rect face = getFaceRect(imageMat);
+            Rect[] detectedEyes = getEyesRect(imageMat, face);
 
             Point[] expectedPupils = image.eyes;
             Point[] detectedPupils = new Point[detectedEyes.length];
@@ -72,7 +72,7 @@ public class EyePupilDetectorImageTest extends ImageTest {
                 }
             }
 
-            if (faces.length >= 1) {
+            if (face != null) {
                 pupilDetector.detectPupils(imageMat, detectedEyes);
                 detectedPupils = pupilDetector.pupils;
 
@@ -90,7 +90,7 @@ public class EyePupilDetectorImageTest extends ImageTest {
         viewsBuilder.build();
     }
 
-    private Rect[] getFaceRect(Mat mat) {
+    private Rect getFaceRect(Mat mat) {
         return faceDetector.detect(mat);
     }
 

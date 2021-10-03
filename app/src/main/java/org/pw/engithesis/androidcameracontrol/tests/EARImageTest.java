@@ -54,18 +54,17 @@ public class EARImageTest extends ImageTest {
     public void createView() {
         ViewsBuilder viewsBuilder = new ViewsBuilder(ctx, parentView);
 
-        for (int image = 0; image < imagesToTest.length; image++) {
+        for (EARImageTestStruct image : imagesToTest) {
             viewsBuilder.newSection();
 
-            EARImageTestStruct imageTestStruct = imagesToTest[image];
 
-            Mat imageMat = getImageMat(imageTestStruct.imgID);
+            Mat imageMat = getImageMat(image.imgID);
             Mat outputMat = imageMat.clone();
 
-            Rect[] faces = faceDetector.detect(imageMat);
-            Utility.drawRects(outputMat, faces);
+            Rect face = faceDetector.detect(imageMat);
+            Utility.drawRects(outputMat, new Rect[]{face});
 
-            ArrayList<MatOfPoint2f> landmarks = facemarkDetector.detect(imageMat, new MatOfRect(faces));
+            ArrayList<MatOfPoint2f> landmarks = facemarkDetector.detect(imageMat, new MatOfRect(face));
             facemarkDetector.drawLandmarks(outputMat, landmarks);
 
             blinkDetector.checkEyeBlink(landmarks.get(0));

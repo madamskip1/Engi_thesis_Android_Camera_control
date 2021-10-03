@@ -52,8 +52,8 @@ public class FaceDetectorImageTest extends ImageTest {
             viewsBuilder.newSection();
 
             Mat imageMat = getImageMat(imageToTest.imgID);
-            Rect[] faces = faceDetector.detect(imageMat);
-            Utility.drawRects(imageMat, faces);
+            Rect face = faceDetector.detect(imageMat);
+            Utility.drawRects(imageMat, new Rect[]{face});
             Utility.drawRects(imageMat, new Rect[]{imageToTest.minFaceRect, imageToTest.maxFaceRect}, new Scalar(60, 130, 255));
             Utility.drawVerticalLine(imageMat, (int) (imageMat.width() * FaceDetector.LEFT_BOUNDARY));
             Utility.drawVerticalLine(imageMat, (int) (imageMat.width() * FaceDetector.RIGHT_BOUNDARY));

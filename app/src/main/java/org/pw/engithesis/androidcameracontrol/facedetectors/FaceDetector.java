@@ -1,11 +1,7 @@
 package org.pw.engithesis.androidcameracontrol.facedetectors;
 
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfRect;
-import org.opencv.core.Point;
 import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
-import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,37 +10,25 @@ public abstract class FaceDetector {
     public static final double LEFT_BOUNDARY = 0.3;
     public static final double RIGHT_BOUNDARY = 0.7;
 
-    public void drawFaceSquare(Mat mat, MatOfRect faces) {
-        Rect[] facesArray = faces.toArray();
-        for (int i = 0; i < facesArray.length; i++) {
-            Rect face = facesArray[i];
-            Imgproc.rectangle(mat, face.tl(), face.br(), new Scalar(255, 0, 0), 3);
+    public abstract Rect detect(Mat mat);
+
+    protected Rect filterFaces(Mat mat, Rect[] faces) {
+        if (faces.length == 0) {
+            return null;
         }
 
-    }
+        ArrayList<Rect> facesArrayList = new ArrayList<>(Arrays.asList(faces));
+        facesArrayList.removeIf(face -> !isInVerticalCenter(mat, face));
 
-    public abstract Rect[] detect(Mat mat);
-
-    protected Rect[] filterFaces(Mat mat, Rect[] faces) {
-        int facesNum = faces.length;
+        int facesNum = facesArrayList.size();
 
         if (facesNum == 0) {
             return null;
+        } else if (facesNum == 1) {
+            return facesArrayList.get(0);
         }
 
-        if (facesNum == 1) {
-            if (isInVerticalCenter(mat, faces[0])) {
-                return faces;
-            }
-            return null;
-        }
-
-        ArrayList<Rect> rectArrayList = new ArrayList<Rect>(Arrays.asList(faces));
-
-        rectArrayList.removeIf(face -> !isInVerticalCenter(mat, face));
-
-
-        return rectArrayList.toArray(new Rect[0]);
+        return chooseBiggestFaceRect(facesArrayList);
     }
 
     private boolean isInVerticalCenter(Mat mat, Rect face) {
@@ -54,5 +38,23 @@ public abstract class FaceDetector {
 
         return (centerX >= leftBoundaryX && centerX <= rightBoundaryX);
     }
+
+    private Rect chooseBiggestFaceRect(ArrayList<Rect> faces) {
+        Rect biggestRect = faces.get(0);
+        double biggestRectSize = biggestRect.width * biggestRect.height;
+
+        for (int i = 1; i < faces.size(); i++) {
+            Rect curRect = faces.get(i);
+            double curSize = curRect.width * curRect.height;
+
+            if (curSize > biggestRectSize) {
+                biggestRect = curRect;
+                biggestRectSize = curSize;
+            }
+        }
+
+        return biggestRect;
+    }
+
 
 }

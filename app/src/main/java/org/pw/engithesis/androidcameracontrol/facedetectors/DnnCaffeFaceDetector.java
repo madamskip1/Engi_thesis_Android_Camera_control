@@ -25,7 +25,7 @@ public class DnnCaffeFaceDetector extends FaceDetector {
     }
 
     @Override
-    public Rect[] detect(Mat mat) {
+    public Rect detect(Mat mat) {
         Mat blob = Dnn.blobFromImage(mat, 1.0, new Size(300, 300), new Scalar(104.0, 177.0, 123.0), false, false);
         dnnNet.setInput(blob);
         Mat detections = dnnNet.forward();
@@ -35,7 +35,7 @@ public class DnnCaffeFaceDetector extends FaceDetector {
         int cols = mat.cols();
         int rows = mat.rows();
 
-        ArrayList<Rect> faces = new ArrayList<Rect>();
+        ArrayList<Rect> faces = new ArrayList<>();
 
         Log.d("DnnCaffe", "probably detected:" + detections.rows());
 
@@ -52,11 +52,11 @@ public class DnnCaffeFaceDetector extends FaceDetector {
                 Log.d("dnnCaffe", "detected i = " + i + " " + cols + "x" + rows + " -> " + x1 + " " + y1 + ", " + x2 + " " + y2);
 
                 faces.add(new Rect(x1, y1, x2, y2));
-                //Imgproc.rectangle(mat, new Point(x1, y1), new Point(x2, y2),  new Scalar(0, 255, 0),2, 4);
             }
         }
 
+
         Rect[] facesRectArray = (Rect[]) faces.toArray();
-        return facesRectArray;
+        return filterFaces(mat, facesRectArray);
     }
 }

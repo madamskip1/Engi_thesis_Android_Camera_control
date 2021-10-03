@@ -30,11 +30,11 @@ public class DrawableTest extends AppCompatActivity {
         Mat testMat = drawableResourceManager.getRGBMat();
 
         HaarCascadeFaceDetector haarCascadeFaceDetector = new HaarCascadeFaceDetector();
-        Rect[] faces = haarCascadeFaceDetector.detect(testMat);
-        Utility.drawRects(testMat, faces);
+        Rect face = haarCascadeFaceDetector.detect(testMat);
+        Utility.drawRects(testMat, new Rect[]{face});
 
         FacemarkDetector facemarkDetector = new FacemarkDetector();
-        ArrayList<MatOfPoint2f> landamrsks = facemarkDetector.detect(testMat, new MatOfRect(faces));
+        ArrayList<MatOfPoint2f> landamrsks = facemarkDetector.detect(testMat, new MatOfRect(face));
         facemarkDetector.drawLandmarks(testMat, landamrsks);
 
         EyeBlinkDetector eyeBlinkDetector = new EyeBlinkDetector();

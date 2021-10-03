@@ -110,12 +110,12 @@ public class CameraCore {
             proxyConverter.setFrame(image);
             Mat mat = proxyConverter.rgb();
             Mat outputMat = mat.clone();
-            Rect[] faces = faceDetector.detect(mat);
+            Rect face = faceDetector.detect(mat);
 
-            Utility.drawRects(outputMat, faces);
+            Utility.drawRects(outputMat, new Rect[]{face});
 
-            if (faces.length >= 1) {
-                Rect[] eyes = eyeDetector.detect(mat, faces[0]);
+            if (face != null) {
+                Rect[] eyes = eyeDetector.detect(mat, face);
                 Utility.drawRects(outputMat, eyes);
 
                 pupilDetector.detectPupils(mat, eyes);
