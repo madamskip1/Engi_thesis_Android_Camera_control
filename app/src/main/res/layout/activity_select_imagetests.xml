@@ -23,17 +23,26 @@
             android:text="Face Detector" />
 
         <Button
-            android:id="@+id/selectImageTests_EyePupil"
+            android:id="@+id/selectImageTests_EyeDetector"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="goEyeDetector"
+            android:text="Eye Detector" />
+
+        <Button
+            android:id="@+id/selectImageTests_EyePupilDetector"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="goEyePupilDetector"
             android:text="Eye Pupil Detector" />
 
         <Button
-            android:id="@+id/button9"
+            android:id="@+id/selectImageTests_EAR"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="goEARImage"
             android:text="EAR" />
+
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

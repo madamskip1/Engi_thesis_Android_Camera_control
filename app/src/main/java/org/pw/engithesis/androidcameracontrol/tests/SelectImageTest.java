@@ -38,4 +38,10 @@ public class SelectImageTest extends AppCompatActivity {
     }
 
 
+    public void goEyeDetector(View view) {
+        setTitle("Eye Detector Image Test");
+        setContentView(R.layout.testing_layout);
+        EyeDetectorImageTest eyeDetectorImageTest = new EyeDetectorImageTest(this, findViewById(R.id.testing_layout_root));
+        eyeDetectorImageTest.createView();
+    }
 }
