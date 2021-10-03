@@ -16,5 +16,5 @@ public abstract class FaceDetector {
 
     }
 
-    public abstract MatOfRect detect(Mat mat);
+    public abstract Rect[] detect(Mat mat);
 }

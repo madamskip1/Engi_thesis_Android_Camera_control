@@ -14,7 +14,6 @@ import com.google.common.util.concurrent.ListenableFuture;
 
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfRect;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
@@ -70,7 +69,7 @@ public class CameraCore {
         ImageAnalysis imageAnalysis = prepareImageAnalysis();
         CameraSelector cameraSelector = prepareCameraSelector();
 
-        cameraProvider.bindToLifecycle((LifecycleOwner) activity, cameraSelector, imageAnalysis);
+        cameraProvider.bindToLifecycle(activity, cameraSelector, imageAnalysis);
     }
 
     private Runnable prepareCameraProviderRunnable() {
@@ -111,15 +110,12 @@ public class CameraCore {
             proxyConverter.setFrame(image);
             Mat mat = proxyConverter.rgb();
             Mat outputMat = mat.clone();
-            MatOfRect faces = faceDetector.detect(mat);
+            Rect[] faces = faceDetector.detect(mat);
 
-            // ArrayList<MatOfPoint2f> landmarks = facemarkLBF.detect(mat, faces);
-            // facemarkLBF.drawLandmarks(mat, landmarks);
-            Rect[] facesArray = faces.toArray();
-            faceDetector.drawFaceSquare(outputMat, faces);
+            Utility.drawRects(outputMat, faces);
 
-            if (facesArray.length >= 1) {
-                Rect[] eyes = eyeDetector.detect(mat, facesArray[0]);
+            if (faces.length >= 1) {
+                Rect[] eyes = eyeDetector.detect(mat, faces[0]);
                 Utility.drawRects(outputMat, eyes);
 
                 pupilDetector.detectPupils(mat, eyes);

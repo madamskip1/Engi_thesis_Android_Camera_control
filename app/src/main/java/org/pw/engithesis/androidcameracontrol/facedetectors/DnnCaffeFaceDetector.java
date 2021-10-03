@@ -3,7 +3,6 @@ package org.pw.engithesis.androidcameracontrol.facedetectors;
 import android.util.Log;
 
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
@@ -15,7 +14,7 @@ import org.pw.engithesis.androidcameracontrol.RawResourceManager;
 import java.util.ArrayList;
 
 public class DnnCaffeFaceDetector extends FaceDetector {
-    private Net dnnNet;
+    private final Net dnnNet;
 
     public DnnCaffeFaceDetector()
     {
@@ -26,12 +25,12 @@ public class DnnCaffeFaceDetector extends FaceDetector {
     }
 
     @Override
-    public MatOfRect detect(Mat mat) {
+    public Rect[] detect(Mat mat) {
         Mat blob = Dnn.blobFromImage(mat, 1.0, new Size(300, 300), new Scalar(104.0, 177.0, 123.0), false, false);
         dnnNet.setInput(blob);
         Mat detections = dnnNet.forward();
 
-        detections = detections.reshape(1, (int)detections.total() / 7);
+        detections = detections.reshape(1, (int) detections.total() / 7);
 
         int cols = mat.cols();
         int rows = mat.rows();
@@ -57,9 +56,7 @@ public class DnnCaffeFaceDetector extends FaceDetector {
             }
         }
 
-        MatOfRect facesMat = new MatOfRect();
-        facesMat.fromList(faces);
-
-        return facesMat;
+        Rect[] facesRectArray = (Rect[]) faces.toArray();
+        return facesRectArray;
     }
 }

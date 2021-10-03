@@ -4,7 +4,6 @@ import android.content.Context;
 import android.widget.ScrollView;
 
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfRect;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
@@ -92,8 +91,7 @@ public class EyePupilDetectorImageTest extends ImageTest {
     }
 
     private Rect[] getFaceRect(Mat mat) {
-        MatOfRect faces = faceDetector.detect(mat);
-        return faces.toArray();
+        return faceDetector.detect(mat);
     }
 
     private Rect[] getEyesRect(Mat mat, Rect face) {

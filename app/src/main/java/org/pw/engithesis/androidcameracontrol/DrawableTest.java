@@ -11,6 +11,7 @@ import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.MatOfRect;
+import org.opencv.core.Rect;
 import org.pw.engithesis.androidcameracontrol.facedetectors.HaarCascadeFaceDetector;
 
 import java.util.ArrayList;
@@ -29,11 +30,11 @@ public class DrawableTest extends AppCompatActivity {
         Mat testMat = drawableResourceManager.getRGBMat();
 
         HaarCascadeFaceDetector haarCascadeFaceDetector = new HaarCascadeFaceDetector();
-        MatOfRect faces = haarCascadeFaceDetector.detect(testMat);
-        haarCascadeFaceDetector.drawFaceSquare(testMat, faces);
+        Rect[] faces = haarCascadeFaceDetector.detect(testMat);
+        Utility.drawRects(testMat, faces);
 
         FacemarkDetector facemarkDetector = new FacemarkDetector();
-        ArrayList<MatOfPoint2f> landamrsks = facemarkDetector.detect(testMat, faces);
+        ArrayList<MatOfPoint2f> landamrsks = facemarkDetector.detect(testMat, new MatOfRect(faces));
         facemarkDetector.drawLandmarks(testMat, landamrsks);
 
         EyeBlinkDetector eyeBlinkDetector = new EyeBlinkDetector();

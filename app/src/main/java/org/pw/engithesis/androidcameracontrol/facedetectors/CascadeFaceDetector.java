@@ -2,6 +2,7 @@ package org.pw.engithesis.androidcameracontrol.facedetectors;
 
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
+import org.opencv.core.Rect;
 import org.opencv.objdetect.CascadeClassifier;
 import org.pw.engithesis.androidcameracontrol.RawResourceManager;
 
@@ -17,11 +18,11 @@ public class CascadeFaceDetector extends FaceDetector {
     }
 
     @Override
-    public MatOfRect detect(Mat mat) {
+    public Rect[] detect(Mat mat) {
         MatOfRect faces = new MatOfRect();
         classifier.detectMultiScale(mat, faces);
 
-        return faces;
+        return faces.toArray();
     }
 
     private void loadClassifier() {

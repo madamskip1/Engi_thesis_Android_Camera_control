@@ -6,9 +6,11 @@ import android.widget.ScrollView;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.MatOfRect;
+import org.opencv.core.Rect;
 import org.pw.engithesis.androidcameracontrol.EyeBlinkDetector;
 import org.pw.engithesis.androidcameracontrol.FacemarkDetector;
 import org.pw.engithesis.androidcameracontrol.R;
+import org.pw.engithesis.androidcameracontrol.Utility;
 import org.pw.engithesis.androidcameracontrol.ViewsBuilder;
 import org.pw.engithesis.androidcameracontrol.facedetectors.HaarCascadeFaceDetector;
 
@@ -60,10 +62,10 @@ public class EARImageTest extends ImageTest {
             Mat imageMat = getImageMat(imageTestStruct.imgID);
             Mat outputMat = imageMat.clone();
 
-            MatOfRect faces = faceDetector.detect(imageMat);
-            faceDetector.drawFaceSquare(outputMat, faces);
+            Rect[] faces = faceDetector.detect(imageMat);
+            Utility.drawRects(outputMat, faces);
 
-            ArrayList<MatOfPoint2f> landmarks = facemarkDetector.detect(imageMat, faces);
+            ArrayList<MatOfPoint2f> landmarks = facemarkDetector.detect(imageMat, new MatOfRect(faces));
             facemarkDetector.drawLandmarks(outputMat, landmarks);
 
             blinkDetector.checkEyeBlink(landmarks.get(0));

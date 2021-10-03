@@ -4,7 +4,6 @@ import android.content.Context;
 import android.widget.ScrollView;
 
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.pw.engithesis.androidcameracontrol.R;
@@ -52,8 +51,7 @@ public class FaceDetectorImageTest extends ImageTest {
             viewsBuilder.newSection();
 
             Mat imageMat = getImageMat(imageToTest.imgID);
-            MatOfRect matOfRect = faceDetector.detect(imageMat);
-            Rect[] faces = matOfRect.toArray();
+            Rect[] faces = faceDetector.detect(imageMat);
             Utility.drawRects(imageMat, faces);
             Utility.drawRects(imageMat, new Rect[]{imageToTest.minFaceRect, imageToTest.maxFaceRect}, new Scalar(60, 130, 255));
 
