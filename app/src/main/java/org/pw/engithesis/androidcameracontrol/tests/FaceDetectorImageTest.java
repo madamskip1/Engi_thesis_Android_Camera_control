@@ -9,6 +9,7 @@ import org.opencv.core.Scalar;
 import org.pw.engithesis.androidcameracontrol.R;
 import org.pw.engithesis.androidcameracontrol.Utility;
 import org.pw.engithesis.androidcameracontrol.ViewsBuilder;
+import org.pw.engithesis.androidcameracontrol.facedetectors.FaceDetector;
 import org.pw.engithesis.androidcameracontrol.facedetectors.HaarCascadeFaceDetector;
 
 public class FaceDetectorImageTest extends ImageTest {
@@ -54,6 +55,8 @@ public class FaceDetectorImageTest extends ImageTest {
             Rect[] faces = faceDetector.detect(imageMat);
             Utility.drawRects(imageMat, faces);
             Utility.drawRects(imageMat, new Rect[]{imageToTest.minFaceRect, imageToTest.maxFaceRect}, new Scalar(60, 130, 255));
+            Utility.drawVerticalLine(imageMat, (int) (imageMat.width() * FaceDetector.LEFT_BOUNDARY));
+            Utility.drawVerticalLine(imageMat, (int) (imageMat.width() * FaceDetector.RIGHT_BOUNDARY));
 
             addImageToView(imageMat, viewsBuilder);
         }

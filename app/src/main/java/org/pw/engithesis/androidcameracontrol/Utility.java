@@ -33,4 +33,8 @@ public class Utility {
         drawRects(mat, rects, new Scalar(255, 0, 0));
     }
 
+    public static void drawVerticalLine(Mat mat, int x) {
+        Imgproc.line(mat, new Point(x, 0), new Point(x, mat.height()), new Scalar(255, 0, 0), 3);
+    }
+
 }
