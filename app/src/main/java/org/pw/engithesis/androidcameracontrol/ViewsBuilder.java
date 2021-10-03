@@ -16,8 +16,7 @@ public class ViewsBuilder {
     LinearLayout curSection;
     Context ctx;
 
-    public ViewsBuilder(Context context, ScrollView parent)
-    {
+    public ViewsBuilder(Context context, ScrollView parent) {
         ctx = context;
         parentLayout = parent;
         parentLayout.requestLayout();
@@ -28,27 +27,24 @@ public class ViewsBuilder {
         curSection = mainLinearLayout;
     }
 
-    public void newSection()
-    {
+    public void newSection() {
         LinearLayout section = newLinearLayout();
         curSection.addView(section);
 
         curSection = section;
     }
 
-    public void closeSection()
-    {
+    public void closeSection() {
         curSection = (LinearLayout) curSection.getParent();
     }
 
-    public void addImage(Bitmap bitmap)
-    {
+    public void addImage(Bitmap bitmap) {
         int height = bitmap.getHeight();
         int width = bitmap.getWidth();
         int screenWidth = getScreenWidth();
         //screenWidth *= 0.9;
 
-        double ratio = (double)screenWidth / width;
+        double ratio = (double) screenWidth / width;
         width = screenWidth;
         height *= ratio;
 
@@ -62,8 +58,7 @@ public class ViewsBuilder {
         curSection.addView(imageView);
     }
 
-    public void addText(String text)
-    {
+    public void addText(String text) {
         TextView textView = new TextView(ctx);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         textView.setLayoutParams(params);
@@ -72,8 +67,7 @@ public class ViewsBuilder {
         curSection.addView(textView);
     }
 
-    public void build()
-    {
+    public void build() {
 
         parentLayout.addView(mainLinearLayout);
         parentLayout.invalidate();
@@ -85,8 +79,7 @@ public class ViewsBuilder {
         return Resources.getSystem().getDisplayMetrics().widthPixels;
     }
 
-    private LinearLayout newLinearLayout()
-    {
+    private LinearLayout newLinearLayout() {
         LinearLayout layout = new LinearLayout(ctx);
         ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 

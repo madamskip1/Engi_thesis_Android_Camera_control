@@ -13,18 +13,6 @@ import org.pw.engithesis.androidcameracontrol.facedetectors.FaceDetector;
 import org.pw.engithesis.androidcameracontrol.facedetectors.HaarCascadeFaceDetector;
 
 public class FaceDetectorImageTest extends ImageTest {
-    private static class FaceDetectorImageTestStruct {
-        public int imgID;
-        public Rect minFaceRect;
-        public Rect maxFaceRect;
-
-        public FaceDetectorImageTestStruct(int id, Rect minFaceRect, Rect maxFaceRect) {
-            imgID = id;
-            this.minFaceRect = minFaceRect;
-            this.maxFaceRect = maxFaceRect;
-        }
-    }
-
     private final FaceDetectorImageTestStruct[] imagesToTest = {
             new FaceDetectorImageTestStruct(R.drawable.portrait_test_1, new Rect(285, 120, 310, 290), new Rect(230, 15, 415, 500)),
             new FaceDetectorImageTestStruct(R.drawable.portrait_test_2, new Rect(145, 290, 320, 390), new Rect(75, 135, 450, 660)),
@@ -36,7 +24,6 @@ public class FaceDetectorImageTest extends ImageTest {
             new FaceDetectorImageTestStruct(R.drawable.portrait_test_8, new Rect(695, 275, 275, 300), new Rect(640, 140, 390, 500)),
             new FaceDetectorImageTestStruct(R.drawable.portrait_test_9, new Rect(210, 265, 295, 355), new Rect(180, 145, 425, 570)),
     };
-
     private final HaarCascadeFaceDetector faceDetector;
 
     protected FaceDetectorImageTest(Context context, ScrollView parent) {
@@ -62,5 +49,17 @@ public class FaceDetectorImageTest extends ImageTest {
         }
 
         viewsBuilder.build();
+    }
+
+    private static class FaceDetectorImageTestStruct {
+        public int imgID;
+        public Rect minFaceRect;
+        public Rect maxFaceRect;
+
+        public FaceDetectorImageTestStruct(int id, Rect minFaceRect, Rect maxFaceRect) {
+            imgID = id;
+            this.minFaceRect = minFaceRect;
+            this.maxFaceRect = maxFaceRect;
+        }
     }
 }

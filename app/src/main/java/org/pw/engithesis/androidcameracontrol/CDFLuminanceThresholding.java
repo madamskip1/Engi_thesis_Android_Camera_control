@@ -6,10 +6,9 @@ import java.util.Arrays;
 
 public class CDFLuminanceThresholding extends ImageThresholding {
     private static final double DEFAULT_THRESHOLD_PARAMETER = 0.05;
-
+    private final double thresholdParameter;
     private double[] cumulativeDistributionOfLuminance;
     private double[] counterPixelsLuminance;
-    private final double thresholdParameter;
 
     public CDFLuminanceThresholding() {
         thresholdParameter = DEFAULT_THRESHOLD_PARAMETER;

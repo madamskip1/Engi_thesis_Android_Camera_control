@@ -76,8 +76,7 @@ public class ImageProxyToMatConverter {
         return rgbaMat;
     }
 
-    public Mat rgb()
-    {
+    public Mat rgb() {
         byte[] nv21;
         ByteBuffer yBuffer = frame.getPlanes()[0].getBuffer();
         ByteBuffer uBuffer = frame.getPlanes()[1].getBuffer();

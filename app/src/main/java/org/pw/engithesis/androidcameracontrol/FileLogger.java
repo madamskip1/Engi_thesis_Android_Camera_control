@@ -13,22 +13,20 @@ public class FileLogger {
     private static final String LOG_DIR_NAME = "AndroidCameraControlLogs";
     private static final String DEFAULT_FILE_NAME = "AndroidCameraControlLog.txt";
     private static final Boolean DEFAULT_APPEND = true;
-    private static final Boolean DEAFULT_WRITE_DATE_AND_TIME = true;
+    private static final Boolean DEFAULT_WRITE_DATE_AND_TIME = true;
 
 
-    private String _fileName;
-    private Boolean _append;
+    private final String _fileName;
+    private final Boolean _append;
     private Boolean _writeDateAndTime;
 
-    private File logDir;
-    private File file;
     private FileWriter fileWriter;
 
 
     public FileLogger() {
         _fileName = DEFAULT_FILE_NAME;
         _append = DEFAULT_APPEND;
-        writeDateAndTime(DEAFULT_WRITE_DATE_AND_TIME);
+        writeDateAndTime(DEFAULT_WRITE_DATE_AND_TIME);
 
         openFile();
     }
@@ -36,7 +34,7 @@ public class FileLogger {
     public FileLogger(String fileName) {
         _fileName = fileName;
         _append = DEFAULT_APPEND;
-        writeDateAndTime(DEAFULT_WRITE_DATE_AND_TIME);
+        writeDateAndTime(DEFAULT_WRITE_DATE_AND_TIME);
 
         openFile();
     }
@@ -44,7 +42,7 @@ public class FileLogger {
     public FileLogger(String fileName, Boolean append) {
         _fileName = fileName;
         _append = append;
-        writeDateAndTime(DEAFULT_WRITE_DATE_AND_TIME);
+        writeDateAndTime(DEFAULT_WRITE_DATE_AND_TIME);
 
         openFile();
     }
@@ -79,13 +77,13 @@ public class FileLogger {
     private void openFile() {
         try {
             String path = App.getContext().getExternalFilesDir(null).getAbsolutePath();
-            logDir = new File(path, LOG_DIR_NAME);
+            File logDir = new File(path, LOG_DIR_NAME);
 
             if (!logDir.exists()) {
                 logDir.mkdir();
             }
 
-            file = new File(logDir, _fileName);
+            File file = new File(logDir, _fileName);
 
             fileWriter = new FileWriter(file, _append);
         } catch (IOException e) {
@@ -96,8 +94,7 @@ public class FileLogger {
     private String getDateTimeString() {
         Date date = Calendar.getInstance().getTime();
         DateFormat dateFormat = new SimpleDateFormat("'['HH:mm:ss, dd-MM-yyyy']'");
-        String formatedDateTime = dateFormat.format(date);
 
-        return formatedDateTime;
+        return dateFormat.format(date);
     }
 }

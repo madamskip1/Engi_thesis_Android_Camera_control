@@ -14,14 +14,22 @@ public class HaarCascadeNativeBridge {
         System.loadLibrary("facedetectors_haar");
     }
 
-    private long nativeDetectorAddress;
     public CascadeClassifier classifier;
+    private long nativeDetectorAddress;
 
     public HaarCascadeNativeBridge(String cascadePath, int minFaceSize) {
         classifier = new CascadeClassifier(cascadePath);
         classifier.load(cascadePath);
         Log.i(TAG, "Classifier LOaded: " + classifier.empty());
     }
+
+    private static native long nativeCreateDetector(String cascadePath, int minFaceSize);
+
+    private static native void nativeDetectFace(long nativeAddress, long grayFrame, long resultFaces);
+
+    private static native void nativeReleaseDetector(long nativeAddress);
+
+    private static native void test(long grayFrameAddress, long classifierAddress, long resultFacesAddress);
 
     public void detectFace(Mat grayFrame, MatOfRect resultFaces) {
         //nativeDetectFace(nativeDetectorAddress, grayFrame.getNativeObjAddr(), resultFaces.getNativeObjAddr());
@@ -33,13 +41,4 @@ public class HaarCascadeNativeBridge {
     public void release() {
         nativeReleaseDetector(nativeDetectorAddress);
     }
-
-    private static native long nativeCreateDetector(String cascadePath, int minFaceSize);
-
-    private static native void nativeDetectFace(long nativeAddress, long grayFrame, long resultFaces);
-
-    private static native void nativeReleaseDetector(long nativeAddress);
-
-
-    private static native void test(long grayFrameAddress, long classifierAddress, long resultFacesAddress);
 }

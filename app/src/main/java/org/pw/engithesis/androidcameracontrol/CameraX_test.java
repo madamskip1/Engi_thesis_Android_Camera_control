@@ -23,7 +23,7 @@ public class CameraX_test extends AppCompatActivity implements Observer {
         Log.d("CAMERAX_TEST", "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.camera_image_view);
-        imgView = (ImageView) findViewById(R.id.camera_preview);
+        imgView = findViewById(R.id.camera_preview);
         fileLogger = new FileLogger("test.txt", true);
         cameraCore = new CameraCore(this);
         cameraCore.setImageView(imgView);
@@ -45,8 +45,8 @@ public class CameraX_test extends AppCompatActivity implements Observer {
     }
 
     private void setFPSText(double curFPS, double avgFPS) {
-        TextView curFPSTextView = (TextView) findViewById(R.id.cur_fps_text);
-        TextView avgFPSTextView = (TextView) findViewById(R.id.avg_fps_text);
+        TextView curFPSTextView = findViewById(R.id.cur_fps_text);
+        TextView avgFPSTextView = findViewById(R.id.avg_fps_text);
 
         curFPSTextView.setText(String.format("%.2f", curFPS));
         avgFPSTextView.setText(String.format("%.2f", avgFPS));

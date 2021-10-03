@@ -8,12 +8,11 @@ import org.opencv.objdetect.CascadeClassifier;
 public class EyeDetector {
     public static final int RIGHT_EYE_INDEX = 0;
     public static final int LEFT_EYE_INDEX = 1;
-
-    private final CascadeClassifier classifier;
     private static final double cropTop = 0.1;
     private static final double cropBottom = 0.45;
     private static final double cropLeft = 0.1;
     private static final double cropRight = 0.1;
+    private final CascadeClassifier classifier;
 
     public EyeDetector() {
         RawResourceManager haarModel = new RawResourceManager(R.raw.haarcascade_eye, "haarcascade_eye");
@@ -26,9 +25,8 @@ public class EyeDetector {
 
         MatOfRect eyes = new MatOfRect();
         classifier.detectMultiScale(croppedFace, eyes);
-        Rect[] orderedEyesArray = sortEyes(face, eyesRegion, eyes.toArray());
 
-        return orderedEyesArray;
+        return sortEyes(face, eyesRegion, eyes.toArray());
     }
 
     private Rect getEyesRegionRect(Rect face) {

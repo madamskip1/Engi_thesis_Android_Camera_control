@@ -53,7 +53,7 @@ public class EyePupilDetector extends Observable {
         Imgproc.erode(PMIMat, erodedPMI, erodeKernel);
 
         ImageThresholding imageThresholding = prepareThresholdFunction(avgIntensity);
-        imageThresholding.threhsoldRef(PMIMat);
+        imageThresholding.thresholdRef(PMIMat);
 
         Point eyePupil = calcGravityCenter(PMIMat);
         eyePupil.x += PMIRect.x + eyeRect.x;

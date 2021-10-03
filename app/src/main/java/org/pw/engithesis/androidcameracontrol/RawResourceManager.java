@@ -12,21 +12,20 @@ public class RawResourceManager {
     private String _resourceName;
     private File resourceFile;
 
-    public RawResourceManager(int resourceID, String resourceName)
-    {
+    public RawResourceManager(int resourceID, String resourceName) {
         _resourceID = resourceID;
         _resourceName = resourceName;
     }
 
-    private RawResourceManager() {}
+    private RawResourceManager() {
+    }
 
     public File getFile() {
         if (resourceFile != null) {
             return resourceFile;
         }
 
-        try
-        {
+        try {
             Context context = App.getContext();
             InputStream is = context.getResources().openRawResource(_resourceID);
             File cascadeDir = context.getDir("tempDir", Context.MODE_PRIVATE);
@@ -42,16 +41,14 @@ public class RawResourceManager {
             os.close();
 
             cascadeDir.delete();
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
         return resourceFile;
     }
 
-    public String getPath()
-    {
+    public String getPath() {
         return getFile().getAbsolutePath();
     }
 }

@@ -9,8 +9,6 @@ public class EyeAspectRatio {
         double distVerticalB = Utility.calcDistance(eye[2], eye[4]);
         double distHorizontal = Utility.calcDistance(eye[0], eye[3]);
 
-        double EAR = (distVerticalA + distVerticalB) / (2.0 * distHorizontal);
-
-        return EAR;
+        return (distVerticalA + distVerticalB) / (2.0 * distHorizontal);
     }
 }

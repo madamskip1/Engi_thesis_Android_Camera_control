@@ -17,16 +17,6 @@ import org.pw.engithesis.androidcameracontrol.facedetectors.HaarCascadeFaceDetec
 import java.util.ArrayList;
 
 public class EARImageTest extends ImageTest {
-    private class EARImageTestStruct {
-        public int imgID;
-        public Boolean[] eyeOpen;
-
-        public EARImageTestStruct(int id, Boolean[] open) {
-            imgID = id;
-            eyeOpen = open;
-        }
-    }
-
     private final EARImageTestStruct[] imagesToTest = {
             new EARImageTestStruct(R.drawable.portrait_test_1, new Boolean[]{true, true}),
             new EARImageTestStruct(R.drawable.portrait_test_2, new Boolean[]{true, true}),
@@ -38,11 +28,9 @@ public class EARImageTest extends ImageTest {
             new EARImageTestStruct(R.drawable.portrait_test_8, new Boolean[]{false, true}),
             new EARImageTestStruct(R.drawable.portrait_test_9, new Boolean[]{false, true})
     };
-
     private final HaarCascadeFaceDetector faceDetector;
     private final FacemarkDetector facemarkDetector;
     private final EyeBlinkDetector blinkDetector;
-
     public EARImageTest(Context ctx, ScrollView parent) {
         super(ctx, parent);
         faceDetector = new HaarCascadeFaceDetector();
@@ -70,11 +58,21 @@ public class EARImageTest extends ImageTest {
             blinkDetector.checkEyeBlink(landmarks.get(0));
 
             addImageToView(outputMat, viewsBuilder);
-            viewsBuilder.addText("ladmarks " + landmarks.size());
+            viewsBuilder.addText("landmarks " + landmarks.size());
             viewsBuilder.addText("right: " + blinkDetector.rightEyeEAR);
             viewsBuilder.addText("left: " + blinkDetector.leftEyeEAR);
         }
 
         viewsBuilder.build();
+    }
+
+    private static class EARImageTestStruct {
+        public int imgID;
+        public Boolean[] eyeOpen;
+
+        public EARImageTestStruct(int id, Boolean[] open) {
+            imgID = id;
+            eyeOpen = open;
+        }
     }
 }

@@ -17,16 +17,6 @@ import org.pw.engithesis.androidcameracontrol.facedetectors.HaarCascadeFaceDetec
 
 
 public class EyePupilDetectorImageTest extends ImageTest {
-    private static class EyePupilImageTestStruct {
-        public int imgID;
-        public Point[] eyes;
-
-        public EyePupilImageTestStruct(int id, Point[] eyesArray) {
-            imgID = id;
-            eyes = eyesArray;
-        }
-    }
-
     private final EyePupilImageTestStruct[] imagesToTest = {
             new EyePupilImageTestStruct(R.drawable.portrait_test_1, new Point[]{new Point(361, 222), new Point(523, 214)}),
             new EyePupilImageTestStruct(R.drawable.portrait_test_2, new Point[]{new Point(217, 410), new Point(373, 416)}),
@@ -38,11 +28,9 @@ public class EyePupilDetectorImageTest extends ImageTest {
             new EyePupilImageTestStruct(R.drawable.portrait_test_8, new Point[]{null, new Point(906, 354)}),
             new EyePupilImageTestStruct(R.drawable.portrait_test_9, new Point[]{new Point(276, 395), null}),
     };
-
     private final HaarCascadeFaceDetector faceDetector;
     private final EyeDetector eyeDetector;
     private final EyePupilDetector pupilDetector;
-
     public EyePupilDetectorImageTest(Context ctx, ScrollView parent) {
         super(ctx, parent);
         faceDetector = new HaarCascadeFaceDetector();
@@ -115,6 +103,16 @@ public class EyePupilDetectorImageTest extends ImageTest {
             }
 
             viewsBuilder.addText(str);
+        }
+    }
+
+    private static class EyePupilImageTestStruct {
+        public int imgID;
+        public Point[] eyes;
+
+        public EyePupilImageTestStruct(int id, Point[] eyesArray) {
+            imgID = id;
+            eyes = eyesArray;
         }
     }
 

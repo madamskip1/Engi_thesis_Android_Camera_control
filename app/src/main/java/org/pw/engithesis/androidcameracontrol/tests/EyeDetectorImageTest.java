@@ -13,29 +13,8 @@ import org.pw.engithesis.androidcameracontrol.ViewsBuilder;
 import org.pw.engithesis.androidcameracontrol.facedetectors.HaarCascadeFaceDetector;
 
 public class EyeDetectorImageTest extends ImageTest {
-    private static class EyesImageTestStruct {
-        public int imgID;
-        public SingleEyeTestStruct[] eyes;
-
-        public EyesImageTestStruct(int id, SingleEyeTestStruct[] eyes) {
-            imgID = id;
-            this.eyes = eyes;
-        }
-    }
-
-    private static class SingleEyeTestStruct {
-        public Rect minEyeRect;
-        public Rect maxEyeRect;
-
-        public SingleEyeTestStruct(Rect minEyeRect, Rect maxEyeRect) {
-            this.minEyeRect = minEyeRect;
-            this.maxEyeRect = maxEyeRect;
-        }
-    }
-
     private final HaarCascadeFaceDetector faceDetector;
     private final EyeDetector eyeDetector;
-
     private final EyesImageTestStruct[] imagesToTest = {
             new EyesImageTestStruct(R.drawable.portrait_test_1, new SingleEyeTestStruct[]{
                     new SingleEyeTestStruct(new Rect(318, 202, 78, 46), new Rect(286, 166, 130, 100)),
@@ -65,7 +44,6 @@ public class EyeDetectorImageTest extends ImageTest {
                     new SingleEyeTestStruct(new Rect(250, 382, 47, 26), new Rect(210, 325, 115, 118)),
                     null})
     };
-
     protected EyeDetectorImageTest(Context context, ScrollView parent) {
         super(context, parent);
         faceDetector = new HaarCascadeFaceDetector();
@@ -99,5 +77,25 @@ public class EyeDetectorImageTest extends ImageTest {
         }
 
         viewsBuilder.build();
+    }
+
+    private static class EyesImageTestStruct {
+        public int imgID;
+        public SingleEyeTestStruct[] eyes;
+
+        public EyesImageTestStruct(int id, SingleEyeTestStruct[] eyes) {
+            imgID = id;
+            this.eyes = eyes;
+        }
+    }
+
+    private static class SingleEyeTestStruct {
+        public Rect minEyeRect;
+        public Rect maxEyeRect;
+
+        public SingleEyeTestStruct(Rect minEyeRect, Rect maxEyeRect) {
+            this.minEyeRect = minEyeRect;
+            this.maxEyeRect = maxEyeRect;
+        }
     }
 }

@@ -8,25 +8,19 @@ import org.opencv.imgproc.Imgproc;
 import java.io.IOException;
 
 public class DrawableResourceManager {
-    private int _resourceID;
+    private final int _resourceID;
     private Mat BGRMat = null;
     private Mat RGBMat = null;
 
-    public DrawableResourceManager(int resourceID)
-    {
+    public DrawableResourceManager(int resourceID) {
         _resourceID = resourceID;
     }
 
-    public Mat getBGRMat()
-    {
-        if (BGRMat == null)
-        {
-            try
-            {
+    public Mat getBGRMat() {
+        if (BGRMat == null) {
+            try {
                 BGRMat = Utils.loadResource(App.getContext(), _resourceID, Imgcodecs.IMREAD_UNCHANGED);
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -34,10 +28,8 @@ public class DrawableResourceManager {
         return BGRMat;
     }
 
-    public Mat getRGBMat()
-    {
-        if (RGBMat == null)
-        {
+    public Mat getRGBMat() {
+        if (RGBMat == null) {
             RGBMat = new Mat();
             Imgproc.cvtColor(getBGRMat(), RGBMat, Imgproc.COLOR_BGR2RGB);
         }

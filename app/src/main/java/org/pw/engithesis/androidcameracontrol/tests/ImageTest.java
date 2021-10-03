@@ -15,9 +15,6 @@ public abstract class ImageTest {
     protected Context ctx;
     protected ScrollView parentView;
 
-    private ImageTest() {
-    }
-
     protected ImageTest(Context context, ScrollView parent) {
         OpenCVLoader.initDebug();
         ctx = context;

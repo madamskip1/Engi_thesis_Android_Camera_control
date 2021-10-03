@@ -7,9 +7,9 @@ import org.opencv.objdetect.CascadeClassifier;
 import org.pw.engithesis.androidcameracontrol.RawResourceManager;
 
 public class CascadeFaceDetector extends FaceDetector {
-    private CascadeClassifier classifier;
     int resourceID = -1;
     String resourceName;
+    private CascadeClassifier classifier;
 
     public CascadeFaceDetector(int resID, String resName) {
         resourceID = resID;

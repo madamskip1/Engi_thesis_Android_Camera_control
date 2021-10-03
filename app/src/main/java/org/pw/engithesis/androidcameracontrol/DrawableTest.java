@@ -34,11 +34,11 @@ public class DrawableTest extends AppCompatActivity {
         Utility.drawRects(testMat, new Rect[]{face});
 
         FacemarkDetector facemarkDetector = new FacemarkDetector();
-        ArrayList<MatOfPoint2f> landamrsks = facemarkDetector.detect(testMat, new MatOfRect(face));
-        facemarkDetector.drawLandmarks(testMat, landamrsks);
+        ArrayList<MatOfPoint2f> landmarks = facemarkDetector.detect(testMat, new MatOfRect(face));
+        facemarkDetector.drawLandmarks(testMat, landmarks);
 
         EyeBlinkDetector eyeBlinkDetector = new EyeBlinkDetector();
-        eyeBlinkDetector.checkEyeBlink(landamrsks.get(0));
+        eyeBlinkDetector.checkEyeBlink(landmarks.get(0));
 
         Log.e("fm", "ear: " + eyeBlinkDetector.leftEyeEAR + ", " + eyeBlinkDetector.rightEyeEAR);
 

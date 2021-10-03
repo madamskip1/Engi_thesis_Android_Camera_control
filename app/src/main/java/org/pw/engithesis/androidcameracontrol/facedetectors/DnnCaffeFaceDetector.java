@@ -16,8 +16,7 @@ import java.util.ArrayList;
 public class DnnCaffeFaceDetector extends FaceDetector {
     private final Net dnnNet;
 
-    public DnnCaffeFaceDetector()
-    {
+    public DnnCaffeFaceDetector() {
         RawResourceManager proto = new RawResourceManager(R.raw.deploy, "deploy.protoxt");
         RawResourceManager model = new RawResourceManager(R.raw.res10_300x300_ssd_iter_140000_fp16, "res10_300x300_ssd_iter_140000_fp16.caffemodel");
 
@@ -39,12 +38,10 @@ public class DnnCaffeFaceDetector extends FaceDetector {
 
         Log.d("DnnCaffe", "probably detected:" + detections.rows());
 
-        for (int i = 0; i < detections.rows(); i++)
-        {
+        for (int i = 0; i < detections.rows(); i++) {
             double confidence = detections.get(i, 2)[0];
 
-            if (confidence > 0.7)
-            {
+            if (confidence > 0.7) {
                 int x1 = (int) (detections.get(i, 3)[0] * cols);
                 int y1 = (int) (detections.get(i, 4)[0] * rows);
                 int x2 = (int) (detections.get(i, 5)[0] * cols);

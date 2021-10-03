@@ -20,11 +20,9 @@ public class EyeBlinkDetector extends Observable {
     public static final int RIGHT_EYE = 1;
 
     public static double BLINK_THRESHOLD = 0.3;
-
+    private final EyeAspectRatio earCalculator;
     public double leftEyeEAR;
     public double rightEyeEAR;
-
-    private EyeAspectRatio earCalculator;
 
     public EyeBlinkDetector() {
         earCalculator = new EyeAspectRatio();
@@ -38,7 +36,7 @@ public class EyeBlinkDetector extends Observable {
         rightEyeEAR = earCalculator.calcEAR(rightEye);
         Log.e("fm", "ear: " + this.leftEyeEAR + ", " + this.rightEyeEAR);
 
-       // TODO: Predykcja czy bylo mrugniecie
+        // TODO: Predykcja czy bylo mrugniecie
 
         notifyUpdate();
     }
@@ -54,19 +52,19 @@ public class EyeBlinkDetector extends Observable {
     private Point[] getEye(MatOfPoint2f faceLandmarks, int index) {
         Point[] eye = new Point[6];
         double[] temp;
-        int moddifier = (index == RIGHT_EYE ? 6 : 0);
+        int modifier = (index == RIGHT_EYE ? 6 : 0);
 
-        temp = faceLandmarks.get(36 + moddifier, 0);
+        temp = faceLandmarks.get(36 + modifier, 0);
         eye[0] = new Point(temp[0], temp[1]);
-        temp = faceLandmarks.get(37 + moddifier, 0);
+        temp = faceLandmarks.get(37 + modifier, 0);
         eye[1] = new Point(temp[0], temp[1]);
-        temp = faceLandmarks.get(38 + moddifier, 0);
+        temp = faceLandmarks.get(38 + modifier, 0);
         eye[2] = new Point(temp[0], temp[1]);
-        temp = faceLandmarks.get(39 + moddifier, 0);
+        temp = faceLandmarks.get(39 + modifier, 0);
         eye[3] = new Point(temp[0], temp[1]);
-        temp = faceLandmarks.get(40 + moddifier, 0);
+        temp = faceLandmarks.get(40 + modifier, 0);
         eye[4] = new Point(temp[0], temp[1]);
-        temp = faceLandmarks.get(41 + moddifier, 0);
+        temp = faceLandmarks.get(41 + modifier, 0);
         eye[5] = new Point(temp[0], temp[1]);
 
         return eye;

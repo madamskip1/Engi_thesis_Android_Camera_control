@@ -8,7 +8,6 @@ import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.LifecycleOwner;
 
 import com.google.common.util.concurrent.ListenableFuture;
 
@@ -27,12 +26,12 @@ public class CameraCore {
 
     private final AppCompatActivity activity;
     private final ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
-    ImageProxyToMatConverter proxyConverter = new ImageProxyToMatConverter();
-    private ImageView imgView = null;
     private final FaceDetector faceDetector;
     private final EyeDetector eyeDetector;
     private final FPSCounter fpsCounter;
     private final EyePupilDetector pupilDetector;
+    ImageProxyToMatConverter proxyConverter = new ImageProxyToMatConverter();
+    private ImageView imgView = null;
     private FacemarkDetector facemarkLBF;
 
 
