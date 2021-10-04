@@ -16,6 +16,9 @@ public class EyeDetectorImageTest extends ImageTest {
     private final HaarCascadeFaceDetector faceDetector;
     private final EyeDetector eyeDetector;
     private final EyesImageTestStruct[] imagesToTest = {
+            new EyesImageTestStruct(R.drawable.lenna, new SingleEyeTestStruct[]{
+                    new SingleEyeTestStruct(new Rect(253, 253, 29, 18), new Rect(238, 238, 63, 51)),
+                    new SingleEyeTestStruct(new Rect(319, 259, 25, 19), new Rect(311, 241, 43, 47))}),
             new EyesImageTestStruct(R.drawable.portrait_test_1, new SingleEyeTestStruct[]{
                     new SingleEyeTestStruct(new Rect(318, 202, 78, 46), new Rect(286, 166, 130, 100)),
                     new SingleEyeTestStruct(new Rect(489, 199, 72, 41), new Rect(452, 158, 148, 101))}),

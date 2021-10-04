@@ -18,6 +18,7 @@ import org.pw.engithesis.androidcameracontrol.facedetectors.HaarCascadeFaceDetec
 
 public class EyePupilDetectorImageTest extends ImageTest {
     private final EyePupilImageTestStruct[] imagesToTest = {
+            new EyePupilImageTestStruct(R.drawable.lenna, new Point[]{new Point(265, 265), new Point(328, 265)}),
             new EyePupilImageTestStruct(R.drawable.portrait_test_1, new Point[]{new Point(361, 222), new Point(523, 214)}),
             new EyePupilImageTestStruct(R.drawable.portrait_test_2, new Point[]{new Point(217, 410), new Point(373, 416)}),
             new EyePupilImageTestStruct(R.drawable.portrait_test_3, new Point[]{new Point(272, 135), new Point(319, 136)}),

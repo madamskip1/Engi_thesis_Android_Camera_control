@@ -14,6 +14,7 @@ import org.pw.engithesis.androidcameracontrol.facedetectors.HaarCascadeFaceDetec
 
 public class FaceDetectorImageTest extends ImageTest {
     private final FaceDetectorImageTestStruct[] imagesToTest = {
+            new FaceDetectorImageTestStruct(R.drawable.lenna, new Rect(230, 225, 125, 150), new Rect(175, 160, 205, 250)),
             new FaceDetectorImageTestStruct(R.drawable.portrait_test_1, new Rect(285, 120, 310, 290), new Rect(230, 15, 415, 500)),
             new FaceDetectorImageTestStruct(R.drawable.portrait_test_2, new Rect(145, 290, 320, 390), new Rect(75, 135, 450, 660)),
             new FaceDetectorImageTestStruct(R.drawable.portrait_test_3, new Rect(250, 110, 94, 94), new Rect(234, 75, 130, 150)),
