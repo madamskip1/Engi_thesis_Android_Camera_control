@@ -10,6 +10,7 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.pw.engithesis.androidcameracontrol.EyeDetector;
 import org.pw.engithesis.androidcameracontrol.EyePupilDetector;
+import org.pw.engithesis.androidcameracontrol.MatToFile;
 import org.pw.engithesis.androidcameracontrol.R;
 import org.pw.engithesis.androidcameracontrol.Utility;
 import org.pw.engithesis.androidcameracontrol.ViewsBuilder;
@@ -43,6 +44,10 @@ public class EyePupilDetectorImageTest extends ImageTest {
     public void createView() {
         ViewsBuilder viewsBuilder = new ViewsBuilder(ctx, parentView);
 
+        MatToFile matToFile = new MatToFile();
+
+        int i = 0;
+
         for (EyePupilImageTestStruct image : imagesToTest) {
             viewsBuilder.newSection();
 
@@ -74,6 +79,9 @@ public class EyePupilDetectorImageTest extends ImageTest {
 
             eyeDetectionStats(expectedPupils, detectedPupils, viewsBuilder);
             viewsBuilder.closeSection();
+
+            //matToFile.saveRGBMatAsPNG("pupilDetector" + i, outputMat);
+            i++;
         }
 
         viewsBuilder.build();

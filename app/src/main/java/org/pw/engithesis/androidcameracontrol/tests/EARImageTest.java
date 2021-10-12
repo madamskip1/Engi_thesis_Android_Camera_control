@@ -9,6 +9,7 @@ import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
 import org.pw.engithesis.androidcameracontrol.EyeBlinkDetector;
 import org.pw.engithesis.androidcameracontrol.FacemarkDetector;
+import org.pw.engithesis.androidcameracontrol.MatToFile;
 import org.pw.engithesis.androidcameracontrol.R;
 import org.pw.engithesis.androidcameracontrol.Utility;
 import org.pw.engithesis.androidcameracontrol.ViewsBuilder;
@@ -42,6 +43,9 @@ public class EARImageTest extends ImageTest {
     public void createView() {
         ViewsBuilder viewsBuilder = new ViewsBuilder(ctx, parentView);
 
+        MatToFile matToFile = new MatToFile();
+
+        int i = 0;
         for (EARImageTestStruct image : imagesToTest) {
             viewsBuilder.newSection();
 
@@ -61,6 +65,9 @@ public class EARImageTest extends ImageTest {
             viewsBuilder.addText("landmarks " + landmarks.size());
             viewsBuilder.addText("right: " + blinkDetector.rightEyeEAR);
             viewsBuilder.addText("left: " + blinkDetector.leftEyeEAR);
+
+            //matToFile.saveRGBMatAsPNG("EAR" + i, outputMat);
+            i++;
         }
 
         viewsBuilder.build();

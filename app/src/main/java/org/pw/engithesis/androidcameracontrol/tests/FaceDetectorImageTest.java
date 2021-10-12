@@ -6,6 +6,7 @@ import android.widget.ScrollView;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
+import org.pw.engithesis.androidcameracontrol.MatToFile;
 import org.pw.engithesis.androidcameracontrol.R;
 import org.pw.engithesis.androidcameracontrol.Utility;
 import org.pw.engithesis.androidcameracontrol.ViewsBuilder;
@@ -36,6 +37,9 @@ public class FaceDetectorImageTest extends ImageTest {
     public void createView() {
         ViewsBuilder viewsBuilder = new ViewsBuilder(ctx, parentView);
 
+        MatToFile matToFile = new MatToFile();
+
+        int i = 0;
         for (FaceDetectorImageTestStruct imageToTest : imagesToTest) {
             viewsBuilder.newSection();
 
@@ -47,6 +51,9 @@ public class FaceDetectorImageTest extends ImageTest {
             Utility.drawVerticalLine(imageMat, (int) (imageMat.width() * FaceDetector.RIGHT_BOUNDARY));
 
             addImageToView(imageMat, viewsBuilder);
+
+            //matToFile.saveRGBMatAsPNG("faceDetector-" + i, imageMat);
+            i++;
         }
 
         viewsBuilder.build();

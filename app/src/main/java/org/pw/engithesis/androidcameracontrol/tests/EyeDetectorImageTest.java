@@ -7,6 +7,7 @@ import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.pw.engithesis.androidcameracontrol.EyeDetector;
+import org.pw.engithesis.androidcameracontrol.MatToFile;
 import org.pw.engithesis.androidcameracontrol.R;
 import org.pw.engithesis.androidcameracontrol.Utility;
 import org.pw.engithesis.androidcameracontrol.ViewsBuilder;
@@ -45,7 +46,10 @@ public class EyeDetectorImageTest extends ImageTest {
                     new SingleEyeTestStruct(new Rect(884, 340, 47, 26), new Rect(856, 296, 106, 101))}),
             new EyesImageTestStruct(R.drawable.portrait_test_9, new SingleEyeTestStruct[]{
                     new SingleEyeTestStruct(new Rect(250, 382, 47, 26), new Rect(210, 325, 115, 118)),
-                    null})
+                    null}),
+            new EyesImageTestStruct(R.drawable.portrait_test_10, new SingleEyeTestStruct[]{
+                    null,
+                    null}),
     };
     protected EyeDetectorImageTest(Context context, ScrollView parent) {
         super(context, parent);
@@ -57,6 +61,9 @@ public class EyeDetectorImageTest extends ImageTest {
     public void createView() {
         ViewsBuilder viewsBuilder = new ViewsBuilder(ctx, parentView);
 
+        MatToFile matToFile = new MatToFile();
+
+        int i = 0;
         for (EyesImageTestStruct image : imagesToTest) {
             viewsBuilder.newSection();
 
@@ -77,6 +84,9 @@ public class EyeDetectorImageTest extends ImageTest {
             }
 
             addImageToView(outputMat, viewsBuilder);
+
+            //matToFile.saveRGBMatAsPNG("eyeDetector" + i, outputMat);
+            i++;
         }
 
         viewsBuilder.build();
