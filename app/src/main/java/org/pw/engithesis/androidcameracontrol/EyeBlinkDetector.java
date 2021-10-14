@@ -52,7 +52,7 @@ public class EyeBlinkDetector extends Observable {
     private Point[] getEye(MatOfPoint2f faceLandmarks, int index) {
         Point[] eye = new Point[6];
         double[] temp;
-        int modifier = (index == RIGHT_EYE ? 6 : 0);
+        int modifier = (index == LEFT_EYE ? 6 : 0);
 
         temp = faceLandmarks.get(36 + modifier, 0);
         eye[0] = new Point(temp[0], temp[1]);
