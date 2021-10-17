@@ -1,7 +1,9 @@
 package org.pw.engithesis.androidcameracontrol.facedetectors;
 
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
 import org.opencv.core.Rect;
+import org.pw.engithesis.androidcameracontrol.Utility;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,18 +30,19 @@ public abstract class FaceDetector {
             return facesArrayList.get(0);
         }
 
-        return chooseBiggestFaceRect(facesArrayList);
+        return getBiggestFaceRect(facesArrayList);
     }
 
     private boolean isInVerticalCenter(Mat mat, Rect face) {
-        int centerX = face.x + (face.width / 2);
+        Point center = Utility.getCenterOfRect(face);
+
         int leftBoundaryX = (int) (mat.width() * LEFT_BOUNDARY);
         int rightBoundaryX = (int) (mat.width() * RIGHT_BOUNDARY);
 
-        return (centerX >= leftBoundaryX && centerX <= rightBoundaryX);
+        return (center.x >= leftBoundaryX && center.x <= rightBoundaryX);
     }
 
-    private Rect chooseBiggestFaceRect(ArrayList<Rect> faces) {
+    private Rect getBiggestFaceRect(ArrayList<Rect> faces) {
         Rect biggestRect = faces.get(0);
         double biggestRectSize = biggestRect.width * biggestRect.height;
 

@@ -37,4 +37,10 @@ public class Utility {
         Imgproc.line(mat, new Point(x, 0), new Point(x, mat.height()), new Scalar(255, 0, 0), 3);
     }
 
+    public static Point getCenterOfRect(Rect rect) {
+        int centerX = rect.x + (rect.width / 2);
+        int centerY = rect.y + (rect.height / 2);
+
+        return new Point(centerX, centerY);
+    }
 }

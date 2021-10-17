@@ -71,7 +71,9 @@ public class EyePupilDetectorImageTest extends ImageTest {
                 detectedPupils = pupilDetector.pupils;
 
                 for (Point detectedPupil : detectedPupils) {
-                    Imgproc.circle(outputMat, detectedPupil, 2, new Scalar(0, 255, 0), 2);
+                    if (detectedPupil != null) {
+                        Imgproc.circle(outputMat, detectedPupil, 2, new Scalar(0, 255, 0), 2);
+                    }
                 }
             }
 
