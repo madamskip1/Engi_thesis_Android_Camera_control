@@ -8,12 +8,12 @@ import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
 import org.pw.engithesis.androidcameracontrol.EyeBlinkDetector;
+import org.pw.engithesis.androidcameracontrol.FaceDetector;
 import org.pw.engithesis.androidcameracontrol.FacemarkDetector;
 import org.pw.engithesis.androidcameracontrol.MatToFile;
 import org.pw.engithesis.androidcameracontrol.R;
 import org.pw.engithesis.androidcameracontrol.Utility;
 import org.pw.engithesis.androidcameracontrol.ViewsBuilder;
-import org.pw.engithesis.androidcameracontrol.facedetectors.HaarCascadeFaceDetector;
 
 import java.util.ArrayList;
 
@@ -29,12 +29,12 @@ public class EARImageTest extends ImageTest {
             new EARImageTestStruct(R.drawable.portrait_test_8, new Boolean[]{false, true}),
             new EARImageTestStruct(R.drawable.portrait_test_9, new Boolean[]{false, true})
     };
-    private final HaarCascadeFaceDetector faceDetector;
+    private final FaceDetector faceDetector;
     private final FacemarkDetector facemarkDetector;
     private final EyeBlinkDetector blinkDetector;
     public EARImageTest(Context ctx, ScrollView parent) {
         super(ctx, parent);
-        faceDetector = new HaarCascadeFaceDetector();
+        faceDetector = new FaceDetector();
         facemarkDetector = new FacemarkDetector();
         blinkDetector = new EyeBlinkDetector();
     }

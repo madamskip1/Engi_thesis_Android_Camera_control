@@ -1,4 +1,4 @@
-package org.pw.engithesis.androidcameracontrol.facedetectors;
+package org.pw.engithesis.androidcameracontrol.facedetectionalgorithms;
 
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
@@ -6,24 +6,22 @@ import org.opencv.core.Rect;
 import org.opencv.objdetect.CascadeClassifier;
 import org.pw.engithesis.androidcameracontrol.RawResourceManager;
 
-public class CascadeFaceDetector extends FaceDetector {
+public class FaceDetectionCascade implements FaceDetectionAlgorithm {
     int resourceID = -1;
     String resourceName;
     private CascadeClassifier classifier;
 
-    public CascadeFaceDetector(int resID, String resName) {
+    public FaceDetectionCascade(int resID, String resName) {
         resourceID = resID;
         resourceName = resName;
         loadClassifier();
     }
 
-    @Override
-    public Rect detect(Mat mat) {
+    public Rect[] detect(Mat frame) {
         MatOfRect matOfRect = new MatOfRect();
-        classifier.detectMultiScale(mat, matOfRect);
+        classifier.detectMultiScale(frame, matOfRect);
 
-        Rect[] faces = matOfRect.toArray();
-        return filterFaces(mat, faces);
+        return matOfRect.toArray();
     }
 
     private void loadClassifier() {

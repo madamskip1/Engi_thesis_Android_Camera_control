@@ -1,4 +1,4 @@
-package org.pw.engithesis.androidcameracontrol.facedetectors;
+package org.pw.engithesis.androidcameracontrol.facedetectionalgorithms;
 
 import android.util.Log;
 
@@ -13,10 +13,10 @@ import org.pw.engithesis.androidcameracontrol.RawResourceManager;
 
 import java.util.ArrayList;
 
-public class DnnCaffeFaceDetector extends FaceDetector {
+public class FaceDetectionDnnCaffe implements FaceDetectionAlgorithm {
     private final Net dnnNet;
 
-    public DnnCaffeFaceDetector() {
+    public FaceDetectionDnnCaffe() {
         RawResourceManager proto = new RawResourceManager(R.raw.deploy, "deploy.protoxt");
         RawResourceManager model = new RawResourceManager(R.raw.res10_300x300_ssd_iter_140000_fp16, "res10_300x300_ssd_iter_140000_fp16.caffemodel");
 
@@ -24,15 +24,15 @@ public class DnnCaffeFaceDetector extends FaceDetector {
     }
 
     @Override
-    public Rect detect(Mat mat) {
-        Mat blob = Dnn.blobFromImage(mat, 1.0, new Size(300, 300), new Scalar(104.0, 177.0, 123.0), false, false);
+    public Rect[] detect(Mat frame) {
+        Mat blob = Dnn.blobFromImage(frame, 1.0, new Size(300, 300), new Scalar(104.0, 177.0, 123.0), false, false);
         dnnNet.setInput(blob);
         Mat detections = dnnNet.forward();
 
         detections = detections.reshape(1, (int) detections.total() / 7);
 
-        int cols = mat.cols();
-        int rows = mat.rows();
+        int cols = frame.cols();
+        int rows = frame.rows();
 
         ArrayList<Rect> faces = new ArrayList<>();
 
@@ -53,7 +53,6 @@ public class DnnCaffeFaceDetector extends FaceDetector {
         }
 
 
-        Rect[] facesRectArray = (Rect[]) faces.toArray();
-        return filterFaces(mat, facesRectArray);
+        return (Rect[]) faces.toArray();
     }
 }

@@ -17,8 +17,6 @@ import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
-import org.pw.engithesis.androidcameracontrol.facedetectors.FaceDetector;
-import org.pw.engithesis.androidcameracontrol.facedetectors.LbpCascadeFaceDetector;
 
 import java.util.concurrent.ExecutionException;
 
@@ -39,7 +37,7 @@ public class CameraCore {
         OpenCVLoader.initDebug();
         activity = context;
         cameraProviderFuture = ProcessCameraProvider.getInstance(activity);
-        faceDetector = new LbpCascadeFaceDetector();
+        faceDetector = new FaceDetector();
         fpsCounter = new FPSCounter();
         eyeDetector = new EyeDetector();
         pupilDetector = new EyePupilDetector();

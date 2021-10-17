@@ -1,20 +1,36 @@
-package org.pw.engithesis.androidcameracontrol.facedetectors;
+package org.pw.engithesis.androidcameracontrol;
 
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
-import org.pw.engithesis.androidcameracontrol.Utility;
+import org.pw.engithesis.androidcameracontrol.facedetectionalgorithms.FaceDetectionAlgorithm;
+import org.pw.engithesis.androidcameracontrol.facedetectionalgorithms.FaceDetectionHaar;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public abstract class FaceDetector {
+public class FaceDetector {
     public static final double LEFT_BOUNDARY = 0.3;
     public static final double RIGHT_BOUNDARY = 0.7;
+    private final FaceDetectionAlgorithm detectionAlgorithm;
 
-    public abstract Rect detect(Mat mat);
+    public FaceDetector() {
+        // Haar Cascading Classifier is default eye detection algorithm
+        this(new FaceDetectionHaar());
+    }
 
-    protected Rect filterFaces(Mat mat, Rect[] faces) {
+    public FaceDetector(FaceDetectionAlgorithm detectionAlgorithm) {
+        this.detectionAlgorithm = detectionAlgorithm;
+    }
+
+    public Rect detect(Mat frame) {
+        Rect[] faces = detectionAlgorithm.detect(frame);
+
+        return filterFaces(frame, faces);
+    }
+
+
+    private Rect filterFaces(Mat mat, Rect[] faces) {
         if (faces.length == 0) {
             return null;
         }
@@ -33,11 +49,11 @@ public abstract class FaceDetector {
         return getBiggestFaceRect(facesArrayList);
     }
 
-    private boolean isInVerticalCenter(Mat mat, Rect face) {
+    private boolean isInVerticalCenter(Mat frame, Rect face) {
         Point center = Utility.getCenterOfRect(face);
 
-        int leftBoundaryX = (int) (mat.width() * LEFT_BOUNDARY);
-        int rightBoundaryX = (int) (mat.width() * RIGHT_BOUNDARY);
+        int leftBoundaryX = (int) (frame.width() * LEFT_BOUNDARY);
+        int rightBoundaryX = (int) (frame.width() * RIGHT_BOUNDARY);
 
         return (center.x >= leftBoundaryX && center.x <= rightBoundaryX);
     }
@@ -58,6 +74,4 @@ public abstract class FaceDetector {
 
         return biggestRect;
     }
-
-
 }

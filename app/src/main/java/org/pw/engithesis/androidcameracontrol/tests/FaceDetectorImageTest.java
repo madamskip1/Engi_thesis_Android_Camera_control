@@ -6,12 +6,11 @@ import android.widget.ScrollView;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
+import org.pw.engithesis.androidcameracontrol.FaceDetector;
 import org.pw.engithesis.androidcameracontrol.MatToFile;
 import org.pw.engithesis.androidcameracontrol.R;
 import org.pw.engithesis.androidcameracontrol.Utility;
 import org.pw.engithesis.androidcameracontrol.ViewsBuilder;
-import org.pw.engithesis.androidcameracontrol.facedetectors.FaceDetector;
-import org.pw.engithesis.androidcameracontrol.facedetectors.HaarCascadeFaceDetector;
 
 public class FaceDetectorImageTest extends ImageTest {
     private final FaceDetectorImageTestStruct[] imagesToTest = {
@@ -26,11 +25,11 @@ public class FaceDetectorImageTest extends ImageTest {
             new FaceDetectorImageTestStruct(R.drawable.portrait_test_8, new Rect(695, 275, 275, 300), new Rect(640, 140, 390, 500)),
             new FaceDetectorImageTestStruct(R.drawable.portrait_test_9, new Rect(210, 265, 295, 355), new Rect(180, 145, 425, 570)),
     };
-    private final HaarCascadeFaceDetector faceDetector;
+    private final FaceDetector faceDetector;
 
     protected FaceDetectorImageTest(Context context, ScrollView parent) {
         super(context, parent);
-        faceDetector = new HaarCascadeFaceDetector();
+        faceDetector = new FaceDetector();
     }
 
     @Override

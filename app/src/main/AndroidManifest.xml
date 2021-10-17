@@ -26,9 +26,6 @@
             android:name=".tests.SelectImageTest"
             android:exported="true" />
         <activity
-            android:name=".DrawableTest"
-            android:exported="true" />
-        <activity
             android:name=".CameraX_test"
             android:exported="true" />
         <activity

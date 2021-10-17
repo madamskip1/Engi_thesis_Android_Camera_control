@@ -7,14 +7,14 @@ import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.pw.engithesis.androidcameracontrol.EyeDetector;
+import org.pw.engithesis.androidcameracontrol.FaceDetector;
 import org.pw.engithesis.androidcameracontrol.MatToFile;
 import org.pw.engithesis.androidcameracontrol.R;
 import org.pw.engithesis.androidcameracontrol.Utility;
 import org.pw.engithesis.androidcameracontrol.ViewsBuilder;
-import org.pw.engithesis.androidcameracontrol.facedetectors.HaarCascadeFaceDetector;
 
 public class EyeDetectorImageTest extends ImageTest {
-    private final HaarCascadeFaceDetector faceDetector;
+    private final FaceDetector faceDetector;
     private final EyeDetector eyeDetector;
     private final EyesImageTestStruct[] imagesToTest = {
             new EyesImageTestStruct(R.drawable.lenna, new SingleEyeTestStruct[]{
@@ -53,7 +53,7 @@ public class EyeDetectorImageTest extends ImageTest {
     };
     protected EyeDetectorImageTest(Context context, ScrollView parent) {
         super(context, parent);
-        faceDetector = new HaarCascadeFaceDetector();
+        faceDetector = new FaceDetector();
         eyeDetector = new EyeDetector();
     }
 
