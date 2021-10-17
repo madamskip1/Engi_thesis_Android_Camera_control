@@ -1,9 +1,9 @@
 package org.pw.engithesis.androidcameracontrol;
 
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
-import org.opencv.objdetect.CascadeClassifier;
+import org.pw.engithesis.androidcameracontrol.eyedetectionalgorithms.EyeDetectionAlgorithm;
+import org.pw.engithesis.androidcameracontrol.eyedetectionalgorithms.EyeDetectionHaar;
 
 public class EyeDetector {
     public static final int RIGHT_EYE_INDEX = 0;
@@ -12,23 +12,25 @@ public class EyeDetector {
     private static final double cropBottom = 0.45;
     private static final double cropLeft = 0.1;
     private static final double cropRight = 0.1;
-    private final CascadeClassifier classifier;
     private final EyeFilter eyeFilter;
+    private final EyeDetectionAlgorithm detectionAlgorithm;
 
     public EyeDetector() {
-        RawResourceManager haarModel = new RawResourceManager(R.raw.haarcascade_eye, "haarcascade_eye");
-        classifier = new CascadeClassifier(haarModel.getPath());
+        // Haar Cascading Classifier is default eye detection algorithm
+        this(new EyeDetectionHaar());
+    }
+
+    public EyeDetector(EyeDetectionAlgorithm eyeDetectionAlgorithm) {
+        this.detectionAlgorithm = eyeDetectionAlgorithm;
         eyeFilter = new EyeFilter();
     }
 
     public Rect[] detect(Mat mat, Rect face) {
         Rect eyesRegion = getEyesRegionRect(face);
-        Mat croppedFace = mat.submat(eyesRegion);
+        Mat eyesRegionMat = mat.submat(eyesRegion);
 
-        MatOfRect detectedEyes = new MatOfRect();
-        classifier.detectMultiScale(croppedFace, detectedEyes);
-
-        Rect[] eyes = eyeFilter.filter(detectedEyes.toArray(), eyesRegion);
+        Rect[] eyes = detectionAlgorithm.detect(eyesRegionMat);
+        eyes = eyeFilter.filter(eyes, eyesRegion);
 
         for (Rect eye : eyes) {
             if (eye != null) {
