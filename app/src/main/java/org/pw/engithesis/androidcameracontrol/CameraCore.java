@@ -115,11 +115,9 @@ public class CameraCore {
                 Rect[] eyes = eyeDetector.detect(mat, face);
                 Utility.drawRects(outputMat, eyes);
 
-                pupilDetector.detectPupils(mat, eyes);
-                Point[] pupils = pupilDetector.pupils;
-
-                for (Point pupil : pupils) {
-                    if (pupil != null) {
+                for (Rect eye : eyes) {
+                    if (eye != null) {
+                        Point pupil = pupilDetector.detect(mat, eye);
                         Imgproc.circle(outputMat, pupil, 2, new Scalar(222, 0, 0), 2);
                     }
                 }

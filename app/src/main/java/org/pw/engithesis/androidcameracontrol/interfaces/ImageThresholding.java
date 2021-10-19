@@ -5,9 +5,10 @@ import org.opencv.core.Mat;
 public abstract class ImageThresholding {
     protected Mat matToThreshold;
 
-    public void thresholdRef(Mat mat) {
+    public Mat thresholdRef(Mat mat) {
         matToThreshold = mat;
         threshold();
+        return mat;
     }
 
     public Mat thresholdNewMat(Mat mat) {

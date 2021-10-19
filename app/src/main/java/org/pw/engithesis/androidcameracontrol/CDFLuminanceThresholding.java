@@ -11,19 +11,19 @@ public class CDFLuminanceThresholding extends ImageThresholding {
     private double[] counterPixelsLuminance;
 
     public CDFLuminanceThresholding() {
-        thresholdParameter = DEFAULT_THRESHOLD_PARAMETER;
-        initArrays();
+        this(DEFAULT_THRESHOLD_PARAMETER);
     }
 
     public CDFLuminanceThresholding(double threshold) {
         thresholdParameter = threshold;
-        initArrays();
+        reset();
     }
 
-
-    private void initArrays() {
+    public void reset() {
+        cumulativeDistributionOfLuminance = null;
         cumulativeDistributionOfLuminance = new double[256];
         Arrays.fill(cumulativeDistributionOfLuminance, 1.0);
+        counterPixelsLuminance = null;
         counterPixelsLuminance = new double[256];
     }
 
@@ -43,6 +43,7 @@ public class CDFLuminanceThresholding extends ImageThresholding {
 
     @Override
     protected void beforeThresholding() {
+        reset();
         countPixelsLuminance();
         calcCDF();
     }

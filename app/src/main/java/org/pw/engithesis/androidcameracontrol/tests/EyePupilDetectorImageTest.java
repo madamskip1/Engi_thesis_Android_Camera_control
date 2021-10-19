@@ -16,6 +16,8 @@ import org.pw.engithesis.androidcameracontrol.R;
 import org.pw.engithesis.androidcameracontrol.Utility;
 import org.pw.engithesis.androidcameracontrol.ViewsBuilder;
 
+import java.util.Locale;
+
 
 public class EyePupilDetectorImageTest extends ImageTest {
     private final EyePupilImageTestStruct[] imagesToTest = {
@@ -33,6 +35,7 @@ public class EyePupilDetectorImageTest extends ImageTest {
     private final FaceDetector faceDetector;
     private final EyeDetector eyeDetector;
     private final EyePupilDetector pupilDetector;
+
     public EyePupilDetectorImageTest(Context ctx, ScrollView parent) {
         super(ctx, parent);
         faceDetector = new FaceDetector();
@@ -46,7 +49,7 @@ public class EyePupilDetectorImageTest extends ImageTest {
 
         MatToFile matToFile = new MatToFile();
 
-        int i = 0;
+        int imgCounter = 0;
 
         for (EyePupilImageTestStruct image : imagesToTest) {
             viewsBuilder.newSection();
@@ -67,12 +70,14 @@ public class EyePupilDetectorImageTest extends ImageTest {
             }
 
             if (face != null) {
-                pupilDetector.detectPupils(imageMat, detectedEyes);
-                detectedPupils = pupilDetector.pupils;
-
-                for (Point detectedPupil : detectedPupils) {
-                    if (detectedPupil != null) {
+                for (int i = 0; i < detectedEyes.length; i++) {
+                    Rect detectedEye = detectedEyes[i];
+                    if (detectedEye != null) {
+                        Point detectedPupil = pupilDetector.detect(imageMat, detectedEye);
                         Imgproc.circle(outputMat, detectedPupil, 2, new Scalar(0, 255, 0), 2);
+                        detectedPupils[i] = detectedPupil;
+                    } else {
+                        detectedPupils[i] = null;
                     }
                 }
             }
@@ -82,8 +87,8 @@ public class EyePupilDetectorImageTest extends ImageTest {
             eyeDetectionStats(expectedPupils, detectedPupils, viewsBuilder);
             viewsBuilder.closeSection();
 
-            //matToFile.saveRGBMatAsPNG("pupilDetector" + i, outputMat);
-            i++;
+            //matToFile.saveRGBMatAsPNG("pupilDetector" + imgCounter, outputMat);
+            imgCounter++;
         }
 
         viewsBuilder.build();
@@ -105,7 +110,7 @@ public class EyePupilDetectorImageTest extends ImageTest {
             if (expectedPupils[i] != null) {
                 if (detectedPupils[i] != null) {
                     double distance = Utility.calcDistance(expectedPupils[i], detectedPupils[i]);
-                    str += String.format("%.2f", distance) + " px ";
+                    str += String.format(Locale.getDefault(), "%.2f", distance) + " px ";
                 } else {
                     str += "not detected...";
                 }

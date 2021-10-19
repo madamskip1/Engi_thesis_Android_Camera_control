@@ -43,4 +43,17 @@ public class Utility {
 
         return new Point(centerX, centerY);
     }
+
+    public static byte[] matToByteArray(Mat mat) {
+        byte[] temp = new byte[(int) mat.total() * mat.channels()];
+        mat.get(0, 0, temp);
+        return temp;
+    }
+
+    public static Point indexToPoint(int i, int width) {
+        int y = i / width;
+        int x = i - (y * width);
+
+        return new Point(x, y);
+    }
 }
