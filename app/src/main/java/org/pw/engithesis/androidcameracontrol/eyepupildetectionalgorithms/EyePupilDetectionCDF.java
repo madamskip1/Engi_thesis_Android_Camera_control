@@ -5,9 +5,9 @@ import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
-import org.pw.engithesis.androidcameracontrol.CDFLuminanceThresholding;
-import org.pw.engithesis.androidcameracontrol.IntensityThresholding;
 import org.pw.engithesis.androidcameracontrol.Utility;
+import org.pw.engithesis.androidcameracontrol.thresholding.CDFLuminanceThresholding;
+import org.pw.engithesis.androidcameracontrol.thresholding.IntensityThresholding;
 
 public class EyePupilDetectionCDF implements EyePupilDetectionAlgorithm {
     private final CDFLuminanceThresholding cdfThresholding;

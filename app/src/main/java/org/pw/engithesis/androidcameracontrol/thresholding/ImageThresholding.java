@@ -1,4 +1,4 @@
-package org.pw.engithesis.androidcameracontrol.interfaces;
+package org.pw.engithesis.androidcameracontrol.thresholding;
 
 import org.opencv.core.Mat;
 
@@ -12,9 +12,7 @@ public abstract class ImageThresholding {
     }
 
     public Mat thresholdNewMat(Mat mat) {
-        matToThreshold = mat.clone();
-        threshold();
-        return matToThreshold;
+        return thresholdRef(mat.clone());
     }
 
     private void threshold() {
@@ -31,6 +29,12 @@ public abstract class ImageThresholding {
 
     }
 
+    protected abstract byte filterFunction(byte pixel);
+
+    protected void beforeThresholding() {
+    }
+
+
     protected int byteToInt(byte b) {
         return b & 0xFF;
     }
@@ -38,9 +42,4 @@ public abstract class ImageThresholding {
     protected byte intToByte(int i) {
         return (byte) i;
     }
-
-    protected void beforeThresholding() {
-    }
-
-    protected abstract byte filterFunction(byte pixel);
 }

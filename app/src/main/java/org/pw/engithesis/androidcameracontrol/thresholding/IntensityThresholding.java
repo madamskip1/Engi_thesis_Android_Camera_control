@@ -1,6 +1,4 @@
-package org.pw.engithesis.androidcameracontrol;
-
-import org.pw.engithesis.androidcameracontrol.interfaces.ImageThresholding;
+package org.pw.engithesis.androidcameracontrol.thresholding;
 
 public class IntensityThresholding extends ImageThresholding {
     private double intensity;

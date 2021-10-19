@@ -1,6 +1,4 @@
-package org.pw.engithesis.androidcameracontrol;
-
-import org.pw.engithesis.androidcameracontrol.interfaces.ImageThresholding;
+package org.pw.engithesis.androidcameracontrol.thresholding;
 
 import java.util.Arrays;
 
@@ -19,14 +17,6 @@ public class CDFLuminanceThresholding extends ImageThresholding {
         reset();
     }
 
-    public void reset() {
-        cumulativeDistributionOfLuminance = null;
-        cumulativeDistributionOfLuminance = new double[256];
-        Arrays.fill(cumulativeDistributionOfLuminance, 1.0);
-        counterPixelsLuminance = null;
-        counterPixelsLuminance = new double[256];
-    }
-
     @Override
     protected byte filterFunction(byte pixel) {
         if (getCDF(pixel) <= thresholdParameter) {
@@ -36,16 +26,23 @@ public class CDFLuminanceThresholding extends ImageThresholding {
         return intToByte(0);
     }
 
-    private double getCDF(byte pixel) {
-        int luminance = byteToInt(pixel);
-        return cumulativeDistributionOfLuminance[luminance];
-    }
-
     @Override
     protected void beforeThresholding() {
         reset();
         countPixelsLuminance();
         calcCDF();
+    }
+
+
+    private void reset() {
+        cumulativeDistributionOfLuminance = new double[256];
+        Arrays.fill(cumulativeDistributionOfLuminance, 1.0);
+        counterPixelsLuminance = new double[256];
+    }
+
+    private double getCDF(byte pixel) {
+        int luminance = byteToInt(pixel);
+        return cumulativeDistributionOfLuminance[luminance];
     }
 
     private void countPixelsLuminance() {
