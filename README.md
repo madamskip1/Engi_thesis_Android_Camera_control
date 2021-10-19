@@ -1,8 +1,8 @@
 
 # Praca dyplomowa inżynierska "*Wykorzystanie kamery przez aplikacje w systemie Android*"
 
-**Autor:** Adamski Maciej
-**Promotor:** prof. Przemysław Rokita
+**Autor:** Adamski Maciej<br/>
+**Promotor:** prof. Przemysław Rokita<br/>
 **Uczelnia/wydział/instytut**: Instytut Informatyki na Wydziale Elektroniki i Nauk Informacyjnych, Politechniki Warszawskiej
 
  
