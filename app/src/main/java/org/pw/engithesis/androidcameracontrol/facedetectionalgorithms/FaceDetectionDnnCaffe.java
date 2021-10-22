@@ -1,7 +1,5 @@
 package org.pw.engithesis.androidcameracontrol.facedetectionalgorithms;
 
-import android.util.Log;
-
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
@@ -35,9 +33,6 @@ public class FaceDetectionDnnCaffe implements FaceDetectionAlgorithm {
         int rows = frame.rows();
 
         ArrayList<Rect> faces = new ArrayList<>();
-
-        Log.d("DnnCaffe", "probably detected:" + detections.rows());
-
         for (int i = 0; i < detections.rows(); i++) {
             double confidence = detections.get(i, 2)[0];
 
@@ -46,13 +41,14 @@ public class FaceDetectionDnnCaffe implements FaceDetectionAlgorithm {
                 int y1 = (int) (detections.get(i, 4)[0] * rows);
                 int x2 = (int) (detections.get(i, 5)[0] * cols);
                 int y2 = (int) (detections.get(i, 6)[0] * rows);
-                Log.d("dnnCaffe", "detected i = " + i + " " + cols + "x" + rows + " -> " + x1 + " " + y1 + ", " + x2 + " " + y2);
 
-                faces.add(new Rect(x1, y1, x2, y2));
+                int width = x2 - x1;
+                int height = y2 - y1;
+
+                faces.add(new Rect(x1, y1, width, height));
             }
         }
 
-
-        return (Rect[]) faces.toArray();
+        return faces.toArray(new Rect[0]);
     }
 }
