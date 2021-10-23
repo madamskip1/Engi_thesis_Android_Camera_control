@@ -35,8 +35,17 @@ public class FaceDetector {
             return null;
         }
 
+        int verticalAdditionalBound = (int) (mat.height() * 0.1);
+        int horizontalAdditionalBound = (int) (mat.width() * 0.1);
+        int leftBound = -horizontalAdditionalBound;
+        int topBound = -verticalAdditionalBound;
+        int rightBound = mat.width() + horizontalAdditionalBound;
+        int bottomBound = mat.height() + verticalAdditionalBound;
+
         ArrayList<Rect> facesArrayList = new ArrayList<>(Arrays.asList(faces));
         facesArrayList.removeIf(face -> !isInVerticalCenter(mat, face));
+        facesArrayList.removeIf(face -> isOutOfFrame(face, leftBound, topBound, rightBound, bottomBound));
+
 
         int facesNum = facesArrayList.size();
 
@@ -57,6 +66,14 @@ public class FaceDetector {
 
         return (center.x >= leftBoundaryX && center.x <= rightBoundaryX);
     }
+
+    private boolean isOutOfFrame(Rect face, int leftBound, int topBound, int rightBound, int bottomBound) {
+        int x2 = face.x + face.width;
+        int y2 = face.y + face.height;
+
+        return (face.x < leftBound || face.y < topBound || x2 > rightBound || y2 > bottomBound);
+    }
+
 
     private Rect getBiggestFaceRect(ArrayList<Rect> faces) {
         Rect biggestRect = faces.get(0);
