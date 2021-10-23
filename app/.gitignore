@@ -1,1 +1,4 @@
 /build
+/src/main/res/drawable/face_test_*
+/src/main/res/drawable/eye_test_*
+/src/main/res/drawable/pupil_test_*

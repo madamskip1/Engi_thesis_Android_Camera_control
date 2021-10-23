@@ -4,7 +4,7 @@ import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.pw.engithesis.androidcameracontrol.facedetectionalgorithms.FaceDetectionAlgorithm;
-import org.pw.engithesis.androidcameracontrol.facedetectionalgorithms.FaceDetectionHaar;
+import org.pw.engithesis.androidcameracontrol.facedetectionalgorithms.FaceDetectionDnnCaffe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,8 +15,8 @@ public class FaceDetector {
     private final FaceDetectionAlgorithm detectionAlgorithm;
 
     public FaceDetector() {
-        // Haar Cascading Classifier is default eye detection algorithm
-        this(new FaceDetectionHaar());
+        // Dnn Caffe  is default face detection algorithm
+        this(new FaceDetectionDnnCaffe());
     }
 
     public FaceDetector(FaceDetectionAlgorithm detectionAlgorithm) {
