@@ -1,0 +1,89 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+% \usepackage[table,xcdraw]{xcolor}
+% If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|ccccccccc|}
+\hline
+{\color[HTML]{000000} \textbf{}} &
+  {\color[HTML]{000000} \textbf{\begin{tabular}[c]{@{}c@{}}Prawidłowa\\ detekcja\end{tabular}}} &
+  {\color[HTML]{000000} \textbf{\begin{tabular}[c]{@{}c@{}}Perfekcyjna\\ detekcja\end{tabular}}} &
+  {\color[HTML]{000000} \textbf{\begin{tabular}[c]{@{}c@{}}Częściowa\\ dobra\\ detekcja\end{tabular}}} &
+  {\color[HTML]{000000} \textbf{\begin{tabular}[c]{@{}c@{}}3/4\\ krawędzie\\ perfekcyjne\end{tabular}}} &
+  {\color[HTML]{000000} \textbf{\begin{tabular}[c]{@{}c@{}}Zła\\ detekcja\end{tabular}}} &
+  {\color[HTML]{000000} \textbf{\begin{tabular}[c]{@{}c@{}}Niewykryte\\ twarze\end{tabular}}} &
+  {\color[HTML]{000000} \textbf{\begin{tabular}[c]{@{}c@{}}Średnia\\ odległość\\ złych\end{tabular}}} &
+  {\color[HTML]{000000} \textbf{\begin{tabular}[c]{@{}c@{}}Średni czas \\ przetwarzania\\ pojedynczego\\ zdjęcia\end{tabular}}} \\ \hline
+\textbf{Haar Cascade 500x500} &
+  69 &
+  4 &
+  65 &
+  31 &
+  11 &
+  9 &
+  6,40 \% &
+  0,073 s \\
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Haar Cascade 300x300} &
+  67 &
+  4 &
+  63 &
+  34 &
+  13 &
+  9 &
+  6,43 \% &
+  0,028 s \\
+  
+\textbf{LBP Cascade 500x500} &
+  60 &
+  5 &
+  55 &
+  30 &
+  20 &
+  17 &
+  6,17 \% &
+  0,038 s \\
+  
+\rowcolor[HTML]{C0C0C0} 
+\textbf{LBP Cascade 300x300} &
+  60 &
+  4 &
+  56 &
+  31 &
+  20 &
+  17 &
+  6,65 \% &
+  0,013 s \\
+  
+\textbf{DNN Caffe 500x500} &
+  nd. &
+  nd. &
+  nd. &
+  nd. &
+  nd. &
+  nd. &
+  nd. &
+  nd. \\
+  
+\rowcolor[HTML]{C0C0C0} 
+\textbf{DNN Caffe 300x300} &
+  nd. &
+  nd. &
+  nd. &
+  nd. &
+  nd. &
+  nd. &
+  nd. &
+  nd. \\
+  
+  \hline
+\end{tabular}%
+}
+\begin{center}
+    \caption{Wynik porównania algorytmów detekcji twarzy dla obrazów w skali szarości}
+\end{center}
+
+\label{tab:face_detect_result_GRAY}
+\end{table}

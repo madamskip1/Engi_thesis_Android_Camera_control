@@ -1,0 +1,87 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+% \usepackage[table,xcdraw]{xcolor}
+% If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|ccccccccc|}
+\hline
+ &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Prawidłowa\\ detekcja\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Perfekcyjna\\ detekcja\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Częściowa\\ dobra\\ detekcja\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}3/4\\ krawędzie\\ perfekcyjne\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Zła\\ detekcja\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Niewykryte\\ twarze\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Średnia\\ odległość\\ złych\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Średni czas \\ przetwarzania\\ pojedynczego\\ zdjęcia\end{tabular}} \\ \hline
+\textbf{Haar Cascade 500x500} &
+  69 &
+  4 &
+  65 &
+  32 &
+  11 &
+  9 &
+  6,07 \% &
+  0,072 s \\
+  
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Haar Cascade 300x300} &
+ 68 &
+  5 &
+  63 &
+  33 &
+  12 &
+   9 &
+  6,29 \% &
+  0,028 s \\
+  
+  \textbf{LBP Cascade 500x500} &
+  58 &
+  4 &
+  54 &
+  29 &
+  22 &
+  22 &
+  6,22\% &
+  0,039 s \\
+  
+\rowcolor[HTML]{C0C0C0} 
+  \textbf{LBP Cascade 300x300} &
+  61 &
+  4 &
+  57 &
+  34 &
+  19 &
+  17 &
+  6,29 \% &
+  0,014 s \\
+  
+\textbf{DNN Caffe 500x500} &
+  80 &
+  68 &
+  12 &
+  11 &
+  0 &
+  0 &
+  5,49 \% &
+  0,079 s \\
+  
+\rowcolor[HTML]{C0C0C0} 
+\textbf{DNN Caffe 300x300} &
+  80 &
+  62 &
+  18 &
+  18 &
+  0 &
+  0 &
+  4,87 \% &
+  0,073 s \\ 
+  
+  \hline
+\end{tabular}%
+}
+\caption{Wynik porównania algorytmów detekcji twarzy dla obrazów RGB}
+\label{tab:face_detect_result_RGB}
+\end{table}

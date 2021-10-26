@@ -1,0 +1,66 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+% \usepackage[table,xcdraw]{xcolor}
+% If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|ccccccccc|}
+\hline
+ &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Prawidłowa\\ detekcja\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Perfekcyjna\\ detekcja\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Częściowa\\ dobra\\ detekcja\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}3/4\\ krawędzie\\ perfekcyjne\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Zła\\ detekcja\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Niewykryte\\ twarze\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Średnia\\ odległość\\ złych\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Średni czas \\ przetwarzania\\ pojedynczego\\ zdjęcia\end{tabular}} \\ \hline
+\textbf{300x300} &
+  80 &
+  62 &
+  18 &
+  18 &
+  0 &
+  0 &
+  4,87 \% &
+  0,064 s \\
+  
+\rowcolor[HTML]{C0C0C0} 
+\textbf{500x500} &
+  80 &
+  68 &
+  12 &
+  11 &
+  0 &
+  0 &
+  5,49 \% &
+  0,065 s \\
+  
+\textbf{1000x1000} &
+  80 &
+  67 &
+  13 &
+  13 &
+  0 &
+  0 &
+  5,31 \% \% &
+  0,066 s \\
+  
+\rowcolor[HTML]{C0C0C0} 
+  \textbf{2000x2000} &
+  80 &
+  65 &
+  15 &
+  15 &
+  0 &
+  0 &
+  4,62 \% &
+  0,062 s \\
+ 
+  \hline
+\end{tabular}%
+}
+\caption{Wpływ rozdzielczości zdjęcia na detekcję DNN}
+\label{tab:face_dnn_speed}
+\end{table}
