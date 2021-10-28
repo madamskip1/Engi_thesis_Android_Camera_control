@@ -1,0 +1,60 @@
+\begin{table}[!h]
+\label{tab:face_dnn_speed}
+\centering
+\caption{Wpływ rozdzielczości zdjęcia na detekcję DNN}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+ &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Prawidłowa\\ detekcja\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Perfekcyjna\\ detekcja\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Częściowa\\ dobra\\ detekcja\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}3/4\\ krawędzie\\ perfekcyjne\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Zła\\ detekcja\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Niewykryte\\ twarze\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Średnia\\ odległość\\ złych\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Średni czas \\ przetwarzania\\ pojedynczego\\ zdjęcia\end{tabular}} \\ \hline
+\textbf{300x300} &
+  80 &
+  62 &
+  18 &
+  18 &
+  0 &
+  0 &
+  4,87 \% &
+  0,064 s \\ \hline
+  
+\textbf{500x500} &
+  80 &
+  68 &
+  12 &
+  11 &
+  0 &
+  0 &
+  5,49 \% &
+  0,065 s \\ \hline
+  
+\textbf{1000x1000} &
+  80 &
+  67 &
+  13 &
+  13 &
+  0 &
+  0 &
+  5,31 \% \% &
+  0,066 s \\ \hline
+  
+  \textbf{2000x2000} &
+  80 &
+  65 &
+  15 &
+  15 &
+  0 &
+  0 &
+  4,62 \% &
+  0,062 s \\ \hline
+ 
+  \hline
+\end{tabular}%
+}
+\end{table}
