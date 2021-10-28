@@ -14,5 +14,5 @@
  
  Praca nad projektem jest na bieżąco dokumentowana i opisywana, a materiały z tym związane znajdują się w folderze [doc](doc):
 
- - Wygenerowana dokumentacja w formacie PDF - [link](doc/_INZ__Notatki.pdf). 
+ - Wygenerowana dokumentacja w formacie PDF - [link](doc/Praca_dyplomowa.pdf). 
  - Kod źródłowy dokumentacji w formacie LaTeX (TeX) - [link](doc/main.tex)
