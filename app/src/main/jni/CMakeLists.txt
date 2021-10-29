@@ -19,6 +19,24 @@ set(ANDROID_OPENCV_COMPONENTS "opencv_java" CACHE STRING "")
 message(STATUS "ANDROID_ABI=${ANDROID_ABI}")
 find_package(OpenCV REQUIRED COMPONENTS ${ANDROID_OPENCV_COMPONENTS})
 
+
+# ------------------------------------------------------------------
+# -- DLIB
+# ------------------------------------------------------------------
+set(DLIB_PATH ${CMAKE_SOURCE_DIR}/dlib)
+
+
+add_library(dlib SHARED IMPORTED)
+
+# sets the location of the prebuilt dlib .so
+set_target_properties(dlib
+        PROPERTIES IMPORTED_LOCATION
+        ${DLIB_PATH}/lib/${ANDROID_ABI}/libdlib.so)
+
+include_directories(${DLIB_PATH}/include)
+# ------------------------------------------------------------------
+
+
 add_library( # Sets the name of the library.
         androidcameracontrol
 
@@ -29,12 +47,12 @@ add_library( # Sets the name of the library.
         androidcameracontrol.cpp
         testmethods.cpp)
 
-add_library(facedetectors_haar
+
+add_library(dlib_natives
         SHARED
 
-        facedetectors/HaarCascadeDetectorNative.cpp
-        facedetectors/HaarCascadeDetector.h
-        facedetectors/HaarCascadeDetector.cpp)
+        facedetectors/dlib_FaceDetectionHOG.cpp
+        )
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
@@ -55,12 +73,17 @@ find_library( # Sets the name of the path variable.
 
 target_link_libraries( # Specifies the target library.
         androidcameracontrol
-        facedetectors_haar
 
-
+        dlib
         # Links the target library to the log library
         # included in the NDK.
         ${log-lib})
 
 target_link_libraries(${PROJECT_NAME} ${ANDROID_OPENCV_COMPONENTS})
-target_link_libraries(facedetectors_haar ${ANDROID_OPENCV_COMPONENTS})
+
+
+target_link_libraries(dlib_natives
+
+        dlib
+        ${ANDROID_OPENCV_COMPONENTS}
+        )
