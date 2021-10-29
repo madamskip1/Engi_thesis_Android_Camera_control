@@ -56,7 +56,6 @@ add_library(dlib_natives
 
         facedetectors/dlib_FaceDetectionHOG.cpp
         facedetectors/dlib_FaceDetectionMMOD.cpp
-
         )
 
 # Searches for a specified prebuilt library and stores the path as a
