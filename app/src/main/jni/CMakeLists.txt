@@ -33,7 +33,8 @@ set_target_properties(dlib
         PROPERTIES IMPORTED_LOCATION
         ${DLIB_PATH}/lib/${ANDROID_ABI}/libdlib.so)
 
-include_directories(${DLIB_PATH}/include)
+include_directories(${DLIB_PATH}/include
+        ${CMAKE_SOURCE_DIR}/dlib_natives)
 # ------------------------------------------------------------------
 
 
@@ -51,7 +52,11 @@ add_library( # Sets the name of the library.
 add_library(dlib_natives
         SHARED
 
+        dlib_natives/dlib_utility.cpp
+
         facedetectors/dlib_FaceDetectionHOG.cpp
+        facedetectors/dlib_FaceDetectionMMOD.cpp
+
         )
 
 # Searches for a specified prebuilt library and stores the path as a

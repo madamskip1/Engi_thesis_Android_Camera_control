@@ -3,6 +3,8 @@
 #include <opencv2/core.hpp>
 #include <dlib/image_processing/frontal_face_detector.h>
 
+#include "../dlib_natives/dlib_utility.h"
+
 class FaceDetectorHOG {
 public:
     FaceDetectorHOG() : detector{dlib::get_frontal_face_detector()} {};
@@ -16,13 +18,6 @@ private:
     dlib::frontal_face_detector detector;
 };
 
-
-cv::Rect dlibRectToCvRect(const dlib::rectangle &dlibRect) {
-    return cv::Rect{cv::Point2i(dlibRect.left(), dlibRect.top()),
-                    cv::Point2i(dlibRect.right() + 1, dlibRect.bottom() + 1)};
-}
-
-
 extern "C"
 JNIEXPORT jlong JNICALL
 Java_org_pw_engithesis_androidcameracontrol_facedetectionalgorithms_FaceDetectionDlibHOG_initNativeDetector(
@@ -35,7 +30,7 @@ Java_org_pw_engithesis_androidcameracontrol_facedetectionalgorithms_FaceDetectio
         JNIEnv *, jclass, jlong detector_addr, jlong frame_addr, jlong result_faces) {
     cv::Mat &frame = *(cv::Mat *) frame_addr;
     auto detector = reinterpret_cast<FaceDetectorHOG *>(detector_addr);
-    std::vector<dlib::rectangle> dlibRects = detector->detect(frame);
+    auto dlibRects = detector->detect(frame);
     std::vector<cv::Rect> cvRects;
 
     for (const auto &rect : dlibRects) {
