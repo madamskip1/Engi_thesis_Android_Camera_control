@@ -1,30 +1,81 @@
 \newpage
 
 \section{Detekcja twarzy} \label{section:face_detection}
-\_\_\_\_\_\_ TODO \_\_\_\_\_\_ 
-\subsection{Cascading Classifier}
-\_\_\_\_\_\_ TODO \_\_\_\_\_\_ 
-\subsubsection{Haar Cascade}
-\_\_\_\_\_\_ TODO \_\_\_\_\_\_ 
-\subsubsection{LBP Cascade}
-\_\_\_\_\_\_ TODO \_\_\_\_\_\_ 
+
+W przetwarzaniu cyfrowym obrazu stosujemy technikę od ogółu do szczegółu. Przykładowo chcąc uzyskać barwę nadwodzia najpierw musimy wykryć samochód itp. W pracy dyplomowej by uzyskać informacje o oczach czy ustach potrzebujemy najpierw informacji o wystąpieniu twarzy i gdzie się ona znajduje. Dlatego pierwszym etapem przetwarzania jest detekcja ludzkiej twarzy. Chcemy z obrazu uzyskać informację o jej położeniu i w następnych etapach operować tylko na wycinku zdjęcia. 
+
+\subsection{Algorytmy detekcji twarzy}
+
+Na potrzeby projektu zostanie zaimplementowane pięć algorytmów, których celem jest wykrycie twarzy na zdjęciu. Krótki opis poszczególnych metod znajduje się w następnym podrozdziale. Z zaproponowanych rozwiązań zostanie finalnie wybrane jedno po serii badań i testów mających na celu wybór zarówno skutecznego jak i szybkiego.
+
+\subsubsection{Klasyfikator kaskadowy}
+\textit{Cascade Classifier} to jedno z podejść do zadania klasyfikacji obiektów. Kaskadowość przejawia się tym, że klasyfikator składa się z łańcucha mniejszych klasyfikatorów. Z danych wejściowych jednego może korzystać następnym jako dodatkowe źródło informacji i użyć je do własnej klasyfikacji. Z tego powodu kolejne elementy są bardziej zaawansowane i operują na większym zestawie danych. Dzięki swojej kaskadowej naturze modele takie mogą być lepiej trenowane i dawać lepsze rezultaty niż klasyfikatory typu monolity.
+
+\vspace{5mm}
+
+Do ładowania i przetwarzania kaskadowych klasyfikatorów w projekcie zostanie użyty moduł \textit{CascadeClassifier} \cite{cascade_opencv} biblioteki \textit{OpenCV} \cite{opencv}. 
+
+\paragraph{Haar}
+
+Jednym z najbardziej znanych modeli klasyfikacji kaskadowej jest \textit{Haar}, który został opisany po raz pierwszy w 2001 roku \cite{haar_proceeding}. Może on być używany do klasyfikacji różnych obiektów, ale autorzy skupiali się głównie na detekcji twarzy. Algorytm \cite{haar_towards} \cite{haar_pyimage} \cite{OBUKHOV2011517} bazuje na podzieleniu zdjęcia na regiony i wykorzystaniu w każdej z nich pięciu cech krawędzi (patrz \hyperref[{fig:haar_features}]{\textit{rysunek \ref{fig:haar_features}}}). Algorytm porównując jasność pikseli w białej i czarnej części stwierdza czy istnieją krawędzie lub linie. Cechy składające się tylko z dwóch regionów odpowiadają za wykrycie pionowych i poziomych krawędzi. Zestaw trzech za wykrycie linii. Natomiast kwadratowa cecha za zmiany przekątne. W dzisiejszych czasach \textit{Haar} nie jest już tak często stosowany jak jeszcze parę lat temu.
+
+\begin{figure}[!h]
+    \begin{center}
+        \includegraphics[scale=0.2]{img/face_section/haar_features.png}
+        \caption{Obliczane cechy w modelu Haar. Źródło: \cite{haar_towards}}
+        \label{fig:haar_features}
+    \end{center}
+\end{figure}
+
+Na potrzeby pracy dyplomowej zostanie wykorzystany model \textit{Haarcascade Frontalface Default} \cite{haar_frontal} autorstwa Rainera Lienharta.
 
 
 
-\subsection{Deep Neural Network}
-Głębokie sieci neuronowe bazujące na różnych modelach dostają na wejście obraz. Na ich podstawie tworzą plamki o ustalonej wielkości, a następnie przepuszczają je przez kolejne warstwy celem wykrycia pożądanych obiektów. 
+\paragraph{Local binary patterns}
+Metoda ta porównuje piksele z ośmioma swoimi najbliższymi sąsiadami w ustalonej kolejności. Jeśli jasność głównego piksela jest większa niż porównywanego to na odpowiedniej pozycji 8-bitowej liczby wstawia 1, inaczej 0. Następnie z uzyskanych w ten sposób liczb tworzy histogram używany jako deskryptor cech. Take dane mogą być użyte do uczenia maszynowego. \cite{comp_haar_lbp}
 \par
-W projekcie zostanie wykorzystany do tego pakiet pakiet \textit{OpenCV-contrib} \cite{opencv_contirb} zawierający implementację DNN.
+Jest to metoda cechująca się wysoką szybkością działania i z tego powodu stosowana w systemach z ograniczonymi zasobami sprzętowymi. Niestety kosztem efektywności.
 \par
-Jednym z modeli dostępnych do detekcji twarzy przy pomocy głębokich sieci neuronowych są modele Caffe (\textit{Convolutional Architecture for Fast Feature Embedding}) \cite{jia2014caffe}. Aktualnie używany w projekcie wzorzec caffe to \textit{res10{\_}300x300{\_}ssd{\_}iter{\_}140000{\_}fp16} \cite{caffemodel_res10}.
+W projekcie użyty będzie model \textit{LBP Cascade Frontalface} \cite{lbp_xml}.
+
+
+\subsubsection{Histogram zorientowanych gradientów}
+Metoda \textit{HOG (Histograms of Oriented Gradients)} \cite{hog_article} została opracowana kilkanaście lat temu przez Navneet Dalal i Bill Triggs celem detekcji ludzkiego ciała. Aktualnie, mimo upływu lat, jest wciąż szeroko wykorzystywana do klasyfikacji obrazów czy wykrywania twarzy.
+\par
+Uzyskanie histogramu HOG składa się z kilku etapów. Metoda \cite{hog_wprowadzenie} \cite{learnopencv_HOG} \cite{guide_hog} ta bazuje na obliczeniu gradientów poziomych i pionowych. Możliwe jest to przez filtrowanie za pomocą odpowiedniego jądra lub przez operator Sobela \cite{feature_extraction}. Dla tak wyodrębnionych gradientów oblicza się ich długość i kierunek (kąt). Następnie dzielimy zdjęcie na obszary o wielkości $8x8$. Dla każdego regionu tworzymy jednowymiarowy wektor o 9 komórkach, w których będzie zapisany histogram HOG. Pola wektora odzwierciedlają kierunek gradientu i odpowiadają kolejnym wielokrotnościom kąta $\measuredangle 20 ^{\circ}$. Wypełniamy go dodając do pól odpowiadającym danemu kątowi wartość gradientu kolejnych pikseli. Jeśli kierunek znajduje się pomiędzy dwoma kątami to wartość dzieli się zależnie od różnicy między dwiema komórkami. Celem wyeliminowania wpływu jasności i oświetlenia przeprowadza się normalizację wartości. Gdy obliczy się już histogram dla każdego regionu, łączy się je w wektor deskryptora cech HOG. Tak uzyskany wektor możemy wykorzystać jako dane uczące algorytmów klasyfikujących. W przypadku metody HOG często wykorzystuje się \textit{maszynę wektorów nośnych (SVM)} \cite{svm_toward_science}.
+
+\vspace{5mm}
+
+W projekcie zostanie użyta metoda \textit{HOG} z biblioteki \textit{dlib}, która uczona była z użyciem liniowego \textit{SVM}.
+
+
+\subsubsection{CNN + MMOD}
+Konwolucyjne sieci neuronowe (CNN) uczą się jakie cechy obrazu pozwalają sklasyfikować widoczne na nim obiekty. Za pomocą operacji splotowych, nakładając odpowiednie filtr są wstanie je uwypuklić i uzyskać istotne informacje. To właśnie w warstwie konwolucyjnej używane są odpowiednie jądra. Sieć przez trening sama dobiera optymalne filtry oraz ich wartości. Dodatkowo istnieją tutaj warstwy próbkowania (downsampling), których celem jest zmniejszenie wielkości obrazu przez pominięcie części pikseli. Pomaga to uprościć sieć, ale kosztem utraty pewnej ilości informacji. Czasem zamiast pomijać piksele brane są wartości uśredniane lub maksymalne z pewnego sąsiedztwa. \cite{jak_cnn}
+
+\vspace{5mm}
+W bibliotece \textit{dlib} sieć CNN często jest zestawiona z metodą \textit{Max-Margin Object Detection (MMMOD)} \cite{mmod}. Służy ona do optymalizacji i zwiększenia prędkości detekcji obiektów.
+\par
+Taka implementacja CNN+MMOD dostępna w dlib zostanie użyta w projekcie.
+
+
+
+\subsubsection{Głębokie sieci neuronowe}
+
+
+Głębokie sieci neuronowe (DNN) różnią się od klasycznych tym, że mają większą liczbę warstw ukrytych. Taki algorytm tworzy plamki o ustalonej wielkości ze zdjęć wejściowych, a następnie przepuszcza je przez kolejne warstwy sieci celem wykrycia pożądanych obiektów. Na wyjściu podaje prawdopodobieństwo, że na obrazie znajduje się interesujący nas element.
+\par
+W projekcie zostanie wykorzystany do tego jeden z modułów biblioteki \textit{OpenCV} zawierający implementację DNN \cite{opencv_dnn}
+\par
+Jednym z modeli dostępnych do detekcji twarzy przy pomocy głębokich sieci neuronowych są modele Caffe (\textit{Convolutional Architecture for Fast Feature Embedding}) \cite{jia2014caffe}. W~projekcie zostanie użyty wzorzec caffe \textit{res10{\_}300x300{\_}ssd{\_}iter{\_}140000{\_}fp16} \cite{caffemodel_res10}.
 
 
 \subsection{Filtrowanie wyników}
 \label{section:face_detection_filter}
 
-Użyte algorytmy mogą dawać w wyniku błędnie określone obszary twarzy. Z tego względu zwróconą tablicę obszarów poddaje filtrowaniu.
+Użyte algorytmy mogą dawać w wyniku błędnie określone obszary twarzy. Z tego względu zwróconą tablicę obszarów poddaję filtrowaniu.
+
 \par
-Etapy filtracji obrazów:
+Proces ten składa się z następujących etapów:
 
 \begin{itemize}
     \item Na początku odrzucam obszary, których środek znajduje się poza ustalonym pionowym obszarem (przyjąłem przedział [0.25, 0.75] szerokości). Wynika to z założeń, że osoba używająca telefonu, korzysta z niego patrząc na wprost, a nie z boku. Natomiast odchył od pionu to indywidualne preferencje - dlatego nie określam poziomego obszaru. (patrz \hyperref[{fig:face_boundary}]{\textit{Rysunek \ref{fig:face_boundary}}})
@@ -39,7 +90,7 @@ Etapy filtracji obrazów:
         \label{fig:face_boundary}
     \end{figure}
     
-    \item Kolejnym etapem jest odrzucenie tych detekcji, które wychodzą zbyt daleko poza zdjęcie Jeśli którykolwiek z boków prostokąta wystaje pionowo/poziomo o odległość większą niż $10\%$ odpowiednio wysokości/szerokości to zostaje odrzucony. (patrz \hyperref[{fig:face_out}]{\textit{Rysunek \ref{fig:face_out}}})
+    \item Kolejnym etapem jest odrzucenie tych detekcji, które wychodzą zbyt daleko poza zdjęcie. Jeśli którykolwiek z boków prostokąta wystaje pionowo/poziomo o odległość większą niż $10\%$ odpowiednio wysokości/szerokości to zostaje odrzucony. (patrz \hyperref[{fig:face_out}]{\textit{Rysunek \ref{fig:face_out}}})
     
     \begin{figure}[!h]
         \begin{center}
@@ -51,7 +102,7 @@ Etapy filtracji obrazów:
         \label{fig:face_out}
     \end{figure}
     
-    \item Z pozostałych obszarów wybieram ten, który zajmuje największą powierzchnię. Taki wybór motywuję własnymi obserwacjami zachowania algorytmów detekcji twarzy oraz tym, że głowa użytkownika telefonu na obrazie z kamery przedniej zajmuję większą część płaszczyzny, ponieważ korzystając z urządzenia nie trzymamy go bardzo daleko od siebie. (patrz \hyperref[{fig:face_size}]{\textit{Rysunek \ref{fig:face_size}}})
+    \item Z pozostałych obszarów wybieram ten, który zajmuje największą powierzchnię. Taki wybór motywuję własnymi obserwacjami zachowania algorytmów detekcji twarzy oraz tym, że głowa użytkownika telefonu na obrazie z kamery przedniej zajmuje większą część płaszczyzny, ponieważ korzystając z urządzenia nie trzymamy go bardzo daleko od siebie. (patrz \hyperref[{fig:face_size}]{\textit{Rysunek \ref{fig:face_size}}})
     
     \begin{figure}[!h]
         \begin{center}
@@ -66,122 +117,3 @@ Etapy filtracji obrazów:
     
     
 \end{itemize}
-
-
-\section{Porównanie algorytmów detekcji twarzy}
-
-\_\_\_\_\_\_ TODO \_\_\_\_\_\_ 
-
-\subsection{Testowanie na statycznych zdjęciach}
-
-Pierwszy etap testowania algorytmów detekcji twarzy będzie bazował na statycznych zdjęciach z głównego datasetu (patrz rozdz. \hyperref[section:dataset]{\textit{\ref{section:dataset}.Dataset}}). Pozwoli to przetestować na jednakowych danych wszystkie metody pod względem ich skuteczności wykrywania docelowych obszarów w różnych warunkach oraz uzyskać miarodajne wyniki.
-
-\subsubsection{Oczekiwany wynik}
-
-Każde zdjęcie z datasetu do tego etapu zostało opisane przez dwa prostokąty między którymi powinna się znaleźć wykryta przez algorytm twarz. Obszar ten został dobrany w następujący sposób:
-
-\begin{itemize}
-    \item Wewnętrzna część obejmuje minimalny obszar, na którym znajdują się brwi, oczy, nos i usta.
-    \item W zewnętrznym prostokącie powinna znaleźć się cała twarz. Powiększony jest on o pewną tolerancję. 
-\end{itemize}
-
-\begin{figure}[!h]
-    \begin{center}
-        \includegraphics[scale=0.3]{img/face_section/face_test_expected.jpg}
-        \caption{Oczekiwany obszar detekcji twarzy. }
-        \label{fig:face_test_expected}
-    \end{center}
-\end{figure}
-
-\subsubsection{Sposób testowania}
-
-Dla każdego algorytmu zostanie przeprowadzone testy na zestawach obrazów o następujących rozdzielczościach i przestrzeniach barw:
-
-\begin{itemize}
-    \item 300x300 RGB
-    \item 500x500 RGB
-    \item 300x300 skala szarości
-    \item 500x500 skala szarości
-\end{itemize}
-
-W przypadku \textit{DNN Caffe} nie jest możliwe przeprowadzenie badań dla zdjęć w skali szarości, ponieważ wymaga on obrazu z trzema kanałami barw.
-
-\subsubsection{Zbierane dane}
-
-Dla każdego rodzaju testu i algorytmu zostaną zebrane następujące dane:
-
-\begin{itemize}
-    \item \textbf{Prawidłowe detekcje} - suma perfekcyjnych i częściowo dobrych detekcji
-    \item \textbf{Perfekcyjne detekcje} - jeśli wykryty obszar w pełni znajduje się pomiędzy oczekiwanym prostokątami
-    \item \textbf{Częściowo dobre detekcje} - jeśli są krawędzie, które znajdują się poza oczekiwanym obszarem, ale w zadowalającej odległości (patrz niżej - \hyperref[{uwaga:czesciowo_dobry}]{\textit{Uwaga 1.}})
-    \item \textbf{Z 3 na 4 krawędzie perfekcyjne detekcje} - jeśli tylko jedna krawędź znajduje się poza oczekiwanym obszarem w zadowalającej odległości (patrz niżej - \hyperref[{uwaga:3_4_perfekcyjny}]{\textit{Uwaga 2.}})
-    \item \textbf{Złe detekcje} - jeśli twarz nie została wykryta lub wskazany obszar jest niezadowalający
-    \item \textbf{Twarze niewykryte} - jeśli całkowicie nie udało się wykryć twarzy (patrz niżej - \hyperref[{uwaga:dodatkowy_zle}]{\textit{Uwaga 3.}})
-    \item \textbf{Średnia procentowa odległość błędnych krawędzi} - wyrażony w procentach średni stosunek odległości krawędzi do szerokości/wysokości maksymalnego dopuszczalnego obszaru dla błędnie wykrytych stron
-    \item \textbf{Średni czas przetwarzania jednego zdjęcia} - wyrażony w sekundach czas potrzebny na przetworzenie jednego zdjęcia przez daną  metodę (patrz niżej - \hyperref[{uwaga:ilosc_powtorzen}]{\textit{Uwaga 4.}})
-\end{itemize}
-
-\textit{Uwaga 1.}\label{uwaga:czesciowo_dobry} Obszar uznany jest za częściowo dobry jeśli żadna krawędź nie jest oddalona o więcej niż $1.2x$ i maksymalnie jedna oddalona jest o długość z przedziału $[1.1x, 1.2x]$. Odległość $x$ to szerokość lub wysokość (zależnie od krawędzie) maksymalnego oczekiwanego obszaru twarzy.
-\par
-\textit{Uwaga 2.}\label{uwaga:3_4_perfekcyjny} Obszar zaliczony jest do grupy 3/4 perfekcyjnych detekcji, jeśli 3 krawędzie znajdują się w oczekiwanym obszarze, a czwarta odchylona od normy w przedziale $[1.0x, 1.2x]$.
-\par 
-\textit{Uwaga 3.}\label{uwaga:dodatkowy_zle} Dodatkowy podział złej detekcji na niewykryte twarze wynika z faktu, że metody oparte o \textit{Cascasding Classifier} na wyjściu podają obszar kwadratowy i przy rozciągniętej lub pochylonej twarzy boczne obszary mogą być bardzo oddalone od oczekiwanej wartości, ale dalej wykryć twarz. 
-\par
-\textit{Uwaga 4.}\label{uwaga:ilosc_powtorzen} Celem miarodajnego wyniku czasu przetwarzania każdy test zostanie przeprowadzony 20 razy, a wyniki uśrednione.
-
-\subsubsection{Wyniki}
-\label{section:face_main_test}
-
-\input{tables/face_detection_result_rgb}
-
-\input{tables/face_detection_result_gray}
-
-
-Metoda \textit{Haar Cascade} daje średnio $\sim69/80$ $(86\%)$ dobrych detekcji. Jest to dosyć przeciętny wynik. Na taki rezultat składa się kilka problemów tej metody. Nie radzi sobie ona dobrze z częściowo zakrytymi twarzami lub gdy głowa jest pochylona w bok. Kolejnymi czynnikiem wpływającym negatywnie na detekcje jest światło - problem z wykrywaniem występuje gdy zdjęcie jest zbyt jasne, twarz oświetlona lub źródło światła świeci prosto w obiektyw. Na plus tej metody można zapisać małą ilość zwróconych przez nią dodatkowych, błędnych obszarów, które musiały zostać odfiltorwane.
-
-\par
-\textit{Cascading Classifier} bazując na modelu \textit{LBP} miał najgorsze wyniki detekcji twarzy, na poziomie $\sim60/80$ $(75 \%)$. Jednak co zwraca uwagę to fakt, że bardzo duży odsetek twarzy nie został w ogóle wykryty. Występują tu te same problemy co w \textit{Haar Cascade}, ale dodatkowo algorytm nie radzi sobie gdy twarz zajmuje prawie całe zdjęcie.
-
-\par
-Najlepszy wynik detekcji uzyskał bezdyskusyjnie \textit{DNN Caffe}. Fakt, że w każdym z dwóch testów wykrył on $100 \%$ twarzy robi wrażenie. Co więcej perfekcyjne detekcje były na poziomie $\sim65/80$ $(81,25 \%)$. Nie występują tu problemy takie jak w poprzednich algorytmach. Radzi sobie on dobrze w złych warunkach oświetleniowych. Częściowe zakrycie twarzy nie wpływa na detekcję. Wykrywa on dobrze zarówno pochylone jak i odwrócone twarze. Jedyną negatywnym zjawiskiem, które zaobserwowałem w tej metodzie to zwracanie wielu dodatkowych obszarów, które są błędne. Zastosowanie filtrowania pozwoliło jednak odrzucić wszystkie błędne obszary.
-
-\vspace{5mm}
-Różnica w procencie perfekcyjnych detekcji pomiędzy \textit{DNN Caffe}, a \textit{LBP} i \textit{Haar} wynika z rodzaju obszarów zwracanych przez te algorytmy. Metoda oparta na głębokich sieciach neuronowych zwraca prostokąt o dowolnym stosunku boków, natomiast druga grupa zwraca kwadrat. Dzięki temu \textit{DNN} lepiej dopasowuję się do kształtu twarzy niż \textit{Cascading Classifier}.
-
-\vspace{5mm}
-
-Najszbyszy okazał się algorytm operujący na modelu \textit{LBP}. \textit{DNN Caffe} dla zdjęć $500x500$  był porównywalnie szybki jak \textit{Haar Cascade}, natomiast już w przypadku $300x300$ około $2.5$ razy wolniejszy.
-\par
-Co ciekawe i warte odnotowania to fakt, że algorytm \textit{DNN} przetwarzał prawie tak samo szybko obie rozdzielczości zdjęć. Można wysnuć tezę, że dla tej metody wielkość obrazu nie ma wpływu na szybkość przetwarzania. Ze względu, że taka właściwość może okazać się przydatna w perspektywie dalszych etapów projektu, zamierzam zbadać tę zależność w następnym rozdziale.
-
-\vspace{5mm}
-
-Zmiana detekcji z trójkanałowej RGB na skale szarości nie przyniosło żadnej zmiany zarówno w skuteczności algorytmów, jak również nie skróciło czasu detekcji.
-
-\subsection{Dodatkowe testy \textit{DNN Caffe}}
-
-\subsubsection{Wpływ wielkości zdjęcia na czas przetwarzania}
-
-\input{tables/face_detection_result_dnn_speed}
-
-Test ten potwierdza postawioną przeze mnie wcześniej tezę, że wielkość zdjęcia nie ma wpływu na szybkość przetwarzania algorytmu \textit{DNN Caffe}. Testy w każdej rozdzielczości zostały wykonane mniej więcej w tym samym czasie, a różnica zapewne jest skutkiem obciążenia urządzenia w danej chwili i jest pomijalna.\\
-Prawdopodobnie wynika to z faktu, że metoda ta tworzy na podstawie zdjęcia wejściowego plamki o podanej wielkości niezależnie od rozdzielczości. W zaimplementowanym algorytmie jest to rozmiar 300x300. Dzięki temu zawsze ma on do przetworzenia taką samą ilość danych, więc czas powinien być w przybliżeniu stały.
-
-\textit{Uwaga}. Różncia czasów DNN między tym testem, a poprzednim (\hyperref[{section:face_main_test}]{\textit{patrz rozdz. \ref{section:face_main_test}.Wyniki}}) prawdopodobnie wynika z jróżnych obciążeń telefonu w danym momencie.
-
-\subsubsection{Porównanie precyzji detekcji zależnie od sposóbu filtrowania}
-
-Metoda oparta na głębokich sieciach neuronowych na wyjściu zwraca wiele obszarów wraz ze wskaźnikiem pewności detekcji. Im większy współczynnik tym w teorii większa szansa, że jest to obiekt, który chcieliśmy wykryć.
-\par
-Z tego powodu postanowiłem porównać autorskie filtrowanie opisane wcześniej (patrz rozdz. \hyperref[{section:face_detection_filter}]{\textit{\ref{section:face_detection_filter}.Filtrowanie wyników}}) i wybór detekcji z największym procentem pewności.
-\par
-
-\input{tables/face_detection_result_filter}
-
-
-Jak widać zaproponowana przeze mnie wcześniej sekwencja filtrowania wykrytych obszarów daje lepsze rezultaty niż wybór najwyższego współczynnika pewności.
-
-
-\subsection{Testowanie na obrazie z kamery na żywo}
-
-\_\_\_\_\_\_ TODO \_\_\_\_\_\_ 

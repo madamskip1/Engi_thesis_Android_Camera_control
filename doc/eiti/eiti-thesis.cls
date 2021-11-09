@@ -192,6 +192,9 @@
 \renewcommand{\cftsecleader}{\cftdotfill{\cftsecdotsep}}
 \renewcommand{\cftsecdotsep}{\cftdotsep}
 
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
+
 %--------------------------------
 % List of Figures setup
 %--------------------------------
