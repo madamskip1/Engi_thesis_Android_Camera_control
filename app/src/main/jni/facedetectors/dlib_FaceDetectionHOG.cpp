@@ -5,12 +5,13 @@
 
 #include "../dlib_natives/dlib_utility.h"
 
+
 class FaceDetectorHOG {
 public:
-    FaceDetectorHOG() : detector{dlib::get_frontal_face_detector()} {};
+    FaceDetectorHOG() : detector{dlib::get_frontal_face_detector()} {}
 
     std::vector<dlib::rectangle> detect(const cv::Mat &frame) {
-        dlib::cv_image<dlib::rgb_pixel> dlibMat{frame};
+        dlib::cv_image<unsigned char> dlibMat{frame};
         return detector(dlibMat, 0);
     }
 
@@ -33,9 +34,11 @@ Java_org_pw_engithesis_androidcameracontrol_facedetectionalgorithms_FaceDetectio
     auto dlibRects = detector->detect(frame);
     std::vector<cv::Rect> cvRects;
 
+    cvRects.reserve(dlibRects.size());
     for (const auto &rect : dlibRects) {
         cvRects.emplace_back(dlibRectToCvRect(rect));
     }
 
     *((cv::Mat *) result_faces) = cv::Mat(cvRects, true);
 }
+

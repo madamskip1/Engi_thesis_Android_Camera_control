@@ -28,8 +28,8 @@ class MMODDetector {
 public:
     MMODDetector() = delete;
 
-    MMODDetector(std::string &&modelPath) {
-        path = std::move(modelPath);
+    explicit MMODDetector(const std::string &modelPath) {
+        path = modelPath;
         dlib::deserialize(path) >> net;
     }
 
@@ -51,9 +51,9 @@ extern "C"
 JNIEXPORT jlong JNICALL
 Java_org_pw_engithesis_androidcameracontrol_facedetectionalgorithms_FaceDetectionDlibMMOD_init(
         JNIEnv *env, jclass, jstring model_path) {
-    auto cstrPath = (env)->GetStringUTFChars(model_path, NULL);
+    auto cstrPath = (env)->GetStringUTFChars(model_path, nullptr);
     std::string strPath = std::string(cstrPath);
-    auto addr = reinterpret_cast<jlong>(new MMODDetector(std::move(strPath)));
+    auto addr = reinterpret_cast<jlong>(new MMODDetector(strPath));
     env->ReleaseStringUTFChars(model_path, cstrPath);
 
     return addr;
@@ -67,6 +67,7 @@ Java_org_pw_engithesis_androidcameracontrol_facedetectionalgorithms_FaceDetectio
     auto dlibRects = detector->detect(frame);
     std::vector<cv::Rect> cvRects;
 
+    cvRects.reserve(dlibRects.size());
     for (const auto &rect : dlibRects) {
         cvRects.emplace_back(dlibRectToCvRect(rect));
     }
