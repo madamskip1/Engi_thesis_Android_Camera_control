@@ -6,7 +6,7 @@ import org.opencv.core.Rect;
 import org.pw.engithesis.androidcameracontrol.R;
 import org.pw.engithesis.androidcameracontrol.RawResourceManager;
 
-public class DlibLandmarks {
+public class DlibLandmarks implements LandmarksAlgorithm {
     public static final int LANDMARKS_NUM = 68;
 
     static {
@@ -24,6 +24,7 @@ public class DlibLandmarks {
 
     private static native int[] getLandmarks(long detectorAddr, long frameAddr, int[] faceRect);
 
+    @Override
     public Point[] detect(Mat frame, Rect face) {
         int[] faceRect = new int[]{face.x, face.y, face.width, face.height};
         int[] landmarksArray = getLandmarks(nativeDetectorAddr, frame.getNativeObjAddr(), faceRect);

@@ -11,7 +11,7 @@ public:
     FaceDetectorHOG() : detector{dlib::get_frontal_face_detector()} {}
 
     std::vector<dlib::rectangle> detect(const cv::Mat &frame) {
-        dlib::cv_image<unsigned char> dlibMat{frame};
+        dlib::cv_image<dlib::rgb_pixel> dlibMat{frame};
         return detector(dlibMat, 0);
     }
 
