@@ -4,18 +4,17 @@ import android.content.Context;
 import android.widget.ScrollView;
 
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfPoint2f;
-import org.opencv.core.MatOfRect;
+import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.pw.engithesis.androidcameracontrol.EyeBlinkDetector;
 import org.pw.engithesis.androidcameracontrol.FaceDetector;
-import org.pw.engithesis.androidcameracontrol.FacemarkDetector;
+import org.pw.engithesis.androidcameracontrol.LandmarksDetector;
 import org.pw.engithesis.androidcameracontrol.MatToFile;
 import org.pw.engithesis.androidcameracontrol.R;
 import org.pw.engithesis.androidcameracontrol.Utility;
 import org.pw.engithesis.androidcameracontrol.ViewsBuilder;
-
-import java.util.ArrayList;
+import org.pw.engithesis.androidcameracontrol.facedetectionalgorithms.FaceDetectionDnnCaffe;
+import org.pw.engithesis.androidcameracontrol.landmarksalgorithms.DlibLandmarks;
 
 public class EARImageTest extends ImageTest {
     private final EARImageTestStruct[] imagesToTest = {
@@ -30,12 +29,13 @@ public class EARImageTest extends ImageTest {
             new EARImageTestStruct(R.drawable.portrait_test_9, new Boolean[]{false, true})
     };
     private final FaceDetector faceDetector;
-    private final FacemarkDetector facemarkDetector;
+    private final LandmarksDetector landmarksDetector;
     private final EyeBlinkDetector blinkDetector;
+
     public EARImageTest(Context ctx, ScrollView parent) {
         super(ctx, parent);
-        faceDetector = new FaceDetector();
-        facemarkDetector = new FacemarkDetector();
+        faceDetector = new FaceDetector(new FaceDetectionDnnCaffe());
+        landmarksDetector = new LandmarksDetector(new DlibLandmarks());
         blinkDetector = new EyeBlinkDetector();
     }
 
@@ -56,13 +56,12 @@ public class EARImageTest extends ImageTest {
             Rect face = faceDetector.detect(imageMat);
             Utility.drawRects(outputMat, new Rect[]{face});
 
-            ArrayList<MatOfPoint2f> landmarks = facemarkDetector.detect(imageMat, new MatOfRect(face));
-            facemarkDetector.drawLandmarks(outputMat, landmarks);
+            Point[] landmarks = landmarksDetector.detect(imageMat, face);
+            landmarksDetector.drawLandmarks(outputMat);
 
-            blinkDetector.checkEyeBlink(landmarks.get(0));
+            blinkDetector.checkEyeBlink(landmarksDetector.getRightEyeLandmarks(), landmarksDetector.getLeftEyeLandmarks());
 
             addImageToView(outputMat, viewsBuilder);
-            viewsBuilder.addText("landmarks " + landmarks.size());
             viewsBuilder.addText("right: " + blinkDetector.rightEyeEAR);
             viewsBuilder.addText("left: " + blinkDetector.leftEyeEAR);
 

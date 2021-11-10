@@ -1,8 +1,5 @@
 package org.pw.engithesis.androidcameracontrol;
 
-import android.util.Log;
-
-import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
 import org.pw.engithesis.androidcameracontrol.interfaces.Observable;
 
@@ -28,45 +25,10 @@ public class EyeBlinkDetector extends Observable {
         earCalculator = new EyeAspectRatio();
     }
 
-    public void checkEyeBlink(MatOfPoint2f faceLandmarks) {
-        Point[] leftEye = getLeftEye(faceLandmarks);
-        Point[] rightEye = getRightEye(faceLandmarks);
-
-        leftEyeEAR = earCalculator.calcEAR(leftEye);
-        rightEyeEAR = earCalculator.calcEAR(rightEye);
-        Log.e("fm", "ear: " + this.leftEyeEAR + ", " + this.rightEyeEAR);
-
-        // TODO: Predykcja czy bylo mrugniecie
+    public void checkEyeBlink(Point[] rightEyeLandmarks, Point[] leftEyeLandmarks) {
+        leftEyeEAR = earCalculator.calcEAR(leftEyeLandmarks);
+        rightEyeEAR = earCalculator.calcEAR(rightEyeLandmarks);
 
         notifyUpdate();
-    }
-
-    private Point[] getLeftEye(MatOfPoint2f faceLandmarks) {
-        return getEye(faceLandmarks, LEFT_EYE);
-    }
-
-    private Point[] getRightEye(MatOfPoint2f faceLandmarks) {
-        return getEye(faceLandmarks, RIGHT_EYE);
-    }
-
-    private Point[] getEye(MatOfPoint2f faceLandmarks, int index) {
-        Point[] eye = new Point[6];
-        double[] temp;
-        int modifier = (index == LEFT_EYE ? 6 : 0);
-
-        temp = faceLandmarks.get(36 + modifier, 0);
-        eye[0] = new Point(temp[0], temp[1]);
-        temp = faceLandmarks.get(37 + modifier, 0);
-        eye[1] = new Point(temp[0], temp[1]);
-        temp = faceLandmarks.get(38 + modifier, 0);
-        eye[2] = new Point(temp[0], temp[1]);
-        temp = faceLandmarks.get(39 + modifier, 0);
-        eye[3] = new Point(temp[0], temp[1]);
-        temp = faceLandmarks.get(40 + modifier, 0);
-        eye[4] = new Point(temp[0], temp[1]);
-        temp = faceLandmarks.get(41 + modifier, 0);
-        eye[5] = new Point(temp[0], temp[1]);
-
-        return eye;
     }
 }
