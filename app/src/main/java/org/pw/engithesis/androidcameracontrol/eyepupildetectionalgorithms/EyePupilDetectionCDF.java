@@ -29,27 +29,22 @@ public class EyePupilDetectionCDF implements EyePupilDetectionAlgorithm {
         int width = grayEyeMat.width();
         int height = grayEyeMat.height();
 
-        Mat binaryEyeAfterCDF = cdfThresholding.thresholdNewMat(grayEyeMat);
+        Mat binaryEyeCDF = cdfThresholding.thresholdNewMat(grayEyeMat);
+        Imgproc.erode(binaryEyeCDF, binaryEyeCDF, erodeKernel);
 
-        Mat erodedMat = new Mat();
-        Imgproc.erode(binaryEyeAfterCDF, erodedMat, erodeKernel);
-
-        Point darkestPixel = getDarkestPixel(erodedMat);
+        Point darkestPixel = getDarkestPixel(binaryEyeCDF);
         double avgIntensity = calcAvgIntensity(darkestPixel, width, height);
 
-        Rect PMIRect = getPMIRect((int) darkestPixel.x, (int) darkestPixel.y, width, height);
-        Mat PMIMat = grayEyeMat.submat(PMIRect);
+        Mat erodedGrayEyeMat = new Mat();
+        Imgproc.erode(grayEyeMat, erodedGrayEyeMat, erodeKernel);
 
-        // TODO: Sprwadzić jak erodedPMI powinien być faktycznie użyty
-        Mat erodedPMI = new Mat();
-        Imgproc.erode(PMIMat, erodedPMI, erodeKernel);
-
+        Rect darkestPixelNeighborhood = getPMIRect((int) darkestPixel.x, (int) darkestPixel.y, width, height);
         intensityThresholding.setIntensity(avgIntensity);
-        intensityThresholding.thresholdRef(PMIMat);
+        Mat darkestPixelNeighborhoodMat = erodedGrayEyeMat.submat(darkestPixelNeighborhood);
+        intensityThresholding.thresholdRef(darkestPixelNeighborhoodMat);
 
-        Point gravityCenter = calcGravityCenter(PMIMat);
-
-        return calcEyePupil(gravityCenter, PMIRect, eyeRegion);
+        Point gravityCenter = calcGravityCenter(darkestPixelNeighborhoodMat);
+        return calcPointInFrame(gravityCenter, darkestPixelNeighborhood, eyeRegion);
     }
 
     private Mat getGrayEyeMat(Mat frame, Rect eyeRegion) {
@@ -141,7 +136,7 @@ public class EyePupilDetectionCDF implements EyePupilDetectionAlgorithm {
         return new Point(x, y);
     }
 
-    private Point calcEyePupil(Point gravityCenter, Rect PMIRect, Rect eyeRect) {
+    private Point calcPointInFrame(Point gravityCenter, Rect PMIRect, Rect eyeRect) {
         double x = gravityCenter.x + PMIRect.x + eyeRect.x;
         double y = gravityCenter.y + PMIRect.y + eyeRect.y;
         return new Point(x, y);
