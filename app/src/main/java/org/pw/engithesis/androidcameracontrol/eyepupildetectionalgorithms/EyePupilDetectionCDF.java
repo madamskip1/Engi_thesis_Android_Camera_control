@@ -24,7 +24,6 @@ public class EyePupilDetectionCDF implements EyePupilDetectionAlgorithm {
     @Override
     public Point detect(Mat frame, Rect eyeRegion) {
         Mat grayEyeMat = getGrayEyeMat(frame, eyeRegion);
-        grayEyePixels = null;
         grayEyePixels = Utility.matToByteArray(grayEyeMat);
         int width = grayEyeMat.width();
         int height = grayEyeMat.height();
@@ -106,8 +105,8 @@ public class EyePupilDetectionCDF implements EyePupilDetectionAlgorithm {
         int rectRight = Utility.clamp(x + 7, 0, width);
         int rectBottom = Utility.clamp(y + 7, 0, height);
 
-        int rectWidth = rectRight - rectLeft;
-        int rectHeight = rectBottom - rectTop;
+        int rectWidth = rectRight - rectLeft + 1;
+        int rectHeight = rectBottom - rectTop + 1;
 
         return new Rect(rectLeft, rectTop, rectWidth, rectHeight);
     }
