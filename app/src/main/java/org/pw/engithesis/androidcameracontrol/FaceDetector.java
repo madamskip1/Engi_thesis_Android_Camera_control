@@ -4,7 +4,7 @@ import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.pw.engithesis.androidcameracontrol.facedetectionalgorithms.FaceDetectionAlgorithm;
-import org.pw.engithesis.androidcameracontrol.facedetectionalgorithms.FaceDetectionDnnCaffe;
+import org.pw.engithesis.androidcameracontrol.facedetectionalgorithms.FaceDetectionDlibHOG;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,8 +15,9 @@ public class FaceDetector {
     private final FaceDetectionAlgorithm detectionAlgorithm;
 
     public FaceDetector() {
-        // Dnn Caffe  is default face detection algorithm
-        this(new FaceDetectionDnnCaffe());
+        // Dlib HOG is default face detection algorithm
+        // was best in comparision
+        this(new FaceDetectionDlibHOG());
     }
 
     public FaceDetector(FaceDetectionAlgorithm detectionAlgorithm) {
@@ -45,7 +46,6 @@ public class FaceDetector {
         ArrayList<Rect> facesArrayList = new ArrayList<>(Arrays.asList(faces));
         facesArrayList.removeIf(face -> !isInVerticalCenter(mat, face));
         facesArrayList.removeIf(face -> isOutOfFrame(face, leftBound, topBound, rightBound, bottomBound));
-
 
         int facesNum = facesArrayList.size();
 
