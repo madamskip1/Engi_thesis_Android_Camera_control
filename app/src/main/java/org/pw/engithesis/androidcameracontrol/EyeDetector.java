@@ -8,10 +8,10 @@ import org.pw.engithesis.androidcameracontrol.eyedetectionalgorithms.EyeDetectio
 public class EyeDetector {
     public static final int RIGHT_EYE_INDEX = 0;
     public static final int LEFT_EYE_INDEX = 1;
-    private static final double cropTop = 0.1;
-    private static final double cropBottom = 0.45;
-    private static final double cropLeft = 0.1;
-    private static final double cropRight = 0.1;
+    private static final double cropTop = 0.05;
+    private static final double cropBottom = 0.3;
+    private static final double cropLeft = 0.0;
+    private static final double cropRight = 0.0;
     private final EyeFilter eyeFilter;
     private final EyeDetectionAlgorithm detectionAlgorithm;
 
