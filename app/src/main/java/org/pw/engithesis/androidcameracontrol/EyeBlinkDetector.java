@@ -16,7 +16,7 @@ public class EyeBlinkDetector extends Observable {
     public static final int LEFT_EYE = 0;
     public static final int RIGHT_EYE = 1;
 
-    public static double BLINK_THRESHOLD = 0.3;
+    public static double BLINK_THRESHOLD = 0.19;
     private final EyeAspectRatio earCalculator;
     public double leftEyeEAR;
     public double rightEyeEAR;
@@ -31,4 +31,13 @@ public class EyeBlinkDetector extends Observable {
 
         notifyUpdate();
     }
+
+    public boolean isLeftBlink() {
+        return leftEyeEAR <= BLINK_THRESHOLD;
+    }
+
+    public boolean isRightBlink() {
+        return rightEyeEAR <= BLINK_THRESHOLD;
+    }
+
 }
