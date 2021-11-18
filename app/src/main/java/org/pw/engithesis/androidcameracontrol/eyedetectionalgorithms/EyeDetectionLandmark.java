@@ -1,5 +1,7 @@
 package org.pw.engithesis.androidcameracontrol.eyedetectionalgorithms;
 
+import android.util.Log;
+
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 
@@ -26,9 +28,8 @@ public class EyeDetectionLandmark {
         } else {
             int x1 = (int) landmarks[0].x;
             int x2 = (int) landmarks[3].x;
-            double y1 = Arrays.stream(new double[]{landmarks[0].y, landmarks[1].y, landmarks[2].y, landmarks[3].y}).max().getAsDouble();
-            double y2 = Arrays.stream(new double[]{landmarks[0].y, landmarks[3].y, landmarks[4].y, landmarks[5].y}).min().getAsDouble();
-
+            double y1 = Arrays.stream(new double[]{landmarks[0].y, landmarks[1].y, landmarks[2].y, landmarks[3].y}).min().getAsDouble();
+            double y2 = Arrays.stream(new double[]{landmarks[0].y, landmarks[3].y, landmarks[4].y, landmarks[5].y}).max().getAsDouble();
             int width = x2 - x1;
             int height = (int) (y2 - y1);
 
