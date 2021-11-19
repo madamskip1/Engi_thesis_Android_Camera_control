@@ -9,7 +9,7 @@ import org.pw.engithesis.androidcameracontrol.Utility;
 import org.pw.engithesis.androidcameracontrol.thresholding.CDFLuminanceThresholding;
 import org.pw.engithesis.androidcameracontrol.thresholding.IntensityThresholding;
 
-public class EyePupilDetectionCDF implements EyePupilDetectionAlgorithm {
+public class EyePupilDetectionCDF extends EyePupilDetectionAlgorithm {
     private final CDFLuminanceThresholding cdfThresholding;
     private final IntensityThresholding intensityThresholding;
     private final Mat erodeKernel;
@@ -44,14 +44,6 @@ public class EyePupilDetectionCDF implements EyePupilDetectionAlgorithm {
 
         Point gravityCenter = calcGravityCenter(darkestPixelNeighborhoodMat);
         return calcPointInFrame(gravityCenter, darkestPixelNeighborhood, eyeRegion);
-    }
-
-    private Mat getGrayEyeMat(Mat frame, Rect eyeRegion) {
-        Mat eyeMat = frame.submat(eyeRegion);
-        Mat grayEyeMat = new Mat();
-        Imgproc.cvtColor(eyeMat, grayEyeMat, Imgproc.COLOR_RGB2GRAY);
-
-        return grayEyeMat;
     }
 
     private Point getDarkestPixel(Mat erodedMat) {

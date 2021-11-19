@@ -56,4 +56,8 @@ public class Utility {
 
         return new Point(x, y);
     }
+
+    public static int byteToInt(byte b) {
+        return b & 0xFF;
+    }
 }
