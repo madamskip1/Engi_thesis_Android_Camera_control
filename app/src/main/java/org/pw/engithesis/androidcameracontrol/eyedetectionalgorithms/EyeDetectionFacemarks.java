@@ -5,29 +5,29 @@ import org.opencv.core.Rect;
 
 import java.util.Arrays;
 
-public class EyeDetectionLandmark {
+public class EyeDetectionFacemarks {
     public static double ADD_TOP = 0.7;
     public static double ADD_BOTTOM = 0.5;
     public static double ADD_LEFT = 0.2;
     public static double ADD_RIGHT = 0.2;
 
 
-    public Rect[] detect(Point[] rightEyeLandmarks, boolean rightEyeBlinking, Point[] leftEyeLandmarks, boolean leftEyeBlinking) {
+    public Rect[] detect(Point[] rightEyeFacemarks, boolean rightEyeBlinking, Point[] leftEyeFacemarks, boolean leftEyeBlinking) {
         Rect[] eyes = new Rect[2];
-        eyes[0] = detectEye(rightEyeLandmarks, rightEyeBlinking);
-        eyes[1] = detectEye(leftEyeLandmarks, leftEyeBlinking);
+        eyes[0] = detectEye(rightEyeFacemarks, rightEyeBlinking);
+        eyes[1] = detectEye(leftEyeFacemarks, leftEyeBlinking);
 
         return eyes;
     }
 
-    private Rect detectEye(Point[] landmarks, boolean blinking) {
+    private Rect detectEye(Point[] facemarks, boolean blinking) {
         if (blinking) {
             return null;
         } else {
-            int x1 = (int) landmarks[0].x;
-            int x2 = (int) landmarks[3].x;
-            double y1 = Arrays.stream(new double[]{landmarks[0].y, landmarks[1].y, landmarks[2].y, landmarks[3].y}).min().getAsDouble();
-            double y2 = Arrays.stream(new double[]{landmarks[0].y, landmarks[3].y, landmarks[4].y, landmarks[5].y}).max().getAsDouble();
+            int x1 = (int) facemarks[0].x;
+            int x2 = (int) facemarks[3].x;
+            double y1 = Arrays.stream(new double[]{facemarks[0].y, facemarks[1].y, facemarks[2].y, facemarks[3].y}).min().getAsDouble();
+            double y2 = Arrays.stream(new double[]{facemarks[0].y, facemarks[3].y, facemarks[4].y, facemarks[5].y}).max().getAsDouble();
             int width = x2 - x1;
             int height = (int) (y2 - y1);
 

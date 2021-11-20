@@ -6,19 +6,19 @@
 
 #include "../dlib_natives/dlib_utility.h"
 
-constexpr int LANDMARKS_NUM = 68;
+constexpr int FACEMARKS_NUM = 68;
 
 dlib::rectangle getDlibRectFromJniArray(JNIEnv *, const jintArray &);
 
-jintArray dlibLandmarksToIntArray(JNIEnv *, const dlib::full_object_detection &);
+jintArray dlibFacemarksToIntArray(JNIEnv *, const dlib::full_object_detection &);
 
-class DlibLandmarks {
+class FacemarksKazemi {
 public:
-    explicit DlibLandmarks(const std::string &filePath) {
+    explicit FacemarksKazemi(const std::string &filePath) {
         dlib::deserialize(filePath) >> shapePredictor;
     }
 
-    dlib::full_object_detection detectLandmarks(const cv::Mat &frame, const dlib::rectangle &face) {
+    dlib::full_object_detection detectFacemarks(const cv::Mat &frame, const dlib::rectangle &face) {
         cv::Mat faceMat{frame, dlibRectToCvRect(face)};
         dlib::cv_image<dlib::rgb_pixel> dlibMat{frame};
         dlib::array2d<dlib::rgb_pixel> dlibFrame;
@@ -33,27 +33,27 @@ private:
 
 extern "C"
 JNIEXPORT jlong JNICALL
-Java_org_pw_engithesis_androidcameracontrol_landmarksalgorithms_DlibLandmarks_init(JNIEnv *env,
-                                                                                   jclass,
-                                                                                   jstring model_path) {
+Java_org_pw_engithesis_androidcameracontrol_facemarksalgorithms_FacemarksKazemi_init(JNIEnv *env,
+                                                                                     jclass,
+                                                                                     jstring model_path) {
     auto cstrPath = (env)->GetStringUTFChars(model_path, nullptr);
     std::string strPath = std::string(cstrPath);
-    auto addr = reinterpret_cast<jlong>(new DlibLandmarks(strPath));
+    auto addr = reinterpret_cast<jlong>(new FacemarksKazemi(strPath));
     env->ReleaseStringUTFChars(model_path, cstrPath);
 
     return addr;
 }
 extern "C"
 JNIEXPORT jintArray JNICALL
-Java_org_pw_engithesis_androidcameracontrol_landmarksalgorithms_DlibLandmarks_getLandmarks(
+Java_org_pw_engithesis_androidcameracontrol_facemarksalgorithms_FacemarksKazemi_getFacemarks(
         JNIEnv *env, jclass, jlong detector_addr, jlong frame_addr, jintArray face_rect) {
     cv::Mat &frame = *(cv::Mat *) frame_addr;
     auto dlibFaceRect = getDlibRectFromJniArray(env, face_rect);
-    auto detector = reinterpret_cast<DlibLandmarks *>(detector_addr);
+    auto detector = reinterpret_cast<FacemarksKazemi *>(detector_addr);
 
-    auto landmarks = detector->detectLandmarks(frame, dlibFaceRect);
+    auto facemarks = detector->detectFacemarks(frame, dlibFaceRect);
 
-    return dlibLandmarksToIntArray(env, landmarks);
+    return dlibFacemarksToIntArray(env, facemarks);
 }
 
 dlib::rectangle getDlibRectFromJniArray(JNIEnv *env, const jintArray &jintRect) {
@@ -68,18 +68,18 @@ dlib::rectangle getDlibRectFromJniArray(JNIEnv *env, const jintArray &jintRect) 
     return dlib::rectangle{x1, y1, x2, y2};
 }
 
-jintArray dlibLandmarksToIntArray(JNIEnv *env, const dlib::full_object_detection &dlibLandmarks) {
-    auto landmarksIntArray = env->NewIntArray(LANDMARKS_NUM * 2);
-    auto landmarksIntArrayAddr = env->GetIntArrayElements(landmarksIntArray, nullptr);
+jintArray dlibFacemarksToIntArray(JNIEnv *env, const dlib::full_object_detection &dlibFacemarks) {
+    auto facemarksIntArray = env->NewIntArray(FACEMARKS_NUM * 2);
+    auto facemarksIntArrayAddr = env->GetIntArrayElements(facemarksIntArray, nullptr);
 
-    for (int i = 0; i < LANDMARKS_NUM; i++) {
+    for (int i = 0; i < FACEMARKS_NUM; i++) {
         int arrayIndex = i * 2;
-        dlib::point point = dlibLandmarks.part(i);
-        landmarksIntArrayAddr[arrayIndex] = point.x();
-        landmarksIntArrayAddr[arrayIndex + 1] = point.y();
+        dlib::point point = dlibFacemarks.part(i);
+        facemarksIntArrayAddr[arrayIndex] = point.x();
+        facemarksIntArrayAddr[arrayIndex + 1] = point.y();
     }
 
-    env->ReleaseIntArrayElements(landmarksIntArray, landmarksIntArrayAddr, 0);
+    env->ReleaseIntArrayElements(facemarksIntArray, facemarksIntArrayAddr, 0);
 
-    return landmarksIntArray;
+    return facemarksIntArray;
 }

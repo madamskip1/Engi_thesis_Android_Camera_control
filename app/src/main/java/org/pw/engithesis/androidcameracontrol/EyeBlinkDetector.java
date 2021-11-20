@@ -25,9 +25,9 @@ public class EyeBlinkDetector extends Observable {
         earCalculator = new EyeAspectRatio();
     }
 
-    public void checkEyeBlink(Point[] rightEyeLandmarks, Point[] leftEyeLandmarks) {
-        leftEyeEAR = earCalculator.calcEAR(leftEyeLandmarks);
-        rightEyeEAR = earCalculator.calcEAR(rightEyeLandmarks);
+    public void checkEyeBlink(Point[] rightEyeFacemarks, Point[] leftEyeFacemarks) {
+        leftEyeEAR = earCalculator.calcEAR(leftEyeFacemarks);
+        rightEyeEAR = earCalculator.calcEAR(rightEyeFacemarks);
 
         notifyUpdate();
     }
