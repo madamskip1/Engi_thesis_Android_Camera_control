@@ -75,7 +75,7 @@ public class EyePupilDetectionEdgeAnalysis extends EyePupilDetectionAlgorithm {
     }
 
     private int[] calcHorizontalCounters() {
-        int[] rows = new int[width];
+        int[] rows = new int[height];
         for (int y = 0; y < height; y++) {
             rows[y] = calcCounter(y * width, 1, width);
         }
@@ -83,7 +83,7 @@ public class EyePupilDetectionEdgeAnalysis extends EyePupilDetectionAlgorithm {
     }
 
     private int[] calcVerticalCounters() {
-        int[] cols = new int[height];
+        int[] cols = new int[width];
         for (int x = 0; x < width; x++) {
             cols[x] = calcCounter(x, width, height);
         }
