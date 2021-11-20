@@ -1,17 +1,15 @@
 package org.pw.engithesis.androidcameracontrol.eyedetectionalgorithms;
 
-import android.util.Log;
-
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 
 import java.util.Arrays;
 
 public class EyeDetectionLandmark {
-    private static final double ADD_TOP = 0.0;
-    private static final double ADD_BOTTOM = 0.0;
-    private static final double ADD_LEFT = 0.0;
-    private static final double ADD_RIGHT = 0.0;
+    public static double ADD_TOP = 0.7;
+    public static double ADD_BOTTOM = 0.5;
+    public static double ADD_LEFT = 0.2;
+    public static double ADD_RIGHT = 0.2;
 
 
     public Rect[] detect(Point[] rightEyeLandmarks, boolean rightEyeBlinking, Point[] leftEyeLandmarks, boolean leftEyeBlinking) {
