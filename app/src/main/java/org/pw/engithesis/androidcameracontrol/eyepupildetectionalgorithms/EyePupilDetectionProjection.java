@@ -5,7 +5,7 @@ import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.pw.engithesis.androidcameracontrol.Utility;
 
-public class EyePupilDetectionProjection implements EyePupilDetectionAlgorithm {
+public class EyePupilDetectionProjection extends EyePupilDetectionAlgorithm {
     private final ProjectionFunctions projectionFunction = ProjectionFunctions.General;
     private double generalProjectionParameter;
 
