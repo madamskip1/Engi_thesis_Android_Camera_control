@@ -1,0 +1,93 @@
+\newpage
+
+\section{Porównanie algorytmów detekcji oczu}
+
+
+
+\subsection{Testowanie na statycznych zdjęciach}
+
+Testowanie detekcji oczu wykorzystując statyczne zdjęcia z datasetu (odrzucone 2, dla których wybrany algorytm nie wykrył prawidłowo twarzy). Znajduje się na nich w sumie 166 oczu do wykrycia, w tym 14 zamkniętych.
+
+\subsubsection{Oczekiwany wynik}
+Podobnie jak w przypadku testowania detekcji twarzy na statycznych zdjęciach, tak w przypadku wykrywania oczu akceptowalny obszar był opisany dwoma prostokątami - minimalny i maksymalnym. Przykład takiego oznaczenia widoczny jest na rys. \ref{fig:expected_eyes_region}. Został on dobrany w następujący sposób:
+\begin{itemize}
+    \item prostokąt wewnętrzny obejmuje jedynie widoczną część gałki ocznej
+    \item prostokąt zewnętrzny jest powiększony na boki i w dół o pewną odległość od gałki, a od góry zawiera w sobie również brwi.
+\end{itemize}
+
+\begin{figure}[!h]
+    \begin{center}
+        \includegraphics[scale=0.6]{img/pupil_section/expected_eyes_region.png}
+        \caption{Przybliżony obszar oczu, który chcę wykrywać}
+        \label{fig:expected_eyes_region}
+    \end{center}
+\end{figure}
+
+\subsection{Warunki testowania}
+
+Oba algorytmy zostaną przetestowane na wykrytych przez algorytm HOG twarzach ze zdjęć 500x500. W tym teście postanowiłem odrzucić już rozdzielczość 300x300, ze względu, że na części z nich osoba jest już bardzo oddalona, co skutkuje bardzo małym rozmiarem oczu. W przypadku korzystania z przedniej kamery telefonu nie będą występowały takie odległości między twarzą, a urządzeniem. Z tego powodu takie warunki nie przyniosłyby znaczących i wartościowych w kontekście pracy dyplomowej wyników. 
+\par
+Testy zostaną przeprowadzone w przestrzeni barw RGB oraz w skali szarości.
+
+\subsection{Badanie skuteczności detekcji}
+
+Na początku porównywana była skuteczność zaprezentowanych metod. Chociaż w pewien sposób procent detekcji był już przedstawiony podczas dostrajania algorytmów, to tutaj zostały skonfrontowane ze sobą oba algorytmy.
+\par
+W przypadku metody opartej o facemarki, niewykryte oczy zarówno otwarte jak i zamknięte mogą oznaczać źle określenie położenia lub złą klasyfikacje do jednej z tych grup. Przykładowo oko otwarte mające $EAR$ mniejszy niż ustalony próg klasyfikowane było jako zamknięte, co skutkowało oznaczeniem jako błędna detekcja. 
+
+\input{tables/eye_section/eye_detection_accuracy}
+
+Najlepsze wyniki uzyskała metoda oparta na punktach charakterystycznych twarzy w trójkanałowej przestrzeni barw. Udało się jej wykryć średnio  $87\%$ wszystkich oczu. A w przypadku przestrzeni RGB aż $98,6\%$ z nich perfekcyjnie. Ta druga statystyka jest dużo lepsza niż w przypadku metod Haar które uzyskały raptem $57\%$. Ogólnie algorytm wykorzystujący facemarki był lepszy od drugiego o około $10\%$.
+\par
+Co ciekawe większą liczbę dobrych detekcji metoda oparta o facemarki uzyskała w przypadku obrazów w skali szarości, ale mniej perfekcyjnych. Natomiast, algorytm Haar lepiej poradził sobie w przypadku trójkanałowego zestawu barw, ale wykrywał ona więcej zamkniętych oczu przez co w tej statystyce wypadł gorzej niż w skali szarości. 
+
+\vspace{5mm}
+
+Ważną różnicą w działaniu obu algorytmów jest kształt i rozmiar oznaczanego obszaru. Metoda oparta o klasyfikatory zwraca kwadratowy region, zawierający dużo większą część twarzy niż same oczy. Natomiast facemarki tworzą obszar o kształcie prostokąta o dowolnym stosunku boków i zawierają głównie samą gałkę oczną. Zmniejsza to ilość punktów, które mogą przeszkadzać np. w detekcji źrenic.
+
+\subsubsection{Badanie szybkości detekcji} \label{section:eye_detection_speed_img}
+
+
+Dla detekcji oczu z użyciem facemarków zostały przedstawione dwa wyniki czasowe - jeden uwzględniający czas wykrycia punktów charakterystycznych, a drugi bez. Związane jest to z faktem, że mimo iż do wykorzystania tej metody niezbędna jest detekcja facemarków, to etap taki i tak będzie wykonany, ponieważ punkty te są używane np. do stwierdzenia mrugnięcia. W przypadku czasów zawierających algorytm punktów charakterystycznych test był przeprowadzony dla dwóch przestrzeni barw. Natomiast, na szybkość przekształcenia facemarków w obszar oka nie wpływa liczba kanałów, ponieważ nie operuje on na pikselach, tylko na zwróconych punktach kartezjańskich. Z tego powodu przedstawiony jest tylko jeden wynik.
+
+\input{tables/eye_section/eye_detection_speed}
+
+Wyniki bezdyskusyjnie pokazują dużo większą szybkość detekcji oczu z użyciem facemarków. Nawet biorąc pod uwagę czas wykrycia punktów charakterystycznych metoda ta była ponad $4$ razy szybsza od algorytmu opartego na klasyfikatorach kaskadowych Haar. 
+\par
+Tworzenia obszarów z punktów charakterystycznych osiągnęło czas rzędu $10^{-5}$, co w porównaniu do pozostałych algorytmów wykorzystywanych w projekcie jest praktycznie zerowy. Tak krótki czas przetwarzania sprawia, że nie będzie on miał żadnego wpływu na ilość klatek na sekundę podczas odbierania obrazu na żywo z kamery.
+\par
+Przestrzeń barw nie miała znaczącego wpływu na czas detekcji, a wyniki w przypadku trójkanałowych kolorów były porównywalne do skali szarości.
+
+\subsection{Testowanie na obrazie z kamery na żywo}
+
+Detekcja oczu została przetestowana również na obrazie z kamery na żywo. Warunki przeprowadzenia eksperymentu zostały opisane w rozdz. \hyperref[{section:face_detection_test_live}]{\ref{section:face_detection_test_live}}.
+
+\subsubsection{Skuteczność detekcji}
+
+Obserwując na żywo detekcje oczu byłem w stanie wysnuć kilka wniosków na temat badanych algorytmów.
+
+\vspace{4mm}
+
+Przede wszystkim oba działały bardzo stabilnie. Nie występowało nieuzasadnione gubienie obszaru oczu podczas statycznego położenia głowy. 
+\par
+W metodzie Haar występował problem przy mocnym skręceniu głowy w bok. Zwracany był wtedy często błędny i bardzo powiększony obszar dalszego oka. 
+\par
+Natomiast detekcja oczu na podstawie facemarków miała problemu z mocno przymkniętymi oczami. Wskaźnik EAR sygnalizował wtedy je jako zamknięte przez co algorytm nie zwracał ich regionu.
+
+\subsubsection{Szybkość detekcji}
+
+Ze względu na praktycznie zerowy obciążenie podczas przekształcania facemarków w obszar twarzy (patrz rozdz. \hyperref[{section:eye_detection_speed_img}]{\ref{section:eye_detection_speed_img}}) wyniki dla facemarków zostały skopiowane z rezultatów uzyskanych przez algorytm Kazemi podczas porównania metod nakładania punktów charakterystycznych na obraz z kamery na żywo  w rozdz. \hyperref[{section:facemark_speed_live}]{\ref{section:facemark_speed_live}}.
+\par
+Ponownie detekcja twarzy odbywała się przy zastosowaniu algorytmu \textit{HOG} dostarczając obraz RGB.
+
+\input{tables/eye_section/eye_detection_speed_live}
+
+Test ten pokazał znaczną przewagę szybkościową metody opartej na facemarkach. Klasyfikatory kaskadowe uzyskały około $23\%$ mniejszą liczbę klatek na sekundę.
+
+
+
+\subsection{Wybór algorytmu}
+
+Porównanie dwóch algorytmów detekcji oczu bezdyskusyjnie pokazało wyższość metody opartej na facemarkach nad klasyfikatorem kaskadowym Haar. Punkty charakterystyczne uzyskały lepszy procentowo wynik prawidłowych detekcji, a dodatkowo w teście na statycznych zdjęciach prawie wszystkie były perfekcyjne. Próby szybkościowe jednoznacznie wskazały na facemarki, które były $4$ razy szybsze od Haar, a jeśli brać pod uwagę jedynie czas tworzenia obszarów to ponad tysiąckrotnie.
+\par
+Na podstawie przeprowadzonych testów zostały wybrane facemarki do detekcji oczu i to ten algorytm będzie wykorzystywany w projekcie i pracy dyplomowej.

@@ -1,0 +1,50 @@
+\begin{table}[!h]
+\label{tab:face_filter_test}
+\centering
+\caption{Wynik porównania sposobów filtrowania detekcji}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+ &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Prawidłowe\\ detekcje\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Perfekcyjne\\ detekcje\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Częściowo\\ dobre\\ detekcje\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}3/4\\ krawędzie\\ perfekcyjne\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Złe\\ detekcje\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Niewykryte\\ twarze\end{tabular}}  \\ \hline \hline
+\textbf{Autorskie filtrowanie 300x300} &
+  80 &
+  62 &
+  18 &
+  18 &
+  0 &
+  0  \\ \hline
+  
+\textbf{Autorskie filtrowanie  500x500} &
+  80 &
+  68 &
+  12 &
+  11 &
+  0 &
+  0  \\ \hline
+  
+\textbf{Najwyższy współczynnik pewności 300x300} &
+  76 &
+  58 &
+  18 &
+  18 &
+  4 &
+  4  \\ \hline
+
+  \textbf{Najwyższy współczynnik pewności 500x500} &
+  76 &
+  64 &
+  12 &
+  11 &
+  4 &
+  4  \\ \hline
+ 
+  \hline
+\end{tabular}%
+}
+\end{table}

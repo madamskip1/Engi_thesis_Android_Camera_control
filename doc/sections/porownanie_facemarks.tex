@@ -1,0 +1,75 @@
+\newpage
+
+\section{Porównanie algorytmów detekcji facemarków}
+
+Podobnie jak w przypadku detekcji twarzy przeprowadziłem testy algorytmów wykrywania facemarków, przedstawionych w rozdziale \hyperref[section:landmarks]{\ref{section:landmarks}.Facemark}. Ze względu na specyfikę nanoszenia punktów charakterystycznych oraz ich ilość, trudno jest określić dokładność działania korzystając z matematycznych i liczbowych form wyrazu. Z tego powodu jakość obu algorytmów to moja subiektywna ocena na podstawie obserwacji facemarków obszaru oczu i ust. Dużą uwagę podczas opiniowania poświęcałem dokładnemu odwzorowaniu punktów w przypadku przymkniętych lub całkiem zamkniętych oczu, ponieważ ma to istotny wpływ na inne aspekty pracy dyplomowej. Natomiast złożoność czasowa jest już mierzalna i została wyrażona liczbowo. 
+
+\subsection{Testowanie na statycznych zdjęciach}
+
+Oba algorytmy były przetestowane na statycznych zdjęciach z datasetu w zakresie skuteczności i szybkości działania.
+
+\subsubsection{Usunięcie części zdjęć z datasetu}
+Ze względu na wybór algorytmu \textit{HOG} do detekcji twarzy zmuszony byłem odrzucić 2~z 80 przygotowanych zdjęć, ponieważ metodzie tej nie udało się wykryć na nich twarzy (patrz rozdz. \hyperref[{section:skutecznosc_detekcji_twarzy}]{\textit{\ref{section:skutecznosc_detekcji_twarzy}. Badanie skuteczności detekcji twarzy}}).
+
+\subsubsection{Badanie skuteczności detekcji}
+
+Podczas testu zostały zebrane następujące dane:
+
+\begin{itemize}
+    \item \textbf{Prawidłowe detekcje} - pokrycie twarzy facemarkami, które uznałem za dobre
+    \item \textbf{Złe detekcje} - pozostałe, które nie uznałem za dobre
+    \item \textbf{Detekcje lepsze niż drugiego algorytmu} - który z dwóch algorytmów poradził sobie lepiej w danym przypadku testowym. 
+\end{itemize}
+
+Zebrane dane są całkowicie subiektywnym odczuciem i inne osoby mogłyby mieć odmienne wyniki.
+
+\vspace{5mm}
+
+Oba algorytmy dawały taki sam rezultat zarówno w skali szarości jak i w trzy kanałowym zestawie barw, dlatego tabela wynikowa została uproszczona przez usunięcie takiego podziału.
+
+\input{tables/facemark_section/facemarks_accuracy}
+
+Zebrane dane pokazują jasno, że model oparty na metodzie \textit{Kazemi} dał zdecydowanie lepsze wyniki niż drugi badany algorytm. W 62 przypadkach testowych pokrycie twarzy facemarkami było subiektywnie dokładniejsze niż w metodzie \textit{LBF}. Tylko 12 z 78 detekcji uznałem za błędne. Można przyjąć, że jest to wynik co najmniej poprawny. Natomiast algorytm zaimplementowany w bibliotece OpenCV mylił się w ponad połowie przypadków.
+
+
+\subsubsection{Badanie szybkości detekcji}
+
+W tym teście zostały zebrane i porównane następujące dane:
+
+\begin{itemize}
+    \item \textbf{Całkowity czas przetwarzania} - suma czasów detekcji facemarków dla wszystkich 20 iteracji
+    \item \textbf{Średni czas przetwarzania pojedynczej iteracji} - uśredniony czas detekcji facemarków dla pojedynczej iteracji
+    \item \textbf{Średni czas przetwarzania jednego zdjęcia} - uśredniony czas detekcji facemarków dla pojedynczego zdjęcia
+\end{itemize}
+
+\input{tables/facemark_section/facemarks_speed}
+
+Algorytm Kazemi z użyciem biblioteki dlib i języka C++ okazał się szybszy o ponad $10\%$ od odpowiednika w postaci LBF. Obie metody uzyskały lepszy czas w teście opartym na obrazach w skali szarości niż w RGB o kilka procent. Istotnym faktem jest, że te algorytmy potrzebują mało czasu na przetworzenie pojedynczego zdjęcia, dzięki czemu w warunkach czasu rzeczywistego nie spowodują znacznego spadku klatek na sekundę. 
+
+\subsection{Testowanie na obrazie z kamery na żywo}
+
+Kolejnym etapem testowania detekcji facemarków będzie wykorzystanie obrazu z kamery na żywo. Warunki przeprowadzenia eksperymentu zostały opisane w rozdz. \hyperref[{section:face_detection_test_live}]{\ref{section:face_detection_test_live}}.
+
+\subsubsection{Skuteczność detekcji}
+
+Ze względu na opisaną wyżej trudność matematycznego wyrażenia skuteczności nakładania punktów charakterystycznych, wyniki porównania zostały przedstawione w formie opisowej i są moim subiektywnym odczuciem obserwacji działania algorytmu na żywo.
+
+\vspace{5mm}
+
+Algorytm Kazemi bez zarzutu poradził sobie w trzech scenariuszach. Natomiast w jednym - przy mocnym oświetleniu padającym na obiektyw i na twarz - występowało wtedy chwilowe niedokładne dopasowanie. Poza tym problemem radził sobie on bardzo dobrze. Ruchy twarzy nie przeszkadzały w prawidłowym ułożeniu facemarków. Punkty były bardzo stabilne, a podczas sztywnego położenia twarzy nie występowały ich drgania.
+\par
+Gorzej poradził sobie algorytm LBF. Podobnie jak Kazemi miał pewne problemy podczas scenariusza opartego na mocnym oświetleniu. Występowało ciągłe drganie punktów, nawet podczas sztywnego położenia twarzy. Metoda ta oznaczała twarz jako szerszą niż w rzeczywistości była. Podczas ruchów twarzy algorytm gubił prawidłowe położenie punktów.
+
+\subsubsection{Szybkość detekcji} \label{section:facemark_speed_live}
+
+Test był przeprowadzony używając detekcji twarzy \textit{HOG}, do którego dostarczano obraz w przestrzeni barw RGB. 
+
+\input{tables/facemark_section/facemark_speed_live}
+
+Mniejsza ilość klatek w przypadku testów w skali szarości prawdopodobnie jest związany z dodatkowym narzutem czasowym w postaci konwersji obrazu z trójkanałowej barwy na jednokanałową.
+\par
+Oba algorytmy uzyskały bardzo zbliżone wyniki. Niewiele szybsza okazała się jednak metoda Kazemi. Rezultat jest porównywalny z testem przeprowadzonym na statycznych zdjęciach.
+
+\subsection{Wybór algorytmu}
+
+\textit{Kazemi} okazał się przede wszystkim dużo skuteczniejszym i stabilnym algorytmem niż facemarki oparte na \textit{Local Binary Features}. Dodatkowo jest około $10\%$ szybszy. Wszystkie testy wskazują na wyższośc \textit{Kazemi} i z tych powodów jest on używany w dalszej części pracy dyplomowej i projektu. 

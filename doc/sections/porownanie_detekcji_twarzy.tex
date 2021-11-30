@@ -50,7 +50,7 @@ Testy będą przeprowadzone w trybie \textit{release}, ponieważ w trybie \texti
 
 
 
-\subsubsection{Badanie skuteczności detekcji}
+\subsubsection{Badanie skuteczności detekcji} \label{section:skutecznosc_detekcji_twarzy}
 
 W tym teście zostaną zebrane i porównane następujące dane:
 \begin{itemize}
@@ -70,8 +70,8 @@ W tym teście zostaną zebrane i porównane następujące dane:
 
 \vspace{10mm}
 
-\input{tables/face_detection_accuracy_rgb}
-\input{tables/face_detection_accuracy_gray}
+\input{tables/face_section/face_detection_accuracy_rgb}
+\input{tables/face_section/face_detection_accuracy_gray}
 
 Metoda \textit{Haar Cascade} daje średnio $\sim69/80$ $(86\%)$ dobrych detekcji. Jest to dosyć przeciętny wynik. Na taki rezultat składa się kilka problemów tej metody. Nie radzi sobie ona dobrze z częściowo zakrytymi twarzami lub gdy głowa jest pochylona w bok. Kolejnymi czynnikiem wpływającym negatywnie na detekcje jest światło - problem z wykrywaniem występuje gdy zdjęcie jest zbyt jasne, twarz oświetlona lub źródło światła świeci prosto w obiektyw. Zaletą tej metody można zapisać małą ilość zwróconych przez nią dodatkowych, błędnych obszarów, które musiały zostać odfiltrowane.
 
@@ -105,8 +105,8 @@ W tym teście zostaną zebrane i porównane następujące dane:
 
 \vspace{10mm}
 
-\input{tables/face_detection_speed_rgb}
-\input{tables/face_detection_speed_gray}
+\input{tables/face_section/face_detection_speed_rgb}
+\input{tables/face_section/face_detection_speed_gray}
 
 Najszbyszy okazał się algorytm operujący na histogramach gradientowych. Niewiele wolniej przetwarzał algorytm kaskadowy \textit{LBP}. \textit{DNN Caffe} dla zdjęć $500x500$  był porównywalnie szybki jak \textit{Haar Cascade}, natomiast już w przypadku $300x300$ około $2.5$ razy wolniejszy.
 \par
@@ -121,7 +121,7 @@ Zmiana detekcji z trójkanałowej RGB na skalę szarości w przypadku \textit{Ha
 
 \subsubsection{Wpływ wielkości zdjęcia na szybkość algorytm \textit{DNN Caffe}}
 
-\input{tables/face_detection_result_dnn_speed}
+\input{tables/face_section/face_detection_result_dnn_speed}
 
 Test ten potwierdza postawioną przeze mnie wcześniej tezę, że wielkość zdjęcia nie ma wpływu na szybkość przetwarzania algorytmu \textit{DNN Caffe}. Testy w każdej rozdzielczości zostały wykonane mniej więcej w tym samym czasie, a różnica zapewne jest skutkiem obciążenia urządzenia w danej chwili i jest pomijalna.\\
 Prawdopodobnie wynika to z faktu, że metoda ta tworzy na podstawie zdjęcia wejściowego plamki o podanej wielkości niezależnie od rozdzielczości. W zaimplementowanym algorytmie jest to rozmiar 300x300. Dzięki temu zawsze ma on do przetworzenia taką samą ilość danych, więc czas powinien być w przybliżeniu stały. \\
@@ -136,12 +136,12 @@ Z tego powodu postanowiłem porównać autorskie filtrowanie opisane wcześniej 
 
 \vspace{8mm}
 
-\input{tables/face_detection_result_filter}
+\input{tables/face_section/face_detection_result_filter}
 
 Wyniki w \hyperref[{tab:face_filter_test}]{\textit{tabeli 3.6}} pokazują, że zaproponowana przeze mnie wcześniej sekwencja filtrowania wykrytych obszarów daje lepsze rezultaty niż wybór najwyższego współczynnika pewności.
 
 
-\subsection{Testowanie na obrazie z kamery na żywo}
+\subsection{Testowanie na obrazie z kamery na żywo} \label{section:face_detection_test_live}
 
 W teście opartym na statycznych zdjęciach najlepsze okazały się algorytmy \textit{DNN} i \textit{HOG}, a dodatkowo ten drugi był również najszybszy. Z tego względu w próbie wykorzystującej obraz na żywo badane będą wyłącznie te dwa algorytmy, a pozostałe odrzucone.
 \par
@@ -163,7 +163,7 @@ Każdy test będzie trwał 210 klatek, ale pierwsze i ostatnie 5 nie będzie bra
 
 Sprawdzenie skuteczności algorytmów polega na zebraniu informacji na ilu klatkach z obrazu na żywo udało się wykryć twarz.
 
-\input{tables/face_detection_accuracy_live}
+\input{tables/face_section/face_detection_accuracy_live}
 
 Jak widać oba algorytmy wykrywały w każdej odebranej klatce twarz. Potwierdzają to zarówno logi jak i podgląd na żywo podczas testu. 
 
@@ -171,7 +171,7 @@ Jak widać oba algorytmy wykrywały w każdej odebranej klatce twarz. Potwierdza
 
 Szybkość detekcji będzie porównana za pomocą średniej ilości klatek na sekundę. Jako, że w statystykach nie jest uwzględniany tylko czas detekcji, a działanie całej aplikacji to występują tu pewne narzuty czasowe związany z wyświetlaniem obrazu i rysowaniem na nich wykrytego obszaru celem podglądu testowanych parametrów na żywo. Jednak opóźnienie to występuje w każdym algorytmie i można uznać je za takie same.
 
-\input{tables/face_detection_speed_live}
+\input{tables/face_section/face_detection_speed_live}
 
 Podobnie jak w testach na statystycznych zdjęciach algorytm \textit{HOG} okazał się szybszy od \textit{DNN Caffe}. W przypadku histogramu gradientów w oparciu o zdjęcie w skali szarości była to prędkość większa aż o $37 \%$.
 

@@ -1,0 +1,51 @@
+\begin{table}[!h]
+\label{tab:eye_detection_accuracy_result}
+\centering
+\caption{Skuteczność algorytmów detekcji twarzy}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+ &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Prawidłowe\\ detekcje\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Perfekcyjne\\ detekcje\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Częściowo\\ dobre\\ detekcje\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Złe\\ detekcje\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Niewykryte\\  oczy otwarte\end{tabular}}  &
+ \textbf{\begin{tabular}[c]{@{}c@{}}Niewykryte\\  oczy zamknięte \end{tabular}} \\ \hline \hline
+
+\textbf{Facemarki oczu RGB} &
+  144 &
+  142 &
+  2 &
+  12 &
+  6 &
+  6  \\ \hline
+  
+\textbf{\begin{tabular}[c]{@{}c@{}}Facemarki oczu \\ sk. szaro. \end{tabular}} &
+  145 &
+  140 &
+  5 &
+  11 &
+  1 &
+  6  \\ \hline
+  
+\textbf{Haar RGB} &
+  133 &
+  95 &
+  38 &
+  23 &
+  9 &
+  11  \\ \hline
+  
+\textbf{Haar sk. szaro.} &
+  130 &
+  95 &
+  35 &
+  26 &
+  11 &
+  7  \\ \hline
+  
+  \hline
+\end{tabular}%
+}
+\end{table}

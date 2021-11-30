@@ -1,0 +1,82 @@
+\begin{table}[!h]
+\label{tab:face_detect_accuracy_GRAY}
+\centering
+\caption{Skuteczność algorytmów detekcji twarzy dla obrazów w skali szarości}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+ &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Prawidłowe\\ detekcje\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Perfekcyjne\\ detekcje\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Częściowo\\ dobre\\ detekcje\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}3/4\\ krawędzie\\ perfekcyjne\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Złe\\ detekcje\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Niewykryte\\ twarze\end{tabular}}   \\ \hline \hline
+\textbf{Haar Cascade 500x500} &
+  69 &
+  4 &
+  65 &
+  31 &
+  11 &
+  9  \\ \hline
+
+\textbf{Haar Cascade 300x300} &
+  67 &
+  4 &
+  63 &
+  34 &
+  13 &
+  9  \\ \hline
+  
+\textbf{LBP Cascade 500x500} &
+  60 &
+  5 &
+  55 &
+  30 &
+  20 &
+  17  \\ \hline
+  
+\textbf{LBP Cascade 300x300} &
+  60 &
+  4 &
+  56 &
+  31 &
+  20 &
+  17  \\ \hline
+  
+\textbf{DNN Caffe 500x500} &
+  nd. &
+  nd. &
+  nd. &
+  nd. &
+  nd. &
+  nd. \\ \hline
+  
+\textbf{DNN Caffe 300x300} &
+  nd. &
+  nd. &
+  nd. &
+  nd. &
+  nd. &
+  nd.  \\ \hline
+  
+  \textbf{Dlib HOG 500x500} &
+  75 &
+  27 &
+  48 &
+  35 &
+  5 &
+  5  \\ \hline
+  
+\textbf{Dlib HOG 300x300} &
+  72 &
+  23 &
+  49 &
+  31 &
+  7 &
+  7  \\ \hline
+  
+  \hline
+\end{tabular}%
+}
+\end{table}
