@@ -1,43 +1,62 @@
 package org.pw.engithesis.androidcameracontrol;
 
-import org.opencv.core.Point;
 import org.pw.engithesis.androidcameracontrol.interfaces.Observable;
 
-/*
- *
- * TODO :
- *  Predykcja czy bylo mrugniecie
- *  Mrugniecie oka musi trwać X klatek, żeby zostało zaliczone
- *
- *
- */
+import java.util.ArrayList;
 
 public class EyeBlinkDetector extends Observable {
-    public static final int LEFT_EYE = 0;
-    public static final int RIGHT_EYE = 1;
 
-    public static double BLINK_THRESHOLD = 0.19;
-    private final EyeAspectRatio earCalculator;
-    public double leftEyeEAR;
-    public double rightEyeEAR;
+    private final EyesClosedQueue closedQueue = new EyesClosedQueue();
+    private boolean blink = true;
 
-    public EyeBlinkDetector() {
-        earCalculator = new EyeAspectRatio();
+    public boolean checkEyeBlink(boolean eyesClosed) {
+        blink = closedQueue.isBlink(eyesClosed);
+        if (blink) {
+            notifyUpdate();
+        }
+
+        return blink;
     }
 
-    public void checkEyeBlink(Point[] rightEyeFacemarks, Point[] leftEyeFacemarks) {
-        leftEyeEAR = earCalculator.calcEAR(leftEyeFacemarks);
-        rightEyeEAR = earCalculator.calcEAR(rightEyeFacemarks);
-
-        notifyUpdate();
+    public boolean isBlinking() {
+        return blink;
     }
 
-    public boolean isLeftBlink() {
-        return leftEyeEAR <= BLINK_THRESHOLD;
-    }
+    private static class EyesClosedQueue {
+        private static final int CONCUSSIVE_FRAME_TOLERANCE = 3;
+        private final ArrayList<Boolean> previousFramesWasClosed;
+        private boolean isClosed = false;
 
-    public boolean isRightBlink() {
-        return rightEyeEAR <= BLINK_THRESHOLD;
-    }
+        EyesClosedQueue() {
+            previousFramesWasClosed = new ArrayList<>();
+            for (int i = 0; i < CONCUSSIVE_FRAME_TOLERANCE; i++) {
+                previousFramesWasClosed.add(false);
+            }
+        }
 
+        public boolean isBlink(boolean closed) {
+            addToFramesList(closed);
+            boolean stateChanged = didStateChange();
+            if (!stateChanged) {
+                return false;
+            }
+
+            isClosed = !isClosed;
+            return isClosed;
+        }
+
+        private void addToFramesList(boolean closed) {
+            previousFramesWasClosed.remove(0);
+            previousFramesWasClosed.add(closed);
+        }
+
+        private boolean didStateChange() {
+            for (int i = 0; i < CONCUSSIVE_FRAME_TOLERANCE; i++) {
+                if (previousFramesWasClosed.get(i) == isClosed) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
 }
