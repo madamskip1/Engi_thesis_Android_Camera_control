@@ -27,7 +27,12 @@ public class FaceDetector {
     public Rect detect(Mat frame) {
         Rect[] faces = detectionAlgorithm.detect(frame);
 
-        return filterFaces(frame, faces);
+        Rect face = filterFaces(frame, faces);
+        if (face == null) {
+            return null;
+        }
+
+        return clipFaceRectToFrame(frame, face);
     }
 
 
@@ -90,5 +95,31 @@ public class FaceDetector {
         }
 
         return biggestRect;
+    }
+
+    private Rect clipFaceRectToFrame(Mat frame, Rect face) {
+        if (face.x < 0) {
+            int diff = -face.x;
+            face.x = 0;
+            face.width -= diff;
+        }
+        if (face.y < 0) {
+            int diff = -face.y;
+            face.y = 0;
+            face.height -= diff;
+        }
+
+        int maxX = face.x + face.width;
+        if (maxX > frame.width()) {
+            int diff = maxX - frame.width();
+            face.width -= diff;
+        }
+        int maxY = face.y + face.height;
+        if (maxY > frame.height()) {
+            int diff = maxY - frame.height();
+            face.height -= diff;
+        }
+
+        return face;
     }
 }
