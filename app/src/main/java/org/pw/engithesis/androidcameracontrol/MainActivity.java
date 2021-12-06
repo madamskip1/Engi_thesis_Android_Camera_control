@@ -28,4 +28,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(selectImageTestIntent);
     }
 
+    public void goImageSlider(View view) {
+        Intent imageSliderIntent = new Intent(this, ImageSlider.class);
+        startActivity(imageSliderIntent);
+    }
 }

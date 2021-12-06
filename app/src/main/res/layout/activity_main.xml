@@ -51,6 +51,13 @@
             android:onClick="goSelectImageTest"
             android:text="Image Tests" />
 
+        <Button
+            android:id="@+id/buttonGoImageSlider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="goImageSlider"
+            android:text="Image Slider" />
+
 
     </LinearLayout>
 

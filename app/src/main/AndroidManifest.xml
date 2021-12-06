@@ -23,6 +23,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidCameraControl">
         <activity
+            android:name=".ImageSlider"
+            android:exported="false" />
+        <activity
             android:name=".tests.SelectImageTest"
             android:exported="true" />
         <activity
