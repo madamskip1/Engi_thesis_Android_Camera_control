@@ -10,7 +10,7 @@ public abstract class EyePupilDetectionAlgorithm {
 
     protected Mat getGrayEyeMat(Mat frame, Rect eyeRegion) {
         Mat eyeMat = frame.submat(eyeRegion);
-        if (eyeMat.channels() == 3) {
+        if (eyeMat.channels() == 1) {
             return eyeMat;
         }
 
