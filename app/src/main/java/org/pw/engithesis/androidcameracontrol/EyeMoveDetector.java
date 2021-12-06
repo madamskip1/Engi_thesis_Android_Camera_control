@@ -6,17 +6,15 @@ import org.opencv.core.Rect;
 import java.util.ArrayList;
 
 public class EyeMoveDetector {
-    private static final int PREVIOUS_FRAMES_LIST_SIZE = 3;
-    private static final double SIDE_POS_BORDER = 0.35;
+    private static final int CONCUSSIVE_FRAME_TO_MOVE = 3;
+    private static final double SIDE_POS_BORDER = 0.40;
+
     private final ArrayList<EYE_POS> eyePupilPosPrevFrames = new ArrayList<>(); // [0.0, 1.0] of X-Axis
-    private boolean canMoveLeft = false;
-    private boolean canMoveRight = false;
-    private boolean areEyesClosed = true;
     private EYE_POS lastPos = EYE_POS.CLOSED;
 
     public EyeMoveDetector() {
-        eyePupilPosPrevFrames.ensureCapacity(PREVIOUS_FRAMES_LIST_SIZE);
-        for (int i = 0; i < PREVIOUS_FRAMES_LIST_SIZE; i++) {
+        eyePupilPosPrevFrames.ensureCapacity(CONCUSSIVE_FRAME_TO_MOVE);
+        for (int i = 0; i < CONCUSSIVE_FRAME_TO_MOVE; i++) {
             eyePupilPosPrevFrames.add(null);
         }
     }
@@ -29,66 +27,30 @@ public class EyeMoveDetector {
             return EYE_MOVE.NONE;
         }
 
-        if (lastPos == EYE_POS.CLOSED)   // (3) przyszlo otwarte, bylo zamkniete
-        {
+        if (lastPos == EYE_POS.CLOSED) {
             if (checkIfMovedTo(EYE_POS.LEFT)) {
                 openEyes(EYE_POS.LEFT);
-            }
-            if (checkIfMovedTo(EYE_POS.RIGHT)) {
+            } else if (checkIfMovedTo(EYE_POS.RIGHT)) {
                 openEyes(EYE_POS.RIGHT);
-            }
-            if (checkIfMovedTo(EYE_POS.CENTER)) {
+            } else if (checkIfMovedTo(EYE_POS.CENTER)) {
                 openEyes(EYE_POS.CENTER);
-            }
-            // even if positions in all previous frames were OPEN we can keep lastPos == CLOSED
-        } else if (lastPos == EYE_POS.CENTER) // (4) przyjdzie otwarte było centrum
-        {
-            if (checkIfMovedTo(EYE_POS.LEFT)) {
-                movedLeft();
-                return EYE_MOVE.LEFT;
-            }
-            if (checkIfMovedTo(EYE_POS.RIGHT)) {
-                movedRight();
-                return EYE_MOVE.RIGHT;
-            }
-        } else if (lastPos == EYE_POS.LEFT)  // (5) przyjdzie otwarte, było lewo
-        {
-            if (checkIfMovedTo(EYE_POS.CENTER)) {
-                movedCenter();
-                return EYE_MOVE.CENTER;
-            }
-            if (checkIfMovedTo(EYE_POS.RIGHT)) {
-                movedRight();
-                return EYE_MOVE.RIGHT;
-            }
-        } else // lastPos == EYE_POS.RIGHT    // (6) przyjdzie otwarte, było prawo
-        {
-            if (checkIfMovedTo(EYE_POS.LEFT)) {
-                movedLeft();
-                return EYE_MOVE.LEFT;
-            }
-            if (checkIfMovedTo(EYE_POS.CENTER)) {
-                movedCenter();
-                return EYE_MOVE.CENTER;
-            }
-        }
+            } // else -> even if positions in all previous frames were OPEN we can keep lastPos == CLOSED, because all weren't same pos in a row (in CONCUSSIVE_FRAME_TO_MOVE)
 
-        return EYE_MOVE.NONE;
+            return EYE_MOVE.NONE; // don't do move just after eyes open
+        }
+        if (lastPos == EYE_POS.CENTER) {
+            return tryToMoveFromCenter();
+        }
+        if (lastPos == EYE_POS.LEFT) {
+            return tryToMoveFromLeft();
+        }
+        // else lastPos == EYE_POS.RIGHT
+        return tryToMoveFromRight();
     }
 
-
-    // ZROBIONE GIT
     public void tickEyeClosed() {
-        // fileLogger.write("pos_closed");
-        if (lastPos == EYE_POS.CLOSED) // (1) Przyjdzie zamknięte, było zamknięte
-        {
-            return;  // GIT
-        }
-
-        // (2) Przyjdzie zamknięte, było otwarte
-        // GIT
         addToPrevFramesList(EYE_POS.CLOSED);
-        if (checkIfMovedTo(EYE_POS.CLOSED)) {
+        if (lastPos != EYE_POS.CLOSED && checkIfMovedTo(EYE_POS.CLOSED)) {
             closeEyes();
         }
     }
@@ -100,22 +62,6 @@ public class EyeMoveDetector {
         double avgPos = (leftEyePos + rightEyePos) / 2.0;
 
         return xAxisPosToEYE_POS(avgPos);
-    }
-
-    private void addToPrevFramesList(EYE_POS pos) {
-        eyePupilPosPrevFrames.remove(0);
-        eyePupilPosPrevFrames.add(pos);
-    }
-
-
-    private boolean checkIfMovedTo(EYE_POS expectedPos) {
-        for (int i = 0; i < PREVIOUS_FRAMES_LIST_SIZE; i++) {
-            if (expectedPos != eyePupilPosPrevFrames.get(i)) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     private EYE_POS xAxisPosToEYE_POS(Double xPos) {
@@ -130,46 +76,70 @@ public class EyeMoveDetector {
         }
     }
 
-    private void movedLeft() {
-        canMoveRight = true;
-        canMoveLeft = false;
-        lastPos = EYE_POS.LEFT;
+    private void addToPrevFramesList(EYE_POS pos) {
+        eyePupilPosPrevFrames.remove(0);
+        eyePupilPosPrevFrames.add(pos);
     }
 
-    private void movedCenter() {
-        canMoveRight = true;
-        canMoveLeft = true;
-        lastPos = EYE_POS.CENTER;
+
+    private boolean checkIfMovedTo(EYE_POS expectedPos) {
+        for (int i = 0; i < CONCUSSIVE_FRAME_TO_MOVE; i++) {
+            if (expectedPos != eyePupilPosPrevFrames.get(i)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
-    private void movedRight() {
-        canMoveRight = false;
-        canMoveLeft = true;
-        lastPos = EYE_POS.RIGHT;
+    private EYE_MOVE tryToMoveFromLeft() {
+        if (checkIfMovedTo(EYE_POS.CENTER)) {
+            lastPos = EYE_POS.CENTER;
+            return EYE_MOVE.CENTER;
+        }
+        if (checkIfMovedTo(EYE_POS.RIGHT)) {
+            lastPos = EYE_POS.RIGHT;
+            return EYE_MOVE.RIGHT;
+        }
+
+        return EYE_MOVE.NONE;
+    }
+
+    private EYE_MOVE tryToMoveFromCenter() {
+        if (checkIfMovedTo(EYE_POS.LEFT)) {
+            lastPos = EYE_POS.LEFT;
+            return EYE_MOVE.LEFT;
+        }
+        if (checkIfMovedTo(EYE_POS.RIGHT)) {
+            lastPos = EYE_POS.RIGHT;
+            return EYE_MOVE.RIGHT;
+        }
+
+        return EYE_MOVE.NONE;
+    }
+
+    private EYE_MOVE tryToMoveFromRight() {
+        if (checkIfMovedTo(EYE_POS.LEFT)) {
+            lastPos = EYE_POS.LEFT;
+            return EYE_MOVE.LEFT;
+        }
+        if (checkIfMovedTo(EYE_POS.CENTER)) {
+            lastPos = EYE_POS.CENTER;
+            return EYE_MOVE.CENTER;
+        }
+
+        return EYE_MOVE.NONE;
     }
 
     private void closeEyes() {
-        canMoveLeft = false;
-        canMoveRight = false;
-        areEyesClosed = true;
         lastPos = EYE_POS.CLOSED;
     }
 
     private void openEyes(EYE_POS openInPos) {
-        if (openInPos == EYE_POS.LEFT) {
-            canMoveRight = true;
-        } else if (openInPos == EYE_POS.RIGHT) {
-            canMoveLeft = true;
-        } else {
-            canMoveRight = true;
-            canMoveLeft = true;
-        }
-
-        areEyesClosed = false;
         lastPos = openInPos;
     }
 
-    private enum EYE_POS {LEFT, CENTER, RIGHT, NONE, CLOSED}
+    private enum EYE_POS {LEFT, CENTER, RIGHT, CLOSED}
 
     public enum EYE_MOVE {LEFT, CENTER, RIGHT, NONE}
 }
