@@ -1,5 +1,5 @@
 
-# Praca dyplomowa inżynierska "*Zastosowanie analizy obrazu twarzy do sterowania aplikacją na urządzeniach z systemem Android *"
+# Praca dyplomowa inżynierska "*Zastosowanie analizy obrazu twarzy do sterowania aplikacją na urządzeniach z systemem Android*"
 
 **Autor:** Adamski Maciej<br/>
 **Promotor:** prof. Przemysław Rokita<br/>
