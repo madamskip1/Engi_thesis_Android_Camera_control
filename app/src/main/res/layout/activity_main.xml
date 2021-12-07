@@ -58,6 +58,12 @@
             android:onClick="goImageSlider"
             android:text="Image Slider" />
 
+        <Button
+            android:id="@+id/buttonGoBlink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="goBlink"
+            android:text="Blink" />
 
     </LinearLayout>
 

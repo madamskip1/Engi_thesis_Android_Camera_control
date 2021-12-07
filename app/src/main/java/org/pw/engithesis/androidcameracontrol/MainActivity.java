@@ -32,4 +32,9 @@ public class MainActivity extends AppCompatActivity {
         Intent imageSliderIntent = new Intent(this, ImageSlider.class);
         startActivity(imageSliderIntent);
     }
+
+    public void goBlink(View view) {
+        Intent blinkIntent = new Intent(this, BlinkActivity.class);
+        startActivity(blinkIntent);
+    }
 }
