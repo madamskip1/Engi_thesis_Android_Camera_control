@@ -1,12 +1,12 @@
-package org.pw.engithesis.androidcameracontrol;
+package org.pw.engithesis.androidcameracontrol.detectors;
 
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
-import org.pw.engithesis.androidcameracontrol.facemarksalgorithms.FacemarksAlgorithm;
-import org.pw.engithesis.androidcameracontrol.facemarksalgorithms.FacemarksKazemi;
+import org.pw.engithesis.androidcameracontrol.detectors.facemarksdetectionalgorithms.FacemarksAlgorithm;
+import org.pw.engithesis.androidcameracontrol.detectors.facemarksdetectionalgorithms.FacemarksKazemi;
 
 public class FacemarksDetector {
     private static final int RIGHT_EYE_START_INDEX = 36;

@@ -1,4 +1,4 @@
-package org.pw.engithesis.androidcameracontrol.facemarksalgorithms;
+package org.pw.engithesis.androidcameracontrol.detectors.facemarksdetectionalgorithms;
 
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint2f;

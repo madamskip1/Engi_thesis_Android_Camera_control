@@ -33,9 +33,10 @@ private:
 
 extern "C"
 JNIEXPORT jlong JNICALL
-Java_org_pw_engithesis_androidcameracontrol_facemarksalgorithms_FacemarksKazemi_init(JNIEnv *env,
-                                                                                     jclass,
-                                                                                     jstring model_path) {
+Java_org_pw_engithesis_androidcameracontrol_detectors_facemarksdetectionalgorithms_FacemarksKazemi_init(
+        JNIEnv *env,
+        jclass,
+        jstring model_path) {
     auto cstrPath = (env)->GetStringUTFChars(model_path, nullptr);
     std::string strPath = std::string(cstrPath);
     auto addr = reinterpret_cast<jlong>(new FacemarksKazemi(strPath));
@@ -45,7 +46,7 @@ Java_org_pw_engithesis_androidcameracontrol_facemarksalgorithms_FacemarksKazemi_
 }
 extern "C"
 JNIEXPORT jintArray JNICALL
-Java_org_pw_engithesis_androidcameracontrol_facemarksalgorithms_FacemarksKazemi_getFacemarks(
+Java_org_pw_engithesis_androidcameracontrol_detectors_facemarksdetectionalgorithms_FacemarksKazemi_getFacemarks(
         JNIEnv *env, jclass, jlong detector_addr, jlong frame_addr, jintArray face_rect) {
     cv::Mat &frame = *(cv::Mat *) frame_addr;
     auto dlibFaceRect = getDlibRectFromJniArray(env, face_rect);

@@ -1,4 +1,4 @@
-package org.pw.engithesis.androidcameracontrol;
+package org.pw.engithesis.androidcameracontrol.detectors;
 
 import org.opencv.core.Point;
 import org.opencv.core.Rect;

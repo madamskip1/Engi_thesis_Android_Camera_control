@@ -49,7 +49,7 @@ private:
 
 extern "C"
 JNIEXPORT jlong JNICALL
-Java_org_pw_engithesis_androidcameracontrol_facedetectionalgorithms_FaceDetectionDlibMMOD_init(
+Java_org_pw_engithesis_androidcameracontrol_detectors_facedetectionalgorithms_FaceDetectionDlibMMOD_init(
         JNIEnv *env, jclass, jstring model_path) {
     auto cstrPath = (env)->GetStringUTFChars(model_path, nullptr);
     std::string strPath = std::string(cstrPath);
@@ -60,7 +60,7 @@ Java_org_pw_engithesis_androidcameracontrol_facedetectionalgorithms_FaceDetectio
 }
 extern "C"
 JNIEXPORT void JNICALL
-Java_org_pw_engithesis_androidcameracontrol_facedetectionalgorithms_FaceDetectionDlibMMOD_nativeDetect(
+Java_org_pw_engithesis_androidcameracontrol_detectors_facedetectionalgorithms_FaceDetectionDlibMMOD_nativeDetect(
         JNIEnv *, jclass, jlong detector_addr, jlong frame_addr, jlong result_faces) {
     cv::Mat &frame = *(cv::Mat *) frame_addr;
     auto detector = reinterpret_cast<MMODDetector *>(detector_addr);

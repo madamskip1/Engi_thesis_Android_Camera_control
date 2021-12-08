@@ -21,13 +21,13 @@ private:
 
 extern "C"
 JNIEXPORT jlong JNICALL
-Java_org_pw_engithesis_androidcameracontrol_facedetectionalgorithms_FaceDetectionDlibHOG_initNativeDetector(
+Java_org_pw_engithesis_androidcameracontrol_detectors_facedetectionalgorithms_FaceDetectionDlibHOG_initNativeDetector(
         JNIEnv *, jclass) {
     return reinterpret_cast<jlong>(new FaceDetectorHOG());
 }
 extern "C"
 JNIEXPORT void JNICALL
-Java_org_pw_engithesis_androidcameracontrol_facedetectionalgorithms_FaceDetectionDlibHOG_nativeDetect(
+Java_org_pw_engithesis_androidcameracontrol_detectors_facedetectionalgorithms_FaceDetectionDlibHOG_nativeDetect(
         JNIEnv *, jclass, jlong detector_addr, jlong frame_addr, jlong result_faces) {
     cv::Mat &frame = *(cv::Mat *) frame_addr;
     auto detector = reinterpret_cast<FaceDetectorHOG *>(detector_addr);

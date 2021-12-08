@@ -1,9 +1,10 @@
-package org.pw.engithesis.androidcameracontrol;
+package org.pw.engithesis.androidcameracontrol.detectors;
 
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
-import org.pw.engithesis.androidcameracontrol.eyedetectionalgorithms.EyeDetectionAlgorithm;
-import org.pw.engithesis.androidcameracontrol.eyedetectionalgorithms.EyeDetectionHaar;
+import org.pw.engithesis.androidcameracontrol.EyeFilter;
+import org.pw.engithesis.androidcameracontrol.detectors.eyedetectionalgorithms.EyeDetectionAlgorithm;
+import org.pw.engithesis.androidcameracontrol.detectors.eyedetectionalgorithms.EyeDetectionHaar;
 
 public class EyeDetector {
     public static final int RIGHT_EYE_INDEX = 0;

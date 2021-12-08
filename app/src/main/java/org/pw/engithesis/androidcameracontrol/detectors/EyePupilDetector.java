@@ -1,10 +1,10 @@
-package org.pw.engithesis.androidcameracontrol;
+package org.pw.engithesis.androidcameracontrol.detectors;
 
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
-import org.pw.engithesis.androidcameracontrol.eyepupildetectionalgorithms.EyePupilDetectionAlgorithm;
-import org.pw.engithesis.androidcameracontrol.eyepupildetectionalgorithms.EyePupilDetectionCDF;
+import org.pw.engithesis.androidcameracontrol.detectors.eyepupildetectionalgorithms.EyePupilDetectionAlgorithm;
+import org.pw.engithesis.androidcameracontrol.detectors.eyepupildetectionalgorithms.EyePupilDetectionCDF;
 
 public class EyePupilDetector {
     private final EyePupilDetectionAlgorithm detectionAlgorithm;

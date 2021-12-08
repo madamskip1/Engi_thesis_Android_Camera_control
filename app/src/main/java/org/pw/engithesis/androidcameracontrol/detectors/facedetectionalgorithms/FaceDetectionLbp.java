@@ -1,4 +1,4 @@
-package org.pw.engithesis.androidcameracontrol.facedetectionalgorithms;
+package org.pw.engithesis.androidcameracontrol.detectors.facedetectionalgorithms;
 
 import org.pw.engithesis.androidcameracontrol.R;
 

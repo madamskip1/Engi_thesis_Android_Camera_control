@@ -1,4 +1,4 @@
-package org.pw.engithesis.androidcameracontrol.facedetectionalgorithms;
+package org.pw.engithesis.androidcameracontrol.detectors.facedetectionalgorithms;
 
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;

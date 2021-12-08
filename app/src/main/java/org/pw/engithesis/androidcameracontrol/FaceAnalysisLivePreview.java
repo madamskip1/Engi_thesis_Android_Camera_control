@@ -11,7 +11,12 @@ import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
-import org.pw.engithesis.androidcameracontrol.eyedetectionalgorithms.EyeDetectionFacemarks;
+import org.pw.engithesis.androidcameracontrol.detectors.EyeBlinkDetector;
+import org.pw.engithesis.androidcameracontrol.detectors.EyeMoveDetector;
+import org.pw.engithesis.androidcameracontrol.detectors.EyePupilDetector;
+import org.pw.engithesis.androidcameracontrol.detectors.FaceDetector;
+import org.pw.engithesis.androidcameracontrol.detectors.FacemarksDetector;
+import org.pw.engithesis.androidcameracontrol.detectors.eyedetectionalgorithms.EyeDetectionFacemarks;
 
 public class FaceAnalysisLivePreview extends ImageAnalyser {
     private final FaceDetector faceDetector = new FaceDetector();

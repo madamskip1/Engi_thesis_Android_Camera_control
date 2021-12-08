@@ -23,19 +23,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidCameraControl">
         <activity
-            android:name=".BlinkActivity"
+            android:name=".activities.BlinkActivity"
             android:exported="false" />
         <activity
-            android:name=".ImageSlider"
+            android:name=".activities.ImageSlider"
             android:exported="false" />
         <activity
             android:name=".tests.SelectImageTest"
             android:exported="true" />
         <activity
-            android:name=".FaceAnalysisLivePreview_Activity"
+            android:name=".activities.FaceAnalysisLivePreview_Activity"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:theme="@style/Theme.AndroidCameraControl.SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

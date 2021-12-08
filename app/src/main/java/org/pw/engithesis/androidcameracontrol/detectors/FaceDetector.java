@@ -1,10 +1,11 @@
-package org.pw.engithesis.androidcameracontrol;
+package org.pw.engithesis.androidcameracontrol.detectors;
 
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
-import org.pw.engithesis.androidcameracontrol.facedetectionalgorithms.FaceDetectionAlgorithm;
-import org.pw.engithesis.androidcameracontrol.facedetectionalgorithms.FaceDetectionDlibHOG;
+import org.pw.engithesis.androidcameracontrol.Utility;
+import org.pw.engithesis.androidcameracontrol.detectors.facedetectionalgorithms.FaceDetectionAlgorithm;
+import org.pw.engithesis.androidcameracontrol.detectors.facedetectionalgorithms.FaceDetectionDlibHOG;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +17,7 @@ public class FaceDetector {
 
     public FaceDetector() {
         // Dlib HOG is default face detection algorithm
-        // was best in comparision
+        // was best in comparison
         this(new FaceDetectionDlibHOG());
     }
 

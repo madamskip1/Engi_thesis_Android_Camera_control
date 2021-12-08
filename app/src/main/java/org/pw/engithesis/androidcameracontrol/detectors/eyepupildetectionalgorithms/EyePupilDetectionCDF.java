@@ -1,4 +1,4 @@
-package org.pw.engithesis.androidcameracontrol.eyepupildetectionalgorithms;
+package org.pw.engithesis.androidcameracontrol.detectors.eyepupildetectionalgorithms;
 
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
