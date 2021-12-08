@@ -8,7 +8,7 @@ import org.pw.engithesis.androidcameracontrol.interfaces.Observer;
 
 public class BlinkActivity extends AppCompatActivity implements Observer {
 
-    CameraControlMainClass cameraControlMainClass;
+    FaceAnalyser cameraControlMainClass;
     EyeBlinkDetector blinkDetector;
     private BlinkNotificationAdapter blinkNotificationAdapter;
 
@@ -18,7 +18,7 @@ public class BlinkActivity extends AppCompatActivity implements Observer {
         setContentView(R.layout.activity_blink);
 
         blinkNotificationAdapter = new BlinkNotificationAdapter(this);
-        cameraControlMainClass = new CameraControlMainClass(this);
+        cameraControlMainClass = new FaceAnalyser(this);
         blinkDetector = cameraControlMainClass.attachObserverToBlinkDetector(this);
         cameraControlMainClass.start();
     }

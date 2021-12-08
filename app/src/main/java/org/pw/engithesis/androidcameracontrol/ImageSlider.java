@@ -12,7 +12,7 @@ public class ImageSlider extends AppCompatActivity implements Observer {
     int[] images = {R.drawable.portrait_test_1, R.drawable.author_name_text, R.drawable.portrait_test_2, R.drawable.lenna, R.drawable.portrait_test_4};
     ImageSliderPagerAdapter imageSliderPagerAdapter;
     ViewPager viewPager;
-    CameraControlMainClass cameraControlMainClass;
+    FaceAnalyser cameraControlMainClass;
     EyeMoveDetector eyeMoveDetector;
 
     @Override
@@ -20,7 +20,7 @@ public class ImageSlider extends AppCompatActivity implements Observer {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_slider);
 
-        cameraControlMainClass = new CameraControlMainClass(this);
+        cameraControlMainClass = new FaceAnalyser(this);
         viewPager = (ViewPager) findViewById(R.id.image_slider);
 
         imageSliderPagerAdapter = new ImageSliderPagerAdapter(ImageSlider.this, images);

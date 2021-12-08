@@ -46,7 +46,7 @@ public class FaceAnalysisLivePreview extends ImageAnalyser {
 
             boolean eyesClosed = closedEyeDetector.areClosed(leftEyeLandmarks, rightEyeLandmarks);
             if (!eyesClosed) {
-                Rect[] eyes = eyeDetectionFacemarks.detect(rightEyeLandmarks, false, leftEyeLandmarks, false);
+                Rect[] eyes = eyeDetectionFacemarks.detect(rightEyeLandmarks, leftEyeLandmarks);
                 Utility.drawRects(outputFrame, eyes);
                 Point[] eyesPupil = new Point[2];
 

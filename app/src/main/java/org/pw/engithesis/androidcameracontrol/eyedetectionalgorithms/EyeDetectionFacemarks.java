@@ -12,29 +12,25 @@ public class EyeDetectionFacemarks {
     public static double ADD_RIGHT = 0.2;
 
 
-    public Rect[] detect(Point[] rightEyeFacemarks, boolean rightEyeBlinking, Point[] leftEyeFacemarks, boolean leftEyeBlinking) {
+    public Rect[] detect(Point[] rightEyeFacemarks, Point[] leftEyeFacemarks) {
         Rect[] eyes = new Rect[2];
-        eyes[0] = detectEye(rightEyeFacemarks, rightEyeBlinking);
-        eyes[1] = detectEye(leftEyeFacemarks, leftEyeBlinking);
+        eyes[0] = detectEye(rightEyeFacemarks);
+        eyes[1] = detectEye(leftEyeFacemarks);
 
         return eyes;
     }
 
-    private Rect detectEye(Point[] facemarks, boolean blinking) {
-        if (blinking) {
-            return null;
-        } else {
-            int x1 = (int) facemarks[0].x;
-            int x2 = (int) facemarks[3].x;
-            double y1 = Arrays.stream(new double[]{facemarks[0].y, facemarks[1].y, facemarks[2].y, facemarks[3].y}).min().getAsDouble();
-            double y2 = Arrays.stream(new double[]{facemarks[0].y, facemarks[3].y, facemarks[4].y, facemarks[5].y}).max().getAsDouble();
-            int width = x2 - x1;
-            int height = (int) (y2 - y1);
+    private Rect detectEye(Point[] facemarks) {
+        int x1 = (int) facemarks[0].x;
+        int x2 = (int) facemarks[3].x;
+        double y1 = Arrays.stream(new double[]{facemarks[0].y, facemarks[1].y, facemarks[2].y, facemarks[3].y}).min().getAsDouble();
+        double y2 = Arrays.stream(new double[]{facemarks[0].y, facemarks[3].y, facemarks[4].y, facemarks[5].y}).max().getAsDouble();
+        int width = x2 - x1;
+        int height = (int) (y2 - y1);
 
-            Rect eye = new Rect(x1, (int) y1, width, height);
+        Rect eye = new Rect(x1, (int) y1, width, height);
 
-            return addSpaceToRect(eye, width, height);
-        }
+        return addSpaceToRect(eye, width, height);
     }
 
     private Rect addSpaceToRect(Rect eye, int width, int height) {

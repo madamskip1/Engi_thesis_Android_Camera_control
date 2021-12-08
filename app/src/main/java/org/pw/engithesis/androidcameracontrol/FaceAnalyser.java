@@ -3,14 +3,13 @@ package org.pw.engithesis.androidcameracontrol;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.ImageProxy;
 
-import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.pw.engithesis.androidcameracontrol.eyedetectionalgorithms.EyeDetectionFacemarks;
 import org.pw.engithesis.androidcameracontrol.interfaces.Observer;
 
-public class CameraControlMainClass extends ImageAnalyser {
+public class FaceAnalyser extends ImageAnalyser {
 
     private final FaceDetector faceDetector = new FaceDetector();
     private final FacemarksDetector facemarksDetector = new FacemarksDetector();
@@ -21,9 +20,8 @@ public class CameraControlMainClass extends ImageAnalyser {
     private final EyeBlinkDetector blinkDetector = new EyeBlinkDetector();
     ImageProxyToMatConverter proxyConverter = new ImageProxyToMatConverter();
 
-    public CameraControlMainClass(AppCompatActivity activity) {
+    public FaceAnalyser(AppCompatActivity activity) {
         super(activity);
-        OpenCVLoader.initDebug();
     }
 
     public EyeMoveDetector attachObserverToEyeMoveDetector(Observer observer) {
@@ -49,7 +47,7 @@ public class CameraControlMainClass extends ImageAnalyser {
             boolean eyesClosed = closedEyeDetector.areClosed(leftEyeLandmarks, rightEyeLandmarks);
 
             if (!eyesClosed) {
-                Rect[] eyes = eyeDetector.detect(rightEyeLandmarks, false, leftEyeLandmarks, false);
+                Rect[] eyes = eyeDetector.detect(rightEyeLandmarks, leftEyeLandmarks);
                 Point[] eyesPupil = new Point[2];
 
                 for (int i = 0; i < 2; i++) {
