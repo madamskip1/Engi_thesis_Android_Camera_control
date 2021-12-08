@@ -13,7 +13,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import java.util.Objects;
 
 public class ImageSliderPagerAdapter extends PagerAdapter {
-    public static final int LOOP_MULTIPLIER = 30;
+    public static final int LOOP_MULTIPLIER = 10;
     private final int[] images;
     private final LayoutInflater layoutInflater;
 
@@ -31,10 +31,9 @@ public class ImageSliderPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         View itemView = layoutInflater.inflate(R.layout.image_slider_item, container, false);
-        ImageView itemImageview = (ImageView) itemView.findViewById(R.id.image_slider_item);
-        itemImageview.setImageResource(images[calcPosition(position)]);
+        ImageView itemImageview = itemView.findViewById(R.id.image_slider_item);
+        itemImageview.setImageResource(images[calcImgIndex(position)]);
         Objects.requireNonNull(container).addView(itemView);
-
 
         return itemView;
     }
@@ -46,10 +45,10 @@ public class ImageSliderPagerAdapter extends PagerAdapter {
 
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-        return view == ((LinearLayout) object);
+        return view == object;
     }
 
-    private int calcPosition(int pos) {
+    private int calcImgIndex(int pos) {
         return pos % images.length;
     }
 }

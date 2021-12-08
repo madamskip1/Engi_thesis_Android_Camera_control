@@ -1,6 +1,8 @@
 package org.pw.engithesis.androidcameracontrol;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -8,11 +10,10 @@ import androidx.viewpager.widget.ViewPager;
 import org.pw.engithesis.androidcameracontrol.interfaces.Observer;
 
 public class ImageSlider extends AppCompatActivity implements Observer {
-
     int[] images = {R.drawable.portrait_test_1, R.drawable.author_name_text, R.drawable.portrait_test_2, R.drawable.lenna, R.drawable.portrait_test_4};
-    ImageSliderPagerAdapter imageSliderPagerAdapter;
     ViewPager viewPager;
-    FaceAnalyser cameraControlMainClass;
+    TextView moveMsgInfo;
+    FaceAnalyser faceAnalyser;
     EyeMoveDetector eyeMoveDetector;
 
     @Override
@@ -20,23 +21,26 @@ public class ImageSlider extends AppCompatActivity implements Observer {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_slider);
 
-        cameraControlMainClass = new FaceAnalyser(this);
-        viewPager = (ViewPager) findViewById(R.id.image_slider);
-
-        imageSliderPagerAdapter = new ImageSliderPagerAdapter(ImageSlider.this, images);
-        viewPager.setAdapter(imageSliderPagerAdapter);
+        moveMsgInfo = findViewById(R.id.image_slider_move_info_text);
+        viewPager = findViewById(R.id.image_slider);
+        viewPager.setAdapter(new ImageSliderPagerAdapter(ImageSlider.this, images));
         viewPager.setCurrentItem(images.length * ImageSliderPagerAdapter.LOOP_MULTIPLIER / 2);
 
-        eyeMoveDetector = cameraControlMainClass.attachObserverToEyeMoveDetector(this);
-        cameraControlMainClass.start();
+        faceAnalyser = new FaceAnalyser(this);
+        eyeMoveDetector = faceAnalyser.attachObserverToEyeMoveDetector(this);
+        faceAnalyser.start();
     }
 
+    @SuppressLint("SetTextI18n")
     public void nextImg() {
         viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+        moveMsgInfo.setText("Przesunięto w prawo");
     }
 
+    @SuppressLint("SetTextI18n")
     public void prevImg() {
         viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+        moveMsgInfo.setText("Przesunięto w lewo");
     }
 
     @Override
