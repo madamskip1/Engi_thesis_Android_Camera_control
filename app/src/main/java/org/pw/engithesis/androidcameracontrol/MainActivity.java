@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void goLiveFront(View view) {
-        Intent goLiveFront = new Intent(this, CameraX_test.class);
+        Intent goLiveFront = new Intent(this, FaceAnalysisLivePreview_Activity.class);
         startActivity(goLiveFront);
     }
 

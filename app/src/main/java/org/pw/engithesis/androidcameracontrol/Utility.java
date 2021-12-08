@@ -21,10 +21,14 @@ public class Utility {
         return Math.hypot(distX, distY);
     }
 
+    public static void drawRect(Mat mat, Rect rect, Scalar color, int thickness) {
+        Imgproc.rectangle(mat, rect.tl(), rect.br(), color, thickness);
+    }
+
     public static void drawRects(Mat mat, Rect[] rects, Scalar color) {
         for (Rect rect : rects) {
             if (rect != null) {
-                Imgproc.rectangle(mat, rect.tl(), rect.br(), color, 3);
+                drawRect(mat, rect, color, 1);
             }
         }
     }
@@ -33,8 +37,16 @@ public class Utility {
         drawRects(mat, rects, new Scalar(255, 0, 0));
     }
 
+    public static void drawCircle(Mat mat, Point point) {
+        Imgproc.circle(mat, point, 1, new Scalar(200, 200, 200), 40);
+    }
+
     public static void drawVerticalLine(Mat mat, int x) {
-        Imgproc.line(mat, new Point(x, 0), new Point(x, mat.height()), new Scalar(255, 0, 0), 3);
+        Imgproc.line(mat, new Point(x, 0), new Point(x, mat.height()), new Scalar(255, 0, 0), 1);
+    }
+
+    public static void drawHorizontalLine(Mat mat, int y) {
+        Imgproc.line(mat, new Point(0, y), new Point(mat.width(), y), new Scalar(255, 0, 0), 1);
     }
 
     public static Point getCenterOfRect(Rect rect) {

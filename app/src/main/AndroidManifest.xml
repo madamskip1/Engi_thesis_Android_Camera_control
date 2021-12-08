@@ -32,7 +32,7 @@
             android:name=".tests.SelectImageTest"
             android:exported="true" />
         <activity
-            android:name=".CameraX_test"
+            android:name=".FaceAnalysisLivePreview_Activity"
             android:exported="true" />
         <activity
             android:name=".MainActivity"
