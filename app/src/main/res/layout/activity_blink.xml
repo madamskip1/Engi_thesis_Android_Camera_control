@@ -10,7 +10,10 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="Mrugnij"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="@string/blink_msg_text_info"
+        android:textSize="20sp"
+        android:textStyle="bold"
         tools:ignore="MissingConstraints" />
 
     <LinearLayout
