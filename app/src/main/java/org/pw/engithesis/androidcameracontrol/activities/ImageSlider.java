@@ -1,4 +1,4 @@
-package org.pw.engithesis.androidcameracontrol;
+package org.pw.engithesis.androidcameracontrol.activities;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -7,6 +7,10 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import org.pw.engithesis.androidcameracontrol.EyeMoveDetector;
+import org.pw.engithesis.androidcameracontrol.FaceAnalyser;
+import org.pw.engithesis.androidcameracontrol.ImageSliderPagerAdapter;
+import org.pw.engithesis.androidcameracontrol.R;
 import org.pw.engithesis.androidcameracontrol.interfaces.Observer;
 
 public class ImageSlider extends AppCompatActivity implements Observer {

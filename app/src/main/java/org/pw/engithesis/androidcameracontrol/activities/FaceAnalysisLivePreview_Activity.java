@@ -1,4 +1,4 @@
-package org.pw.engithesis.androidcameracontrol;
+package org.pw.engithesis.androidcameracontrol.activities;
 
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -7,6 +7,9 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.pw.engithesis.androidcameracontrol.FPSCounter;
+import org.pw.engithesis.androidcameracontrol.FaceAnalysisLivePreview;
+import org.pw.engithesis.androidcameracontrol.R;
 import org.pw.engithesis.androidcameracontrol.interfaces.Observer;
 
 import java.util.Locale;

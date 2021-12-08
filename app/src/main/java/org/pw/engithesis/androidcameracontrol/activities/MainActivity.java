@@ -1,4 +1,4 @@
-package org.pw.engithesis.androidcameracontrol;
+package org.pw.engithesis.androidcameracontrol.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,7 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.pw.engithesis.androidcameracontrol.R;
 import org.pw.engithesis.androidcameracontrol.tests.SelectImageTest;
 
 public class MainActivity extends AppCompatActivity {
@@ -16,7 +17,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
-
 
     public void goLiveFront(View view) {
         Intent goLiveFront = new Intent(this, FaceAnalysisLivePreview_Activity.class);

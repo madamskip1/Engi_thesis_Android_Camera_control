@@ -1,4 +1,4 @@
-package org.pw.engithesis.androidcameracontrol;
+package org.pw.engithesis.androidcameracontrol.activities;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,6 +9,8 @@ import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import org.pw.engithesis.androidcameracontrol.FaceAnalyser;
+import org.pw.engithesis.androidcameracontrol.R;
 import org.pw.engithesis.androidcameracontrol.interfaces.Observer;
 
 import java.text.DateFormat;
