@@ -105,7 +105,7 @@ public class EyePupilDetectionProjection extends EyePupilDetectionAlgorithm {
         int index = startIndex;
 
         for (int i = 0; i < length; i++) {
-            sumColIntensity += (double) Utility.byteToInt(pixels[index]);
+            sumColIntensity += Utility.byteToInt(pixels[index]);
             index += step;
         }
 

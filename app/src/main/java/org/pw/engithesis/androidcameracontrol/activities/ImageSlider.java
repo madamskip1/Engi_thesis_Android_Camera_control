@@ -14,7 +14,7 @@ import org.pw.engithesis.androidcameracontrol.detectors.EyeMoveDetector;
 import org.pw.engithesis.androidcameracontrol.interfaces.Observer;
 
 public class ImageSlider extends AppCompatActivity implements Observer {
-    int[] images = {R.drawable.portrait_test_1, R.drawable.author_name_text, R.drawable.portrait_test_2, R.drawable.lenna, R.drawable.portrait_test_4};
+    int[] images = {R.drawable.face_test_500x500_28, R.drawable.face_test_500x500_71, R.drawable.face_test_500x500_62, R.drawable.face_test_500x500_59, R.drawable.face_test_500x500_33};
     ViewPager viewPager;
     TextView moveMsgInfo;
     FaceAnalyser faceAnalyser;
