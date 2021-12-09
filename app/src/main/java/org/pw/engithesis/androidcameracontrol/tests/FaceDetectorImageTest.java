@@ -63,7 +63,7 @@ public class FaceDetectorImageTest extends ImageTest {
                 if (canShowImage()) {
                     viewsBuilder.newSection();
                     Utility.drawRect(imageMat, face, new Scalar(0, 255, 0), 2);
-                    Utility.drawRects(imageMat, expectedFace, new Scalar(60, 130, 255));
+                    Utility.drawRects(imageMat, expectedFace, new Scalar(60, 130, 255), 2);
                     Utility.drawVerticalLine(imageMat, (int) (imageMat.width() * FaceDetector.LEFT_BOUNDARY));
                     Utility.drawVerticalLine(imageMat, (int) (imageMat.width() * FaceDetector.RIGHT_BOUNDARY));
                     addImageToView(imageMat, viewsBuilder);
@@ -79,6 +79,7 @@ public class FaceDetectorImageTest extends ImageTest {
         double timeInSec = (end - start) / (double) 1_000_000_000;
         double sumTimeInSec = sumTime / (double) 1_000_000_000;
 
+        viewsBuilder.newSection();
         viewsBuilder.addText("____________________");
         viewsBuilder.addText("____________________");
         viewsBuilder.addText("Tested images: " + imagesToTest.length);
@@ -89,11 +90,12 @@ public class FaceDetectorImageTest extends ImageTest {
         viewsBuilder.addText("Wrong detection: " + numWrong / REPEAT_TEST);
         viewsBuilder.addText("Avg side deviation: " + String.format(Locale.getDefault(), "%.2f", wrongSum / wrongSideCounter / REPEAT_TEST * 100) + "%");
         viewsBuilder.addText("Total tests time: " + timeInSec + " s");
-        viewsBuilder.addText("Avg test time: " + timeInSec / REPEAT_TEST + " s");
+        viewsBuilder.addText("Avg test time: " + (timeInSec / REPEAT_TEST) + " s");
         viewsBuilder.addText("Detections total time: " + sumTimeInSec + " s");
         viewsBuilder.addText("Avg detections time: " + (sumTimeInSec / REPEAT_TEST) + " s");
         viewsBuilder.addText("One detection avg time: " + (sumTimeInSec / (double) imagesToTest.length / REPEAT_TEST) + " s");
         viewsBuilder.addText("____________________");
+        viewsBuilder.closeSection();
 
         viewsBuilder.build();
     }

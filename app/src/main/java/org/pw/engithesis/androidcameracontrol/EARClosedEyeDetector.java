@@ -6,7 +6,7 @@ public class EARClosedEyeDetector {
     public static double CLOSED_THRESHOLD = 0.19;
     private final EyeAspectRatio earCalculator;
 
-    EARClosedEyeDetector() {
+    public EARClosedEyeDetector() {
         earCalculator = new EyeAspectRatio();
     }
 

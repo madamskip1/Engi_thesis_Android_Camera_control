@@ -25,16 +25,16 @@ public class Utility {
         Imgproc.rectangle(mat, rect.tl(), rect.br(), color, thickness);
     }
 
-    public static void drawRects(Mat mat, Rect[] rects, Scalar color) {
+    public static void drawRects(Mat mat, Rect[] rects, Scalar color, int thickness) {
         for (Rect rect : rects) {
             if (rect != null) {
-                drawRect(mat, rect, color, 1);
+                drawRect(mat, rect, color, thickness);
             }
         }
     }
 
     public static void drawRects(Mat mat, Rect[] rects) {
-        drawRects(mat, rects, new Scalar(255, 0, 0));
+        drawRects(mat, rects, new Scalar(255, 0, 0), 1);
     }
 
     public static void drawCircle(Mat mat, Point point) {
