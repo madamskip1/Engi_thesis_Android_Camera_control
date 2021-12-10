@@ -10,4 +10,5 @@
     <string name="main_activity_btn_text_eye_move">Wykorzystanie ruchu oczu</string>
     <string name="main_activity_btn_text_image_tests">Testy na statycznych zdjęciach</string>
     <string name="main_activity_btn_text_live_analysis_preview">Analiza twarzy z podglądem na żywo</string>
+    <string name="select_image_test_btn_text_facemarks">Detekcja facemarków</string>
 </resources>

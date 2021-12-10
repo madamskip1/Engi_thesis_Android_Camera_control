@@ -43,6 +43,12 @@
             android:onClick="goEARImage"
             android:text="@string/select_image_test_btn_text_ear" />
 
+        <Button
+            android:id="@+id/selectImageTests_Facemarks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="goFacemarks"
+            android:text="@string/select_image_test_btn_text_facemarks" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

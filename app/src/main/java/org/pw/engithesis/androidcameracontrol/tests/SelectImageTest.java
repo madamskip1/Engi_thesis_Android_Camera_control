@@ -43,4 +43,11 @@ public class SelectImageTest extends AppCompatActivity {
         EyeDetectorImageTest eyeDetectorImageTest = new EyeDetectorImageTest(this, findViewById(R.id.testing_layout_root));
         eyeDetectorImageTest.createView();
     }
+
+    public void goFacemarks(View view) {
+        setTitle("Detekcja facemarków");
+        setContentView(R.layout.testing_layout);
+        FacemarksImageTest facemarksImageTest = new FacemarksImageTest(this, findViewById(R.id.testing_layout_root));
+        facemarksImageTest.createView();
+    }
 }
