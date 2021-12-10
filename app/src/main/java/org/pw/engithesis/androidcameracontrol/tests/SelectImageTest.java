@@ -11,35 +11,34 @@ public class SelectImageTest extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTitle("Image Test Selection");
+        setTitle("Wybór testu");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_imagetests);
     }
 
     public void goEyePupilDetector(View view) {
-        setTitle("Eye Pupil Detector Image Test");
+        setTitle("Detekcja źrenic");
         setContentView(R.layout.testing_layout);
         EyePupilDetectorImageTest test = new EyePupilDetectorImageTest(this, findViewById(R.id.testing_layout_root));
         test.createView();
     }
 
     public void goEARImage(View view) {
-        setTitle("EAR Image Test");
+        setTitle("EAR - Eye aspect ratio");
         setContentView(R.layout.testing_layout);
         EARImageTest earImageTest = new EARImageTest(this, findViewById(R.id.testing_layout_root));
         earImageTest.createView();
     }
 
     public void goFaceDetector(View view) {
-        setTitle("Face Detector Image Test");
+        setTitle("Detekcja twarzy");
         setContentView(R.layout.testing_layout);
         FaceDetectorImageTest faceDetectorImageTest = new FaceDetectorImageTest(this, findViewById(R.id.testing_layout_root));
         faceDetectorImageTest.createView();
     }
 
-
     public void goEyeDetector(View view) {
-        setTitle("Eye Detector Image Test");
+        setTitle("Detekcja oczu");
         setContentView(R.layout.testing_layout);
         EyeDetectorImageTest eyeDetectorImageTest = new EyeDetectorImageTest(this, findViewById(R.id.testing_layout_root));
         eyeDetectorImageTest.createView();

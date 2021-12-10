@@ -14,6 +14,7 @@ import org.pw.engithesis.androidcameracontrol.detectors.EyeMoveDetector;
 import org.pw.engithesis.androidcameracontrol.interfaces.Observer;
 
 public class ImageSlider extends AppCompatActivity implements Observer {
+
     int[] images = {R.drawable.face_test_500x500_28, R.drawable.face_test_500x500_71, R.drawable.face_test_500x500_62, R.drawable.face_test_500x500_59, R.drawable.face_test_500x500_33};
     ViewPager viewPager;
     TextView moveMsgInfo;
@@ -22,6 +23,7 @@ public class ImageSlider extends AppCompatActivity implements Observer {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTitle(R.string.main_activity_btn_text_eye_move);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_slider);
 

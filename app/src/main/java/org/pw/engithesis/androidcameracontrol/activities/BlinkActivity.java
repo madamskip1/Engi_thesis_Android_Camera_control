@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class BlinkActivity extends AppCompatActivity implements Observer {
+
     private int buttonsCounter = 0;
     private LinearLayout blinkMsgBox;
 
@@ -30,6 +31,7 @@ public class BlinkActivity extends AppCompatActivity implements Observer {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTitle(R.string.main_activity_btn_text_blink);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blink);
         blinkMsgBox = findViewById(R.id.blink_msg_box);

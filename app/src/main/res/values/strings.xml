@@ -2,4 +2,12 @@
     <string name="app_name">Android Camera Control</string>
     <string name="image_slider_info_text">Rusz oczami w lewo lub w prawo by zmienić zdjęcie</string>
     <string name="blink_msg_text_info">Mrugnij, by wyświetlić informację</string>
+    <string name="select_image_test_btn_text_face_detection">Detekcja twarzy</string>
+    <string name="select_image_test_btn_text_eye_detection">Detekcja oczu</string>
+    <string name="select_image_test_btn_text_eyepupil_detection">Detekcja źrenic</string>
+    <string name="select_image_test_btn_text_ear">EAR</string>
+    <string name="main_activity_btn_text_blink">Wykorzystanie mrugania</string>
+    <string name="main_activity_btn_text_eye_move">Wykorzystanie ruchu oczu</string>
+    <string name="main_activity_btn_text_image_tests">Testy na statycznych zdjęciach</string>
+    <string name="main_activity_btn_text_live_analysis_preview">Analiza twarzy z podglądem na żywo</string>
 </resources>

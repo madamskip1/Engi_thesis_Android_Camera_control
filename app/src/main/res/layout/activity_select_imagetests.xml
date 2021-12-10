@@ -20,28 +20,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="goFaceDetector"
-            android:text="Face Detector" />
+            android:text="@string/select_image_test_btn_text_face_detection" />
 
         <Button
             android:id="@+id/selectImageTests_EyeDetector"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="goEyeDetector"
-            android:text="Eye Detector" />
+            android:text="@string/select_image_test_btn_text_eye_detection" />
 
         <Button
             android:id="@+id/selectImageTests_EyePupilDetector"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="goEyePupilDetector"
-            android:text="Eye Pupil Detector" />
+            android:text="@string/select_image_test_btn_text_eyepupil_detection" />
 
         <Button
             android:id="@+id/selectImageTests_EAR"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="goEARImage"
-            android:text="EAR" />
+            android:text="@string/select_image_test_btn_text_ear" />
 
 
     </LinearLayout>

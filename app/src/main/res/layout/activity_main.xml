@@ -7,7 +7,6 @@
     tools:context=".activities.MainActivity"
     android:theme="@style/Theme.AndroidCameraControl.NoTitleBar">
 
-
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
@@ -40,30 +39,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="goLiveFront"
-            android:text="Live Front camera"
+            android:text="@string/main_activity_btn_text_live_analysis_preview"
             app:cornerRadius="0px" />
-
-
-        <Button
-            android:id="@+id/buttonMainFaceImageTest"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="goSelectImageTest"
-            android:text="Image Tests" />
 
         <Button
             android:id="@+id/buttonGoImageSlider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="goImageSlider"
-            android:text="Image Slider" />
+            android:text="@string/main_activity_btn_text_eye_move" />
 
         <Button
             android:id="@+id/buttonGoBlink"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="goBlink"
-            android:text="Blink" />
+            android:text="@string/main_activity_btn_text_blink" />
+
+        <Button
+            android:id="@+id/buttonMainFaceImageTest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="goSelectImageTest"
+            android:text="@string/main_activity_btn_text_image_tests" />
 
     </LinearLayout>
 
