@@ -24,7 +24,7 @@ public class FaceAnalysisLivePreview_Activity extends AppCompatActivity implemen
     public void onCreate(@Nullable Bundle savedInstanceState) {
         setTitle(R.string.main_activity_btn_text_live_analysis_preview);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.camera_image_view);
+        setContentView(R.layout.activity_face_analysis_live_preview);
         imgView = findViewById(R.id.camera_preview);
 
         faceAnalysisLivePreview = new FaceAnalysisLivePreview(this);
