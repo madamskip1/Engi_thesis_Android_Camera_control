@@ -38,8 +38,14 @@ public class Utility {
     }
 
     public static void drawCircle(Mat mat, Point point) {
-        Imgproc.circle(mat, point, 1, new Scalar(200, 200, 200), 40);
+        drawCircle(mat, point, new Scalar(200, 200, 200), 1, 40);
     }
+
+    public static void drawCircle(Mat mat, Point point, Scalar color, int radius, int thickness)
+    {
+        Imgproc.circle(mat, point, radius, color, thickness);
+    }
+
 
     public static void drawVerticalLine(Mat mat, int x) {
         Imgproc.line(mat, new Point(x, 0), new Point(x, mat.height()), new Scalar(255, 0, 0), 1);
