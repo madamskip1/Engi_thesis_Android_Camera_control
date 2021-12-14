@@ -43,7 +43,6 @@ public class EyeDetectorImageTest extends ImageTest {
     private double wrongSum = 0;
     private int wrongSideCounter = 0;
 
-
     protected EyeDetectorImageTest(Context context, ScrollView parent) {
         super(context, parent);
     }
@@ -106,10 +105,12 @@ public class EyeDetectorImageTest extends ImageTest {
                         }
                     }
                     addImageToView(imageMat, viewsBuilder);
+                    eyesDetectionStats(eyes, imageToTest.eyes, viewsBuilder);
                     viewsBuilder.closeSection();
+                } else {
+                    eyesDetectionStats(eyes, imageToTest.eyes, viewsBuilder);
                 }
 
-                eyesDetectionStats(eyes, imageToTest.eyes);
             }
         }
 
@@ -144,22 +145,30 @@ public class EyeDetectorImageTest extends ImageTest {
         viewsBuilder.build();
     }
 
-    private void eyesDetectionStats(Rect[] eyes, SingleEyeTestStruct[] expectedEyes) {
-        eyeDetectionStats(eyes[0], expectedEyes[0]);
-        eyeDetectionStats(eyes[1], expectedEyes[1]);
+    private void eyesDetectionStats(Rect[] eyes, SingleEyeTestStruct[] expectedEyes, ViewsBuilder viewsBuilder) {
+        eyeDetectionStats(eyes[0], expectedEyes[0], viewsBuilder, "Prawe oko");
+        eyeDetectionStats(eyes[1], expectedEyes[1], viewsBuilder, "Lewe oko");
     }
 
-    private void eyeDetectionStats(Rect eye, SingleEyeTestStruct expectedEye) {
+    private void eyeDetectionStats(Rect eye, SingleEyeTestStruct expectedEye, ViewsBuilder viewsBuilder, String eyeString) {
         if (eye == null) {
             if (expectedEye == null) {
                 numCorrect++;
                 numPerfect++;
                 closedCorrect++;
                 totalClosedEyes++;
+
+                if (canShowImage()) {
+                    viewsBuilder.addText(eyeString + ": Prawidłowo wykryte zamknięte oko");
+                }
             } else {
                 numWrong++;
                 openWrong++;
                 totalOpenEyes++;
+
+                if (canShowImage()) {
+                    viewsBuilder.addText(eyeString + ": Błędnie wykryto jako zamknięte");
+                }
             }
             return;
         }
@@ -168,6 +177,10 @@ public class EyeDetectorImageTest extends ImageTest {
             numWrong++;
             closedWrong++;
             totalClosedEyes++;
+
+            if (canShowImage()) {
+                viewsBuilder.addText(eyeString + ": Błędnie wykryto jako otwarte");
+            }
             return;
         }
 
@@ -185,6 +198,14 @@ public class EyeDetectorImageTest extends ImageTest {
         double diffRightPercent = Math.abs(diffRight) / width;
         double diffBottomPercent = Math.abs(diffBottom) / height;
         double diffLeftPercent = Math.abs(diffLeft) / width;
+
+        if (canShowImage()) {
+            viewsBuilder.addText(eyeString + ":");
+            viewsBuilder.addText(prepareImageStatText("Góra", diffTop, diffTopPercent));
+            viewsBuilder.addText(prepareImageStatText("Prawo", diffRight, diffRightPercent));
+            viewsBuilder.addText(prepareImageStatText("Dół", diffBottom, diffBottomPercent));
+            viewsBuilder.addText(prepareImageStatText("Lewo", diffLeft, diffLeftPercent));
+        }
 
         countCorrectness(diffTopPercent, diffRightPercent, diffBottomPercent, diffLeftPercent);
     }
@@ -252,6 +273,10 @@ public class EyeDetectorImageTest extends ImageTest {
         } else {
             return val - max;
         }
+    }
+
+    private String prepareImageStatText(String side, double diff, double diffPercent) {
+        return side + ": " + (int) diff + " (" + String.format(new Locale("pl", "PL"), "%.2f", diffPercent * 100) + "%)";
     }
 
     private boolean canShowImage() {
