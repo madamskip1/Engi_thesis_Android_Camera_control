@@ -26,17 +26,17 @@ public class FacemarksImageTest extends ImageTest {
     public void createView() {
         ViewsBuilder viewsBuilder = new ViewsBuilder(ctx, parentView);
 
-        long sumTime = 0;
-        long start = System.nanoTime();
+        long detectionTotalTime = 0;
+        long startTestTime = System.nanoTime();
 
         for (int i = 0; i < REPEAT_TEST; i++) {
             for (int imageToTest : imagesToTest) {
                 Mat imageMat = getImageMat(imageToTest);
                 Rect face = faceDetector.detect(imageMat);
 
-                long singleStart = System.nanoTime();
+                long startDetectionTime = System.nanoTime();
                 facemarksDetector.detect(imageMat, face);
-                sumTime += System.nanoTime() - singleStart;
+                detectionTotalTime += System.nanoTime() - startDetectionTime;
 
                 if (canShowImage()) {
                     viewsBuilder.newSection();
@@ -47,19 +47,19 @@ public class FacemarksImageTest extends ImageTest {
             }
         }
 
-        long end = System.nanoTime();
-        double timeInSec = (end - start) / (double) 1_000_000_000;
-        double sumTimeInSec = sumTime / (double) 1_000_000_000;
+        long endTestTime = System.nanoTime();
+        double testTotalTimeInSec = (endTestTime - startTestTime) / (double) 1_000_000_000;
+        double detectionTotalTimeInSec = detectionTotalTime / (double) 1_000_000_000;
 
         viewsBuilder.newSection();
         viewsBuilder.addText("____________________");
         viewsBuilder.addText("____________________");
-        viewsBuilder.addText("Tested images: " + imagesToTest.length);
-        viewsBuilder.addText("Total time: " + timeInSec + " s");
-        viewsBuilder.addText("Avg test time: " + (timeInSec / REPEAT_TEST) + " s");
-        viewsBuilder.addText("Detections total time: " + sumTimeInSec + " s");
-        viewsBuilder.addText("Avg detections time: " + (sumTimeInSec / REPEAT_TEST) + " s");
-        viewsBuilder.addText("One detection avg time: " + (sumTimeInSec / (double) imagesToTest.length / REPEAT_TEST) + " s");
+        viewsBuilder.addText("Przetestowane zdjęcia: " + imagesToTest.length);
+        viewsBuilder.addText("Całkowity czas: " + testTotalTimeInSec + " s");
+        viewsBuilder.addText("Śr. czas testu: " + (testTotalTimeInSec / REPEAT_TEST) + " s");
+        viewsBuilder.addText("Całkowity czas detekcji: " + detectionTotalTimeInSec + " s");
+        viewsBuilder.addText("Śr. czas detekcji testu: " + (detectionTotalTimeInSec / REPEAT_TEST) + " s");
+        viewsBuilder.addText("Śr. czas pojedynczej detekcji: " + (detectionTotalTimeInSec / (double) imagesToTest.length / REPEAT_TEST) + " s");
         viewsBuilder.addText("____________________");
         viewsBuilder.closeSection();
 

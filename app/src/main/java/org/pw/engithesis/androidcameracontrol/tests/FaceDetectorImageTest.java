@@ -39,8 +39,9 @@ public class FaceDetectorImageTest extends ImageTest {
     public void createView() {
         ViewsBuilder viewsBuilder = new ViewsBuilder(ctx, parentView);
 
-        long sumTime = 0;
-        long start = System.nanoTime();
+        long detectionTotalTime = 0;
+        long startTestTime = System.nanoTime();
+
         for (int j = 0; j < REPEAT_TEST; j++) {
             for (FaceDetectorImageTestStruct imageToTest : imagesToTest) {
                 Rect[] expectedFace = new Rect[]{imageToTest.minFaceRect, imageToTest.maxFaceRect};
@@ -49,15 +50,15 @@ public class FaceDetectorImageTest extends ImageTest {
                 Rect face;
 
                 if (!DETECT_IN_GRAY) {
-                    long singleStart = System.nanoTime();
+                    long startDetectionTime = System.nanoTime();
                     face = faceDetector.detect(imageMat);
-                    sumTime += System.nanoTime() - singleStart;
+                    detectionTotalTime += System.nanoTime() - startDetectionTime;
                 } else {
                     Mat grayImage = new Mat();
                     Imgproc.cvtColor(imageMat, grayImage, Imgproc.COLOR_RGB2GRAY);
                     long singleStart = System.nanoTime();
                     face = faceDetector.detect(grayImage);
-                    sumTime += System.nanoTime() - singleStart;
+                    detectionTotalTime += System.nanoTime() - singleStart;
                 }
 
                 if (canShowImage()) {
@@ -67,40 +68,41 @@ public class FaceDetectorImageTest extends ImageTest {
                     Utility.drawVerticalLine(imageMat, (int) (imageMat.width() * FaceDetector.LEFT_BOUNDARY));
                     Utility.drawVerticalLine(imageMat, (int) (imageMat.width() * FaceDetector.RIGHT_BOUNDARY));
                     addImageToView(imageMat, viewsBuilder);
-                    faceDetectionStats(face, expectedFace, viewsBuilder, true);
+                    faceDetectionStats(face, expectedFace, viewsBuilder);
                     viewsBuilder.closeSection();
                 } else {
-                    faceDetectionStats(face, expectedFace, viewsBuilder, false);
+                    faceDetectionStats(face, expectedFace, viewsBuilder);
                 }
             }
         }
 
-        long end = System.nanoTime();
-        double timeInSec = (end - start) / (double) 1_000_000_000;
-        double sumTimeInSec = sumTime / (double) 1_000_000_000;
+        long endTestTime = System.nanoTime();
+        double testTotalTimeInSec = (endTestTime - startTestTime) / (double) 1_000_000_000;
+        double detectionTotalTimeInSec = detectionTotalTime / (double) 1_000_000_000;
 
         viewsBuilder.newSection();
         viewsBuilder.addText("____________________");
         viewsBuilder.addText("____________________");
-        viewsBuilder.addText("Tested images: " + imagesToTest.length);
-        viewsBuilder.addText("Correct detection: " + numCorrect / REPEAT_TEST);
-        viewsBuilder.addText("Perfect detection: " + numPerfect / REPEAT_TEST);
-        viewsBuilder.addText("Partial correct: " + numPartialCorrect / REPEAT_TEST);
-        viewsBuilder.addText("3/4 side correct: " + numThreeSideCorrect / REPEAT_TEST);
-        viewsBuilder.addText("Wrong detection: " + numWrong / REPEAT_TEST);
-        viewsBuilder.addText("Avg side deviation: " + String.format(Locale.getDefault(), "%.2f", wrongSum / wrongSideCounter / REPEAT_TEST * 100) + "%");
-        viewsBuilder.addText("Total tests time: " + timeInSec + " s");
-        viewsBuilder.addText("Avg test time: " + (timeInSec / REPEAT_TEST) + " s");
-        viewsBuilder.addText("Detections total time: " + sumTimeInSec + " s");
-        viewsBuilder.addText("Avg detections time: " + (sumTimeInSec / REPEAT_TEST) + " s");
-        viewsBuilder.addText("One detection avg time: " + (sumTimeInSec / (double) imagesToTest.length / REPEAT_TEST) + " s");
+        viewsBuilder.addText("Przetestowane zdjęcia: " + imagesToTest.length);
+        viewsBuilder.addText("Prawidłowe detekcje: " + (int) (numCorrect / REPEAT_TEST));
+        viewsBuilder.addText("Złe detekcje: " + (int) (numWrong / REPEAT_TEST));
+        viewsBuilder.addText("Perfekcyjne detekcje: " + (int) (numPerfect / REPEAT_TEST));
+        viewsBuilder.addText("Częściowo dobre detekcje: " + (int) (numPartialCorrect / REPEAT_TEST));
+        viewsBuilder.addText("3/4 boków dobrych: " + (int) (numThreeSideCorrect / REPEAT_TEST));
+        viewsBuilder.addText("Śr. odchylenie boków: " + String.format(Locale.getDefault(), "%.2f", wrongSum / wrongSideCounter / REPEAT_TEST * 100) + "%");
+        viewsBuilder.addText("____________________");
+        viewsBuilder.addText("Całkowity czas: " + testTotalTimeInSec + " s");
+        viewsBuilder.addText("Śr. czas testu: " + (testTotalTimeInSec / REPEAT_TEST) + " s");
+        viewsBuilder.addText("Całkowity czas detekcji: " + detectionTotalTimeInSec + " s");
+        viewsBuilder.addText("Śr. czas detekcji testu: " + (detectionTotalTimeInSec / REPEAT_TEST) + " s");
+        viewsBuilder.addText("Śr. czas pojedynczej detekcji: " + (detectionTotalTimeInSec / (double) imagesToTest.length / REPEAT_TEST) + " s");
         viewsBuilder.addText("____________________");
         viewsBuilder.closeSection();
 
         viewsBuilder.build();
     }
 
-    private void faceDetectionStats(Rect face, Rect[] expectedFace, ViewsBuilder viewsBuilder, boolean showImgStats) {
+    private void faceDetectionStats(Rect face, Rect[] expectedFace, ViewsBuilder viewsBuilder) {
         if (face == null) {
             numWrong++;
             return;
@@ -118,11 +120,11 @@ public class FaceDetectorImageTest extends ImageTest {
         double diffBottomPercent = Math.abs(diffBottom) / height;
         double diffLeftPercent = Math.abs(diffLeft) / width;
 
-        if (showImgStats) {
-            viewsBuilder.addText(prepareImageStatText("Top", diffTop, diffTopPercent));
-            viewsBuilder.addText(prepareImageStatText("Right", diffRight, diffRightPercent));
-            viewsBuilder.addText(prepareImageStatText("Bottom", diffBottom, diffBottomPercent));
-            viewsBuilder.addText(prepareImageStatText("Left", diffLeft, diffLeftPercent));
+        if (canShowImage()) {
+            viewsBuilder.addText(prepareImageStatText("Góra", diffTop, diffTopPercent));
+            viewsBuilder.addText(prepareImageStatText("Prawo", diffRight, diffRightPercent));
+            viewsBuilder.addText(prepareImageStatText("Dół", diffBottom, diffBottomPercent));
+            viewsBuilder.addText(prepareImageStatText("Lewo", diffLeft, diffLeftPercent));
         }
 
         countCorrectness(diffTopPercent, diffRightPercent, diffBottomPercent, diffLeftPercent);

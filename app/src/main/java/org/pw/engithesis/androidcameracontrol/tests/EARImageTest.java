@@ -69,15 +69,15 @@ public class EARImageTest extends ImageTest {
         viewsBuilder.newSection();
         viewsBuilder.addText("____________________");
         viewsBuilder.addText("____________________");
-        viewsBuilder.addText("Tested images: " + imagesToTest.length);
-        viewsBuilder.addText("Eyes open: " + eyesOpenNum);
-        viewsBuilder.addText("Eyes closed: " + eyesClosedNum);
-        viewsBuilder.addText("Correct detection: " + correct);
-        viewsBuilder.addText("Wrong detection: " + wrong);
-        viewsBuilder.addText("Open correct: " + correctOpen);
-        viewsBuilder.addText("Closed correct: " + correctClosed);
-        viewsBuilder.addText("Open wrong: " + (eyesOpenNum - correctOpen));
-        viewsBuilder.addText("Closed wrong: " + (eyesClosedNum - correctClosed));
+        viewsBuilder.addText("Przetestowanych zdjęć: " + imagesToTest.length);
+        viewsBuilder.addText("Oczy otwarte: " + eyesOpenNum);
+        viewsBuilder.addText("Oczy zamknięte: " + eyesClosedNum);
+        viewsBuilder.addText("Prawidłowe detekcje: " + correct);
+        viewsBuilder.addText("Złe detekcje: " + wrong);
+        viewsBuilder.addText("Prawidłowe oczy otwarte: " + correctOpen);
+        viewsBuilder.addText("Prawidłowe oczy zamknięte: " + correctClosed);
+        viewsBuilder.addText("Złe oczy otwarte: " + (eyesOpenNum - correctOpen));
+        viewsBuilder.addText("Złe oczy zamknięte: " + (eyesClosedNum - correctClosed));
         viewsBuilder.addText("____________________");
         viewsBuilder.closeSection();
 

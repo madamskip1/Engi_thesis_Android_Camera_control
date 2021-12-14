@@ -53,8 +53,8 @@ public class EyeDetectorImageTest extends ImageTest {
         ViewsBuilder viewsBuilder = new ViewsBuilder(ctx, parentView);
 
 
-        long sumTime = 0;
-        long start = System.nanoTime();
+        long detectionTotalTime = 0;
+        long startTestTime = System.nanoTime();
 
         for (int j = 0; j < REPEAT_TEST; j++) {
             for (EyesImageTestStruct imageToTest : imagesToTest) {
@@ -65,24 +65,24 @@ public class EyeDetectorImageTest extends ImageTest {
                 /*      HAAR    */
                 /*
                if (!DETECT_IN_GRAY) {
-                    long singleStart = System.nanoTime();
+                    long startDetectionTime = System.nanoTime();
                     eyes = eyeDetector.detect(imageMat, face);
-                    timeSum += System.nanoTime() - singleStart;
+                    detectionTotalTime += System.nanoTime() - startDetectionTime ;
                 }
                 else
                 {
                     Mat grayImage = new Mat();
                     Imgproc.cvtColor(imageMat, grayImage, Imgproc.COLOR_RGB2GRAY);
-                    long singleStart = System.nanoTime();
+                    long startDetectionTime  = System.nanoTime();
                     eyes = eyeDetector.detect(grayImage, face);
-                    timeSum += System.nanoTime() - singleStart;
+                    detectionTotalTime += System.nanoTime() - startDetectionTime ;
                 }
                 */
                 /* ************ */
 
 
                 /*      Facemark    */
-                long singleStart = System.nanoTime();
+                long startDetectionTime = System.nanoTime();
                 facemarksDetector.detect(imageMat, face);
                 Point[] rightEyeLandmarks = facemarksDetector.getRightEyeFacemarks();
                 Point[] leftEyeLandmarks = facemarksDetector.getLeftEyeFacemarks();
@@ -94,7 +94,7 @@ public class EyeDetectorImageTest extends ImageTest {
                     eyes[1] = null;
                 }
 
-                sumTime += System.nanoTime() - singleStart;
+                detectionTotalTime += System.nanoTime() - startDetectionTime;
                 /* **************** */
 
                 if (canShowImage()) {
@@ -113,30 +113,31 @@ public class EyeDetectorImageTest extends ImageTest {
             }
         }
 
-        long end = System.nanoTime();
-        double timeInSec = (end - start) / (double) 1_000_000_000;
-        double sumTimeInSec = sumTime / (double) 1_000_000_000;
+        long endTestTime = System.nanoTime();
+        double testTotalTimeInSec = (endTestTime - startTestTime) / (double) 1_000_000_000;
+        double detectionTotalTimeInSec = detectionTotalTime / (double) 1_000_000_000;
 
         viewsBuilder.newSection();
         viewsBuilder.addText("____________________");
         viewsBuilder.addText("____________________");
-        viewsBuilder.addText("Tested images: " + imagesToTest.length);
-        viewsBuilder.addText("Eyes open: " + totalOpenEyes / REPEAT_TEST);
-        viewsBuilder.addText("Eyes closed: " + totalClosedEyes / REPEAT_TEST);
-        viewsBuilder.addText("Correct detection: " + numCorrect / REPEAT_TEST);
-        viewsBuilder.addText("Perfect detection: " + numPerfect / REPEAT_TEST);
-        viewsBuilder.addText("Partial correct: " + numPartialCorrect / REPEAT_TEST);
-        viewsBuilder.addText("3/4 side correct: " + numThreeSideCorrect / REPEAT_TEST);
-        viewsBuilder.addText("Wrong detection: " + numWrong / REPEAT_TEST);
-        viewsBuilder.addText("Closed wrong: " + closedWrong / REPEAT_TEST);
-        viewsBuilder.addText("Open wrong: " + openWrong / REPEAT_TEST);
-        viewsBuilder.addText("Closed correct: " + closedCorrect / REPEAT_TEST);
-        viewsBuilder.addText("Avg side deviation: " + String.format(new Locale("pl", "PL"), "%.2f", wrongSum / wrongSideCounter * 100) + "%");
-        viewsBuilder.addText("Total time: " + timeInSec + " s");
-        viewsBuilder.addText("Avg test time: " + (timeInSec / REPEAT_TEST) + " s");
-        viewsBuilder.addText("Detections total time: " + sumTimeInSec + " s");
-        viewsBuilder.addText("Avg detections time: " + (sumTimeInSec / REPEAT_TEST) + " s");
-        viewsBuilder.addText("One detection avg time: " + (sumTimeInSec / (double) imagesToTest.length / REPEAT_TEST) + " s");
+        viewsBuilder.addText("Przetestowane zdjęcia: " + imagesToTest.length);
+        viewsBuilder.addText("Oczy otwarte: " + (int) (totalOpenEyes / REPEAT_TEST));
+        viewsBuilder.addText("Oczy zamknięte: " + (int) (totalClosedEyes / REPEAT_TEST));
+        viewsBuilder.addText("Prawidłowe detekcje: " + (int) (numCorrect / REPEAT_TEST));
+        viewsBuilder.addText("Złe detekcje: " + (int) (numWrong / REPEAT_TEST));
+        viewsBuilder.addText("Perfekcyjne detekcje: " + (int) (numPerfect / REPEAT_TEST));
+        viewsBuilder.addText("Częściowo dobre detekcje: " + (int) (numPartialCorrect / REPEAT_TEST));
+        viewsBuilder.addText("3/4 boków dobrych: " + (int) (numThreeSideCorrect / REPEAT_TEST));
+        viewsBuilder.addText("Prawidłowe oczy zamknięte: " + (int) (closedCorrect / REPEAT_TEST));
+        viewsBuilder.addText("Złe oczy zamknięte: " + (int) (closedWrong / REPEAT_TEST));
+        viewsBuilder.addText("Złe oczy otwarte: " + (int) (openWrong / REPEAT_TEST));
+        viewsBuilder.addText("Śr. odchylenie boków: " + String.format(new Locale("pl", "PL"), "%.2f", wrongSum / wrongSideCounter * 100) + "%");
+        viewsBuilder.addText("____________________");
+        viewsBuilder.addText("Całkowity czas: " + testTotalTimeInSec + " s");
+        viewsBuilder.addText("Śr. czas testu: " + (testTotalTimeInSec / REPEAT_TEST) + " s");
+        viewsBuilder.addText("Całkowity czas detekcji: " + detectionTotalTimeInSec + " s");
+        viewsBuilder.addText("Śr. czas detekcji testu: " + (detectionTotalTimeInSec / REPEAT_TEST) + " s");
+        viewsBuilder.addText("Śr. czas pojedynczej detekcji: " + (detectionTotalTimeInSec / (double) imagesToTest.length / REPEAT_TEST) + " s");
         viewsBuilder.addText("____________________");
         viewsBuilder.closeSection();
 
