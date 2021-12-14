@@ -11,10 +11,130 @@ import org.pw.engithesis.androidcameracontrol.R;
 import org.pw.engithesis.androidcameracontrol.Utility;
 import org.pw.engithesis.androidcameracontrol.ViewsBuilder;
 import org.pw.engithesis.androidcameracontrol.detectors.EyePupilDetector;
-import org.pw.engithesis.androidcameracontrol.detectors.eyepupildetectionalgorithms.EyePupilDetectionProjection;
+
+import java.util.Locale;
 
 
 public class EyePupilDetectorImageTest extends ImageTest {
+    private static final boolean SHOW_IMAGES = false;
+    private static final double REPEAT_TEST = 1.0;
+
+    private final EyePupilDetector pupilDetector = new EyePupilDetector();
+    private double errorSum = 0.0;
+    private int outsideIris = 0;
+    private int insideIris = 0;
+    private int in10Good = 0;
+    private int in5Good = 0;
+    private int in1Good = 0;
+
+    public EyePupilDetectorImageTest(Context ctx, ScrollView parent) {
+        super(ctx, parent);
+    }
+
+    @Override
+    public void createView() {
+        ViewsBuilder viewsBuilder = new ViewsBuilder(ctx, parentView);
+
+        long detectionTotalTime = 0;
+        long startTestTime = System.nanoTime();
+
+        for (int i = 0; i < REPEAT_TEST; i++) {
+            for (EyePupilImageTestStruct image : imagesToTest) {
+                Mat imageMat = getImageMat(image.imgID);
+                Rect eyeRect = new Rect(0, 0, imageMat.width(), imageMat.height());
+
+                Point expectedPupilCenter = image.pupilCenter;
+                Rect expectedIrisRect = image.irisRect;
+
+                long startDetectionTime = System.nanoTime();
+                Point detectedPupilCenter = pupilDetector.detect(imageMat, eyeRect);
+                detectionTotalTime += System.nanoTime() - startDetectionTime;
+
+                if (canShowImage()) {
+                    viewsBuilder.newSection();
+                    Utility.drawRect(imageMat, expectedIrisRect, new Scalar(0, 0, 255), 1);
+                    Utility.drawCircle(imageMat, detectedPupilCenter, new Scalar(0, 255, 0), 1, 1);
+                    Utility.drawCircle(imageMat, expectedPupilCenter, new Scalar(60, 130, 255), 1, 1);
+                    addImageToView(imageMat, viewsBuilder);
+                    eyeDetectionStats(expectedPupilCenter, expectedIrisRect, detectedPupilCenter, imageMat.width(), imageMat.height(), viewsBuilder);
+                    viewsBuilder.closeSection();
+                } else {
+                    eyeDetectionStats(expectedPupilCenter, expectedIrisRect, detectedPupilCenter, imageMat.width(), imageMat.height(), viewsBuilder);
+                }
+            }
+        }
+
+        long endTestTime = System.nanoTime();
+        double testTotalTimeInSec = (endTestTime - startTestTime) / (double) 1_000_000_000;
+        double detectionTotalTimeInSec = detectionTotalTime / (double) 1_000_000_000;
+
+        viewsBuilder.newSection();
+        viewsBuilder.addText("____________________");
+        viewsBuilder.addText("____________________");
+        viewsBuilder.addText("Przetestowanych zdjęć oczu: " + imagesToTest.length);
+        viewsBuilder.addText("W obszare tęczówki: " + (int) (insideIris / REPEAT_TEST));
+        viewsBuilder.addText("Poza obszarem tęczówki: " + (int) (outsideIris / REPEAT_TEST));
+        viewsBuilder.addText("Śr. błąd: " + String.format(new Locale("pl", "PL"), "%.2f", (errorSum / (double) imagesToTest.length / REPEAT_TEST * 100)) + "%");
+        viewsBuilder.addText("Błąd <= 0.10: " + (int) (in10Good / REPEAT_TEST));
+        viewsBuilder.addText("Błąd <= 0.05: " + (int) (in5Good / REPEAT_TEST));
+        viewsBuilder.addText("Błąd <= 0.01: " + (int) (in1Good / REPEAT_TEST));
+        viewsBuilder.addText("____________________");
+        viewsBuilder.addText("Całkowity czas: " + testTotalTimeInSec + " s");
+        viewsBuilder.addText("Śr. czas testu: " + testTotalTimeInSec / REPEAT_TEST + " s");
+        viewsBuilder.addText("Całkowity czas detekcji: " + detectionTotalTimeInSec + " s");
+        viewsBuilder.addText("Śr. czas detekcji testu: " + (detectionTotalTimeInSec / REPEAT_TEST) + " s");
+        viewsBuilder.addText("Śr. czas pojedynczej detekcji: " + (detectionTotalTimeInSec / (double) imagesToTest.length / REPEAT_TEST) + " s");
+        viewsBuilder.addText("____________________");
+        viewsBuilder.addText("____________________");
+        viewsBuilder.closeSection();
+        viewsBuilder.build();
+    }
+
+    private void eyeDetectionStats(Point expectedPupilCenter, Rect expectedIrisRect, Point detectedPupilCenter, int width, int height, ViewsBuilder viewsBuilder) {
+        boolean isInsideIris = detectedPupilCenter.inside(expectedIrisRect);
+        if (isInsideIris) {
+            insideIris++;
+        } else {
+            outsideIris++;
+        }
+
+        double distance = Utility.calcDistance(expectedPupilCenter, detectedPupilCenter);
+        double error = distance / Math.hypot(width, height);
+        errorSum += error;
+
+        if (error <= 0.1) {
+            in10Good++;
+            if (error <= 0.05) {
+                in5Good++;
+                if (error <= 0.01) {
+                    in1Good++;
+                }
+            }
+        }
+
+        if (canShowImage()) {
+            viewsBuilder.addText("W środku tęczówki: " + (isInsideIris ? "Tak" : "Nie"));
+            viewsBuilder.addText("Błąd: " + String.format(new Locale("pl", "PL"), "%.2f", error * 100) + "%");
+        }
+    }
+
+    private boolean canShowImage() {
+        return SHOW_IMAGES && REPEAT_TEST == 1.0;
+    }
+
+
+    private static class EyePupilImageTestStruct {
+        public final int imgID;
+        public final Point pupilCenter;
+        public final Rect irisRect;
+
+        public EyePupilImageTestStruct(int imgId, Point pupilCenter, Rect irisRect) {
+            this.imgID = imgId;
+            this.pupilCenter = pupilCenter;
+            this.irisRect = irisRect;
+        }
+    }
+
     private final EyePupilImageTestStruct[] imagesToTest = {
             new EyePupilImageTestStruct(R.drawable.eye_pupil_test_from_500x500_0, new Point(27, 13), new Rect(17, 6, 20, 17)),
             new EyePupilImageTestStruct(R.drawable.eye_pupil_test_from_500x500_1, new Point(32, 14), new Rect(22, 5, 21, 18)),
@@ -153,116 +273,4 @@ public class EyePupilDetectorImageTest extends ImageTest {
             new EyePupilImageTestStruct(R.drawable.eye_pupil_test_from_500x500_139, new Point(27, 13), new Rect(17, 7, 19, 14)),
             new EyePupilImageTestStruct(R.drawable.eye_pupil_test_from_500x500_140, new Point(12, 5), new Rect(7, 1, 10, 9)),
     };
-
-    private static final boolean SHOW_IMAGES = true;
-
-    private final EyePupilDetector pupilDetector;
-    private double errorSum = 0.0;
-    private int outsideIris = 0;
-    private int insideIris = 0;
-    private int in10Good = 0;
-    private int in10Error = 0;
-    private int in5Good = 0;
-    private int in5Error = 0;
-    private final int in1Good = 0;
-    private int in1Error = 0;
-
-    public EyePupilDetectorImageTest(Context ctx, ScrollView parent) {
-        super(ctx, parent);
-        pupilDetector = new EyePupilDetector(new EyePupilDetectionProjection());
-    }
-
-    @Override
-    public void createView() {
-        ViewsBuilder viewsBuilder = new ViewsBuilder(ctx, parentView);
-
-        final double repeat = 100.0;
-        long timeSum = 0;
-        long start = System.nanoTime();
-
-        for (int i = 0; i < repeat; i++) {
-            for (EyePupilImageTestStruct image : imagesToTest) {
-                Mat imageMat = getImageMat(image.imgID);
-                Rect eyeRect = new Rect(0, 0, imageMat.width(), imageMat.height());
-
-                Point expectedPupilCenter = image.pupilCenter;
-                Rect expectedPupilRect = image.pupilRect;
-
-                long singleStart = System.nanoTime();
-                Point detectedPupilCenter = pupilDetector.detect(imageMat, eyeRect);
-                timeSum += System.nanoTime() - singleStart;
-
-                eyeDetectionStats(expectedPupilCenter, expectedPupilRect, detectedPupilCenter, imageMat.width(), imageMat.height(), viewsBuilder);
-
-                if (SHOW_IMAGES)
-                {
-                    viewsBuilder.newSection();
-                    Utility.drawRect(imageMat, expectedPupilRect, new Scalar(0, 0, 255), 1);
-                    Utility.drawCircle(imageMat, detectedPupilCenter, new Scalar(0, 255, 0), 1, 1);
-                    Utility.drawCircle(imageMat, expectedPupilCenter, new Scalar(60, 130, 255), 1, 1);
-                    addImageToView(imageMat, viewsBuilder);
-                    viewsBuilder.closeSection();
-                }
-
-            }
-        }
-
-        long end = System.nanoTime();
-        double timeInSec = (end - start) / (double) 1_000_000_000;
-        double sumTimeInSec = timeSum / (double) 1_000_000_000;
-
-        viewsBuilder.newSection();
-        viewsBuilder.addText("Total time: " + timeInSec + " s");
-        viewsBuilder.addText("Avg time: " + timeInSec / repeat + " s");
-        viewsBuilder.addText("Sum time " + sumTimeInSec);
-        viewsBuilder.addText("Avg sumtime " + sumTimeInSec / repeat);
-        viewsBuilder.addText("single sumtime" + sumTimeInSec / (double) imagesToTest.length / repeat);
-        viewsBuilder.closeSection();
-        viewsBuilder.build();
-    }
-
-    private void eyeDetectionStats(Point expectedPupilCenter, Rect expectedPupilRect, Point detectedPupilCenter, int width, int height, ViewsBuilder viewsBuilder) {
-        if (detectedPupilCenter.inside(expectedPupilRect)) {
-            insideIris++;
-        } else {
-            outsideIris++;
-        }
-
-        double distance = Utility.calcDistance(expectedPupilCenter, detectedPupilCenter);
-        double error = distance / Math.hypot(width, height);
-        //   viewsBuilder.addText("error " + Double.toString(error));
-        errorSum += error;
-
-        if (error > 0.1) {
-            in10Error++;
-            in5Error++;
-            in1Error++;
-        } else if (error > 0.5) {
-            in10Good++;
-            in5Error++;
-            in1Error++;
-        } else if (error > 0.01) {
-            in10Good++;
-            in5Good++;
-            in1Error++;
-        } else {
-            in10Good++;
-            in5Good++;
-            in10Good++;
-        }
-    }
-
-    private static class EyePupilImageTestStruct {
-        public final int imgID;
-        public final Point pupilCenter;
-        public final Rect pupilRect;
-
-        public EyePupilImageTestStruct(int imgId, Point pupilCenter, Rect pupilRect) {
-            this.imgID = imgId;
-            this.pupilCenter = pupilCenter;
-            this.pupilRect = pupilRect;
-        }
-    }
-
-
 }
