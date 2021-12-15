@@ -92,6 +92,7 @@ public class FaceAnalysisLivePreview extends ImageAnalyser {
 
         } else {
             eyeMoveDetector.tickEyeClosed();
+            blinkDetector.checkEyeBlink(true);
         }
 
 

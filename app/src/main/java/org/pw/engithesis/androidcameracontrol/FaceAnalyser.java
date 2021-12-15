@@ -64,8 +64,9 @@ public class FaceAnalyser extends ImageAnalyser {
                 eyeMoveDetector.tickEyeClosed();
 
             blinkDetector.checkEyeBlink(eyesClosed);
-        } else
+        } else {
             eyeMoveDetector.tickEyeClosed();
-
+            blinkDetector.checkEyeBlink(true);
+        }
     }
 }
