@@ -1,0 +1,19 @@
+ \newpage
+ \abstract
+
+The main goal of this thesis was to create the application for the devices that run the Android operating system, which with the aid of face analysis, would be able to react to the user gestures such as blinking or eyeball movement.
+
+\par
+
+To detect specific parts of the face there was prepared a set of algorithms. Each of them was further tested in terms of detection effectiveness and time complexity. The chosen image processing methods were implemented with the usage of \textit{OpenCV} and \textit{Dlib} libraries. The best solutions from each group were used in a final software project. The face detection process is performed with the aid of an algorithm based on a \textit{Histogram of Oriented Gradients}, whereas the facemarks are being detected with the \textit{Kazemi} method. The face pointers allow determining the eyes' location on the photo as well as ascertain whether they are closed with the \textit{Eye Aspect Ratio} coefficient. There is used the \textit{thresholding by cumulative distribution function} in order to find the center of the pupil.
+
+\par
+
+The final result of this thesis is a simple application that presents the working of the image analysis, reacts to horizontal eyeballs movement, and to blinking. Those gestures detection were shown to the user in a readable way as a notification and also in the form of moving images in the simple photo gallery.
+
+\par
+
+This work was a helpful introduction to application development on Android devices. It also brought a significant amount of knowledge related to image processing, neural networks, and machine learning. Moreover, it allowed getting to know the two popular libraries from the domain of computer vision.
+
+
+ \keywords Digital image processing and analysis, Face detection, Eye gaze tracking, Mobile application development, Image based application

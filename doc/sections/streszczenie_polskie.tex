@@ -1,0 +1,19 @@
+ \cleardoublepage % Zaczynamy od nieparzystej strony
+ \streszczenie
+ 
+ Celem pracy inżynierskiej było stworzenie aplikacji na urządzenia z systemem \textit{Android}, która przy pomocy analizy twarzy będzie reagowała na gesty użytkownika takie jak mruganie czy ruch gałkami ocznymi.
+ 
+ \par
+ 
+ Został przygotowany zestaw algorytmów do~detekcji poszczególnych fragmentów twarzy, które następnie były testowane pod kątem skuteczności detekcji i~złożoności czasowej. Do~implementacji wybranych metod przetwarzania obrazu zostały użyte biblioteki \textit{OpenCV} oraz \textit{Dlib}.
+ Najlepsze rozwiązania z~poszczególnych grup zostały wykorzystane w finalnym projekcie oprogramowania. Proces detekcji twarzy odbywa się przy pomocy algorytmu opartego na~\textit{Histogramach zorientowanych gradientów}, natomiast znaczniki są~wykrywane dzięki metodzie \textit{Kazemi}. \textit{Punkty charakterystyczne twarzy} pozwalają określić położenie na~zdjęciu oczu, a~także stwierdzić czy są one zamknięte przy użyciu współczynnika \textit{Eye Aspect Ratio}. Wykorzystywane jest \textit{progowanie na~podstawie dystrybunaty} celem wyznaczenia środka źrenicy.
+ 
+ \par
+ 
+ Końcowym efektem pracy dyplomowej jest prosta aplikacja, która prezentuje działanie analizy obrazu oraz reaguje na~ruch oczami w~poziomie czy mruganie użytkownika. Wykrycie takich gestów przedstawione było w~zrozumiałej formie przez wyświetlanie komunikatów oraz przesuwanie obrazów w prostej galerii zdjęć. 
+ 
+ \par
+ 
+ Praca pomogła zapoznać się z~wytwarzaniem oprogramowania użytkowego na systemy Android. Przyniosła również dużo wiedzy z~zakresu przetwarzania obrazu oraz sieci neuronowych i~uczenia maszynowego. Pozwoliła też poznać dwie popularne biblioteki z~dziedziny widzenia komputerowego. 
+
+ \slowakluczowe Cyfrowe przetwarzanie i analiza obrazów, Detekcja twarzy, Śledzenie oczu, Programowanie aplikacji mobilnych, Kontrola aplikacji z wykorzystaniem obrazów

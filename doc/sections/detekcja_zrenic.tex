@@ -2,37 +2,40 @@
 
 \section{Detekcja źrenic}
 
-W pracy dyplomowej występuje sterowanie aplikacją za pomocą ruch gałek ocznych, w szczególności analizując położenie źrenic. Mając wykryty obszar oczu (patrz rozdz. \hyperref[{section:eye_detection}]{\textit{\ref{section:eye_detection}.Detekcja oczu}}) metodami klasycznymi przetwarzania obrazów określam położenie środka źrenicy.
-\par
-W projekcie zaimplementowane zostały trzy algorytmy do testów i wybrany jeden, który dawał najlepsze rezultaty.
+W pracy dyplomowej występuje sterowanie aplikacją za pomocą ruch gałek ocznych, w~szczególności analizując położenie źrenic. Mając wykryty obszar oczu (patrz rozdz.~\hyperref[{section:eye_detection}]{\textit{\ref{section:eye_detection}}}) metodami klasycznymi przetwarzania obrazów określane położenie środka źrenicy.
 
-\subsection{Algorytm CDF (Cumulative Distribution Function)}
-Algorytm zaimplementowany na podstawie dwóch artykułów o detekcji źrenic \cite{IMECSPupilCDFAnalysis}
-\cite{EyePupilWebCam}. Opiera się w głównej mierze na progowaniu za pomocą dystrybuanty. Następnie analizuje najciemniejsze obszary, w których wyznacza środek źrenicy.
+\par
+
+W projekcie zaimplementowane zostały trzy algorytmy do testów i~wybrany jeden, który dawał najlepsze rezultaty.
+
+\subsection{Algorytmy detekcji źrenic}
+
+\subsubsection{Algorytm CDF (Cumulative Distribution Function)}
+Algorytm zaimplementowany na podstawie dwóch artykułów o~detekcji źrenic~\cite{IMECSPupilCDFAnalysis}~\cite{EyePupilWebCam}. Opiera się w~głównej mierze na progowaniu za pomocą dystrybuanty. Następnie analizuje najciemniejszy obszar wyznaczany jest środek źrenicy.
 
 \iffalse
 \begin{figure}[!h]
     \begin{center}
-        \subfigure[Oko skierowane w prawo]{\label{fig:pupil_cdf_left}\includegraphics[scale=0.3]{img/pupil_section/pupil_2eyes_left_1.png}}
+        \subfigure[Oko skierowane w~prawo]{\label{fig:pupil_cdf_left}\includegraphics[scale=0.3]{img/pupil_section/pupil_2eyes_left_1.png}}
         \hspace{3mm}
         \subfigure[Oko skierowane na wprost]{\label{fig:pupil_cdf_center}\includegraphics[scale=0.3]{img/pupil_section/pupil_2eyes_center_1.png}}
         \hspace{3mm}
-        \subfigure[Oko skierowane w lewo]{\label{fig:pupil_cdf_right}\includegraphics[scale=0.3]{img/pupil_section/pupil_2eyes_right_1.png}}
+        \subfigure[Oko skierowane w~lewo]{\label{fig:pupil_cdf_right}\includegraphics[scale=0.3]{img/pupil_section/pupil_2eyes_right_1.png}}
     \end{center}
     \caption{Rezultat wykrywania źrenic metodą CDF}
     \label{fig:cdf_results}
 \end{figure}
 \fi
 
-\subsubsection{Kroki algorytmu}
+\paragraph{Kroki algorytmu}
 
 \begin{itemize}
-    \item Za pomocą progowania z użyciem dystrybuanty tworzymy obraz binarny.\\
+    \item Za pomocą progowania z~użyciem dystrybuanty tworzony jest obraz binarny.\\
     \begin{align}
         CDF(r) = \sum_{w=0}^{r} p(w)
     \end{align}
     
-    Gdzie \textit{p(w)} to prawdopodobieństwo znalezienia punktu o jasności równej \textit{w} - określone przy pomocy dystrybuanty.
+    Gdzie \textit{p(w)} to prawdopodobieństwo znalezienia punktu o~jasności równej \textit{w} - określone przy pomocy dystrybuanty.
     
     \begin{align}
         I`(x, y) = 
@@ -44,14 +47,15 @@ Algorytm zaimplementowany na podstawie dwóch artykułów o detekcji źrenic \ci
     
     Gdzie \textit{I} to jasność piksela, natomiast \textit{a} to ustalony próg
 
-    \item Na uzyskany obraz binarny nakładamy operację morfologiczną erozji (filtr minimalny), celem usunięcia pojedynczych ciemnych pikseli
+    \item Na uzyskany obraz binarny nakładana jest operacja morfologiczna erozji (filtr minimalny), celem usunięcia pojedynczych ciemnych pikseli
     
-    \item Znajdujemy najciemniejszy piksel na oryginalnym obrazie wśród tych, które mają wartość 255 (są białe) na obrazie binarnym
+    \item Następnie znajdowany jest najciemniejszy piksel na oryginalnym obrazie wśród tych, które mają wartość~255 (są białe) na obrazie binarnym
     
-    \item Obliczamy średnią jasność pikseli w kwadracie 10x10 wokół wybranego najciemniejszego punktu
+    \item Obliczana jest średnia jasność pikseli w~kwadracie~10x10 wokół wybranego najciemniejszego punktu
     
-    \item Nakładamy erozję na obszarze 15x15 wokół wybranego punktu
-    \item Na tym obszarze stosujemy progowanie
+    \item Nakładana jest erozja na obszarze~15x15 wokół wybranego punktu
+    
+    \item Na tym obszarze stosowane jest progowanie na podstawie wartości
     
     \begin{align}
         I`(x, y) = 
@@ -63,7 +67,7 @@ Algorytm zaimplementowany na podstawie dwóch artykułów o detekcji źrenic \ci
     
     Gdzie \textit{$I_{AVG}$} to średnia jasność obszaru obliczona wcześniej
     
-    \item Środkiem źrenicy będzie środek ciężkości białych punktów na binarnym obszarze, który uzyskaliśmy
+    \item Szukanym punktem źrenicy jest środek ciężkości białych punktów na uzyskanym binarnym obrazie
 
 \end{itemize}
 
@@ -77,12 +81,12 @@ Algorytm zaimplementowany na podstawie dwóch artykułów o detekcji źrenic \ci
 \end{figure}
 \fi
 
-\subsubsection{Wynik kolejnych etapów algorytmu}
-Na \hyperref[{fig:cdf_steps}]{\textit{rys. \ref{fig:cdf_steps}}} przedstawiony jest wynik kolejnych etapów detekcji źrenic za pomocą metody \textit{CDF} na przykładowym zdjęciu oka.
+\paragraph{Wynik kolejnych kroków algorytmu}
+Na \hyperref[{fig:cdf_steps}]{\textit{rys.~\ref{fig:cdf_steps}}} przedstawiony jest rezultat kolejnych etapów wykrywania źrenic przy pomocy metody \textit{CDF} na przykładowym zdjęciu oka.
 
 \begin{figure}[!h]
     \begin{center}
-        \subfigure[Obszar oka w skali szarości]{\label{fig:cdf_gray}\includegraphics[scale=0.50]{img/pupil_section/CDF_steps/CDF_gray_eye.png}}
+        \subfigure[Obszar oka w~skali szarości]{\label{fig:cdf_gray}\includegraphics[scale=0.50]{img/pupil_section/CDF_steps/CDF_gray_eye.png}}
         \hspace{8mm}
         \subfigure[Wynik progowania CDF]{\label{fig:cdf_binary}\includegraphics[scale=0.50]{img/pupil_section/CDF_steps/CDF_binary_eye_after_CDF.png}}
         \hspace{8mm}
@@ -92,7 +96,7 @@ Na \hyperref[{fig:cdf_steps}]{\textit{rys. \ref{fig:cdf_steps}}} przedstawiony j
         
         \subfigure[Najciemniejszy punkt]{\label{fig:cdf_darkest}\includegraphics[scale=0.50]{img/pupil_section/CDF_steps/CDF_darkest_pixel.png}}
         \hspace{8mm}
-        \subfigure[Obszar 10x10, w którym obliczana jest średnia jasność]{\label{fig:cdf_avgIntens}\includegraphics[scale=0.50]{img/pupil_section/CDF_steps/CDF_avgIntensity_region.png}}
+        \subfigure[Obszar 10x10, w~którym obliczana jest średnia jasność]{\label{fig:cdf_avgIntens}\includegraphics[scale=0.50]{img/pupil_section/CDF_steps/CDF_avgIntensity_region.png}}
         \hspace{8mm}
         \subfigure[Wynik erozji]{\label{fig:cdf_eroded}\includegraphics[scale=0.50]{img/pupil_section/CDF_steps/cdf_eroded_eye.png}}
         
@@ -110,15 +114,23 @@ Na \hyperref[{fig:cdf_steps}]{\textit{rys. \ref{fig:cdf_steps}}} przedstawiony j
     \label{fig:cdf_steps}
 \end{figure}
 
-\subsection{Algorytm PF (Projection Function)}
 
-Algorytm po raz pierwszy opisany w artykule zatytułowanym \textit{Projection Functions for Eye Detection} \cite{projection_function} z 2004 roku. Jest oparty na rzutowaniu jasności pikseli na składowe poziome i pionowe. Do obliczenia tych wartości wykorzystuje się funkcje projekcji, która może przyjmować różne postaci - z czego trzy zostały opisane w tej pracy dyplomowej. Największe różnice wartości oznaczają szybkie zmiany jasności, które mogą być konturami oka. \cite{EyePupilWebCam}
 
-\subsubsection{Funkcja projekcji}
 
-Funkcja projekcji służąca do rzutowania jasności rzędów i kolumn może przyjmować różne formy. Najczęściej stosowana jest funkcja całkowa, jednak ze względu na swoje niedociągnięcia i kłopoty z z wykrywaniem wariancji powstały także inne algorytmy. Trzy różne funkcje opisane są poniżej.
 
-\paragraph{Funkcja całkowa} Wylicza się za jej pomocą średnią jasność pikseli w danym rzędzie lub kolumnie. W teorii jest to całka:
+
+
+
+
+\subsubsection{Algorytm PF (Projection Function)}
+
+Algorytm po raz pierwszy opisany w~artykule zatytułowanym \textit{Projection Functions for Eye Detection} \cite{projection_function} z~2004 roku. Jest oparty na rzutowaniu jasności pikseli na składowe poziome i~pionowe. Do obliczenia tych wartości wykorzystuje się funkcje projekcji, która może przyjmować różne postaci - z~czego trzy zostały opisane w~tej pracy dyplomowej. Największe różnice wartości oznaczają szybkie zmiany jasności, które mogą być konturami oka.~\cite{EyePupilWebCam}
+
+\paragraph{Funkcja projekcji}
+
+Funkcja projekcji służąca do rzutowania jasności rzędów i~kolumn może przyjmować różne formy. Najczęściej stosowana jest funkcja całkowa, jednak ze względu na swoje niedociągnięcia i~kłopoty z~wykrywaniem wariancji powstały także inne algorytmy. Trzy różne funkcje opisane są poniżej.
+
+\subparagraph{Funkcja całkowa} Wylicza się za jej pomocą średnią jasność pikseli w~danym rzędzie lub kolumnie. w~teorii jest to całka:
 \begin{align}
     {IPF_h}(y) = \frac{1}{{x_b}-{x_a}}\int_{x_a}^{x_b} I(x,y) \, \mathrm{d}x
 \end{align}
@@ -126,7 +138,7 @@ Funkcja projekcji służąca do rzutowania jasności rzędów i kolumn może prz
     {IPF_v}(x) = \frac{1}{{y_b}-{y_a}}\int_{y_a}^{y_b} I(x,y) \, \mathrm{d}y
 \end{align}
 
-Ale w praktyce degeneruje się do funkcji sumy:
+Ale w~praktyce degeneruje się do funkcji sumy:
 
 \begin{align}
     {IPF_h}(y)=\frac{1}{{x_b}-{x_a}}\sum_{x={x_a}}^{{x_b}} I(x,y)
@@ -135,43 +147,43 @@ Ale w praktyce degeneruje się do funkcji sumy:
     {IPF_v}(x)=\frac{1}{{y_b}-{y_a}}\sum_{y={y_a}}^{{y_b}} I(x,y)
 \end{align}
 
-\paragraph{Funkcja wariancji} Średnia różnica między jasnością danego piksela, a wyliczonego \textit{IPF} danego rzędu lub kolumny
+\subparagraph{Funkcja wariancji} Średnia różnica między jasnością danego piksela, a~wyliczonego \textit{IPF} danego rzędu lub kolumny
 
 \begin{align}
-    {VPF_h}(y)=\frac{1}{{x_b}-{x_a}}\sum_{x={x_a}}^{{x_b}} (I(x,y) - {IPF_h})
+    {VPF_h}(y)=\frac{1}{{x_b}-{x_a}}\sum_{x={x_a}}^{{x_b}} (I(x,y) - {IPF_h(y)})
 \end{align}
 \begin{align}
-    {VPF_v}(x)=\frac{1}{{y_b}-{y_a}}\sum_{y={y_a}}^{{y_b}} (I(x,y) - {IPF_v})
+    {VPF_v}(x)=\frac{1}{{y_b}-{y_a}}\sum_{y={y_a}}^{{y_b}} (I(x,y) - {IPF_v(x)})
 \end{align}
 
-Chociaż we wskazanym wyżej artykule funkcja ta występuje w przedstawionej formie to spotykane są również postacie z różnicą kwadratową oraz z pierwiastkami z obliczonej wartości. 
+Chociaż we wskazanym wyżej artykule funkcja ta występuje w~przedstawionej formie to spotykane są również postacie z~różnicą kwadratową oraz z~pierwiastkami z~obliczonej wartości. 
 
-\paragraph{Funkcja ogólna} Parametryzowana suma wyliczonych wartości \textit{IPF} i \textit{VPF}.
+\subparagraph{Funkcja ogólna} Parametryzowana suma wyliczonych wartości \textit{IPF} i~\textit{VPF}.
 
 \begin{align}
-    {GPF_h}(y)=(1-\alpha) * {IPF_h} + \alpha * {VPF_h}
+    {GPF_h}(y)=(1-\alpha) * {IPF_h(y)} + \alpha * {VPF_h(y)}
 \end{align}
 \begin{align}
-    {GPF_v}(x)=(1-\alpha) * {IPF_v} + \alpha * {VPF_v} 
+    {GPF_v}(x)=(1-\alpha) * {IPF_v(x)} + \alpha * {VPF_v(x)} 
 \end{align}
 
 Autorzy tej metody zalecają parametr $\alpha = 0.6$ jako dający najlepsze rezultaty.
 
-\subsubsection{Kroki algorytmu}
+\paragraph{Kroki algorytmu}
 
 \begin{itemize}
-    \item Dla każdego rzędu i kolumny obliczamy wartość funkcji projekcji
-    \item Dla wyliczonych funkcji projekcji obliczamy wartości pochodnej w każdym rzędzie i kolumnie
-    \item Wybieramy po dwa ekstrema dla poziomego i pionowego wymiaru
-    \item Przecięcie wybranych kolumn i rzędów utworzy prostokąt, którego środkiem będzie poszukiwany punkt na źrenicy 
+    \item Dla każdego rzędu i~kolumny obliczana jest wartość funkcji projekcji
+    \item Dla wyliczonych funkcji projekcji określana jest wartość pochodnej w~każdym rzędzie i~kolumnie
+    \item Wybierane są dwa ekstrema dla poziomego i~pionowego wymiaru
+    \item Przecięcie wybranych kolumn i~rzędów tworzy prostokąt, którego śreodek jest poszukiwany punkt na źrenicy 
 \end{itemize}
 
-\subsubsection{Wynik kolejnych etapów algorytmu}
-Na \hyperref[{fig:pf_steps}]{\textit{rys. \ref{fig:pf_steps}}} przedstawiony jest wynik kolejnych etapów detekcji źrenic za pomocą metody \textit{PF} na przykładowym zdjęciu oka.
+\paragraph{Wynik kolejnych kroków algorytmu}
+Na \hyperref[{fig:pf_steps}]{\textit{rys.~\ref{fig:pf_steps}}} przedstawiony jest rezultat kolejnych etapów wykrywania źrenic przy pomocy metody \textit{PF} na przykładowym zdjęciu oka.
 
 \begin{figure}[!h]
     \begin{center}
-        \subfigure[Obszar oka w skali szarości]{\label{fig:pf_gray_eye}\includegraphics[scale=0.50]{img/pupil_section/PF_steps/PF_gray_eye.png}}
+        \subfigure[Obszar oka w~skali szarości]{\label{fig:pf_gray_eye}\includegraphics[scale=0.50]{img/pupil_section/PF_steps/PF_gray_eye.png}}
         \hspace{8mm}
         \subfigure[Pionowe wartości projekcji]{\label{fig:pf_x_projection}\includegraphics[scale=0.50]{img/pupil_section/PF_steps/PF_x_projection.png}}
         \hspace{8mm}
@@ -198,25 +210,30 @@ Na \hyperref[{fig:pf_steps}]{\textit{rys. \ref{fig:pf_steps}}} przedstawiony jes
     \label{fig:pf_steps}
 \end{figure}
 
-\subsection{Algorytm EA (Edge Analysis)}
 
-Algorytm detekcji źrenic \cite{EyePupilWebCam} opierający się na wykryciu i analizie krawędzi. W teorii krawędzie najbardziej pionowe i poziome na zdjęciu powinny należeć do tęczówki i źrenicy.
 
-\subsubsection{Kroki algorytmu}
+
+
+
+\subsubsection{Algorytm EA (Edge Analysis)}
+
+Algorytm detekcji źrenic \cite{EyePupilWebCam} opierający się na wykryciu i~analizie krawędzi. w~teorii krawędzie najbardziej pionowe i~poziome na zdjęciu powinny należeć do tęczówki i~źrenicy.
+
+\paragraph{Kroki algorytmu}
 
 \begin{itemize}
-    \item Dla obszaru oka w skali szarości nakładamy filtr rozmywający, np. Gaussa. Pozwoli to pozbyć się drobnych szumów i wygładzić obraz.
-    \item Wykrywamy krawędzie i tworzymy obraz binarny. Można zastosować np. algorytm Canny, który jest jedną z najpopularniejszych metod detekcji krawędzi
-    \item Wybieramy dwa rzędy i dwie kolumny z największą liczbą punktów o wartości 255 (białe piksele na obrazie binarnym)
-    \item Przecięcie wybranych rzędów i kolumn utworzy prostokąt, którego środkiem będzie poszukiwany punkt na źrenicy
+    \item Dla obszaru oka w~skali szarości nakładany jest filtr rozmywający, np. Gaussa. Pozwala to pozbyć się drobnych szumów i~wygładzić obraz.
+    \item Wykrywane są krawędzie i~tworzony obraz binarny. Można zastosować np. algorytm Canny, który jest jedną z~najpopularniejszych metod detekcji krawędzi
+    \item Wybierane są dwa rzędy i~dwie kolumny z~największą liczbą punktów o~wartości~255 (białe piksele na obrazie binarnym)
+    \item Przecięcie wybranych rzędów i~kolumn tworzy prostokąt, którego środek jest poszukiwany punkt na źrenicy
 \end{itemize}
 
-\subsubsection{Wynik kolejnych etapów algorytmu}
-Na \hyperref[{fig:ea_steps}]{\textit{rys. \ref{fig:ea_steps}}} przedstawiony jest wynik kolejnych etapów detekcji źrenic za pomocą metody \textit{EA} na przykładowym zdjęciu oka.
+\paragraph{Wynik kolejnych kroków algorytmu}
+Na \hyperref[{fig:ea_steps}]{\textit{rys.~\ref{fig:ea_steps}}} przedstawiony jest rezultat kolejnych etapów wykrywania źrenic przy pomocy metody \textit{EA} na przykładowym zdjęciu oka.
 
 \begin{figure}[!h]
     \begin{center}
-        \subfigure[Obszar oka w skali szarości]{\label{fig:ea_gray_eye}\includegraphics[scale=0.50]{img/pupil_section/EA_steps/EA_gray_eye.png}}
+        \subfigure[Obszar oka w~skali szarości]{\label{fig:ea_gray_eye}\includegraphics[scale=0.50]{img/pupil_section/EA_steps/EA_gray_eye.png}}
         \hspace{8mm}
         \subfigure[Rozmycie filtrem Gaussa]{\label{fig:ea_gaussian}\includegraphics[scale=0.50]{img/pupil_section/EA_steps/EA_gaussian.png}}
         \hspace{8mm}

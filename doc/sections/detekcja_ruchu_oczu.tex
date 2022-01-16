@@ -1,0 +1,46 @@
+\newpage
+
+\section{Detekcja ruchu gałek ocznych}
+
+Do detekcji ruchu gałek ocznych wykorzystywany jest identyczny mechanizm jak w~przypadku wykrywania mrugania. Analizowane są położenia źrenic w~określonej ilości klatek obrazu, a~na~ich podstawie zgłaszana jest ewentualna zmiana położenia oczu, a~w~konsekwencji ich ruch. 
+
+\subsection{Algorytm detekcji ruchu oczu}
+
+\begin{enumerate}
+    \item Utworzenie tablicy $T$ przechowującej $a$ wartości oznaczających położenie oka w~$a$~ostatnich klatkach obrazu.
+    \item Usunięcie najstarszej wartości z tablicy $T$ jeśli jest pełna
+    \item Dodanie do tablicy $T$ nowego położenia oka danej klatce
+    \item Analiza zawartości tabeli $T$  i porównanie z poprzednim stanem $S_{i-1}$:
+    
+    \begin{enumerate}
+        \item Jeśli wszystkie pola mają taką samą wartość to ustalenie stanu $S_{i}$ na tę wartość. Inaczej skok do punktu 6
+        \item Jeśli stan $S_{i}$ jest inny niż $S_{i-1}$ to:
+        
+        \begin{enumerate}
+            \item Jeśli stan $S_{i-1}$ oznaczał oczy zamknięte to nastąpiło ich otwarcie
+            \item Jeśli stan $S_{i-1}$ oznaczał położenie otwartych oczu to $S_{i}$ oznacza ich nowe położenie 
+            \item Jeśli stan $S_{i}$ oznacza oczy zamknięte to nastąpiło ich zamknięcie
+        \end{enumerate}
+    \end{enumerate}
+    
+    \item Powrót do punktu 3
+\end{enumerate}
+
+\vspace{3mm}
+
+\textit{Uwaga 1.} Parametr $a$ oznacza ile klatek z~rzędu musi występować dany stan oka by uznać go za wiarygodny (służy odrzuceniu pojedynczych błędnych wskazań i~szumów).
+
+\par
+
+\textit{Uwaga 2.} Stan może przyjmować wartości: lewo, środek, prawo oraz zamknięte. Pierwsze trzy oznaczają położenie tęczówki i~źrenicy (kierunek patrzenia użytkownika). 
+
+
+
+
+\subsection{Testowania detekcji ruchu oczu na obrazie na żywo z kamery}
+
+Sposób badania był identyczny jak w~przypadku detekcji mrugania (patrz rozdz.~\ref{section:test_eye_blink}). Testowane były zdarzenia ruchu oczu w~lewo, w~prawo i~na przemian.
+
+\input{tables/eye_move_live_accuracy}
+
+W każdym teście wykrytych zostało co najmniej 8 na 10 zdarzeń. Aż w~14 przypadkach osiągając $100\%$ wykrywalności. Sumarycznie wykrywalność uplasowała się na poziomie średnio $96,6\%$. Podobnie jak w~detekcji mrugania rezultat ten wydaj się całkowicie adekwatny na potrzeby pracy dyplomowej i~projektu aplikacji. 

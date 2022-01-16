@@ -1,0 +1,44 @@
+\newpage
+
+\section{Detekcja mrugania}
+
+Celem stwierdzenia czy wystąpiło mrugniecie zostało zaimplementowane proste rozwiązanie polegające na analizie określonej ilości klatek wstecz. Wykorzystywany jest fakt czy w~danej klatce oczy były zamknięte czy otwarte i~zmianę tego stanu system informuje o~ewentualnym wystąpieniu zdarzenia. 
+
+\subsection{Algorytm detekcji mrugania}
+
+\begin{enumerate}
+    \item Utworzenie tablicy $T$ przechowującej $a$ wartości typu prawda/fałsz oznaczających czy oczy były zamknięte czy otwarte w~$a$ ostatnich klatkach obrazu.
+    \item Usunięcie najstarszej wartości z~tablicy $T$ jeśli jest pełna
+    \item Dodanie do tablicy $T$ nowej flagi zamkniętych oczu w~danej klatce
+    \item Analiza zawartości tabeli $T$. Jeśli wszystkie pola mają taką samą wartość to ustalenie stanu $S_{i}$ na tę wartość i~porównanie z~poprzednim stanem~$S_{i-1}$:
+        \begin{itemize}
+            \item Jeśli $S_{i}$ jest inny niż $S_{i-1}$ i~stan $S_{i}$ oznacza oczy zamknięte to wystąpiło mrugnięcie
+        \end{itemize}
+    \item Powrót do punktu 3
+\end{enumerate}
+
+\vspace{3mm}
+
+\textit{Uwaga 1.} Parametr $a$ oznacza ile klatek z~rzędu musi występować dany stan oka by uznać go za wiarygodny (służy odrzuceniu pojedynczych błędnych wskazań i~szumów).
+
+\par
+
+\textit{Uwaga 2.} Stan o~wartości prawda oznacza oczy zamknięte.
+
+
+
+\subsection{Testowania detekcji mrugania na obrazie na żywo z~kamery} \label{section:test_eye_blink}
+
+Przeprowadzone zostały testy detekcji ruchu oczu na obrazie na żywo. w~każdych warunkach zostały wykonane trzy testy powtórzone dwukrotnie:
+
+\begin{itemize}
+    \item mrugnięcie lewym okiem
+    \item mrugnięcie prawym okiem
+    \item mrugnięcie oboma oczami na raz
+\end{itemize}
+
+Poszczególne czynności w~ramach jednego testu wykonane był 10 razy. 
+
+\input{tables/eye_blink_live_accuracy}
+
+Skuteczność detekcji mrugania okazała się bardzo dobra, lepsza niż oczekiwana. w~przypadku testu gdy czynność została wykonana oboma oczami na raz została wykryta ona za każdym razem. w~pozostałych przypadkach osiągała wynik na poziomie średnio~$92\%$ skuteczności. Takie rezultaty wydają się być całkowicie wystarczające i~zadowalające z~perspektywy pracy dyplomowej. 

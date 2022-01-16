@@ -31,36 +31,32 @@
     Zastosowanie analizy obrazu twarzy do sterowania aplikacją na urządzeniach z systemem Android 
 }
 \engtitle{ % Tytuł po angielsku do angielskiego streszczenia
-    Agnielski tytuł
+    Facial image based application control on Android devices
 }
 \author{Adamski Maciej}
 \album{300184}
-\promotor{prof. Przemysław Rokita}
+\promotor{prof. dr hab. inż. Przemysław Rokita}
 \date{\the\year}
 \maketitle
 
 %--------------------------------------
 % Streszczenie po polsku
 %--------------------------------------
- \cleardoublepage % Zaczynamy od nieparzystej strony
- \streszczenie
- \_\_\_\_\_\_ TODO \_\_\_\_\_\_ 
- \slowakluczowe XXX, XXX, XXX
+
+\input{sections/streszczenie_polskie}
 
 %--------------------------------------
 % Streszczenie po angielsku
 %--------------------------------------
- \newpage
- \abstract
- \_\_\_\_\_\_ TODO \_\_\_\_\_\_ 
- \keywords XXX, XXX, XXX
+
+\input{sections/streszczenie_angielskie}
 
 %--------------------------------------
 % Oświadczenie o autorstwie
 %--------------------------------------
-%\cleardoublepage  % Zaczynamy od nieparzystej strony
-%\pagestyle{plain}
-%\makeauthorship
+\cleardoublepage  % Zaczynamy od nieparzystej strony
+\pagestyle{plain}
+\makeauthorship
 
 %--------------------------------------
 % Spis treści
@@ -74,7 +70,10 @@
 \cleardoublepage % Zaczynamy od nieparzystej strony
 \pagestyle{headings}
 
+\input{sections/wstep}
+\input{sections/stos_technologiczny}
 \input{sections/sposob_badania}
+
 \input{sections/detekcja_twarzy}
 \input{sections/porownanie_detekcji_twarzy}
 \input{sections/facemarks}
@@ -83,6 +82,11 @@
 \input{sections/detekcja_oczu}
 \input{sections/porownanie_detekcji_oczu}
 \input{sections/detekcja_zrenic}
+\input{sections/porownanie_detekcji_zrenic}
+\input{sections/detekcja_mrugania}
+\input{sections/detekcja_ruchu_oczu}
+\input{sections/architektura}
+\input{sections/podsumowanie}
 
 
 %--------------------------------------------

@@ -1,0 +1,63 @@
+\newpage
+
+\section{Podsumowanie}
+
+\subsection{Wykonane prace}
+
+Na początku wykonano przegląd dostępnych rozwiązań mających na celu detekcję twarzy i~jej punktów charakterystycznych, oczu oraz źrenic. Część z~nich dostępna była w~bibliotekach OpenCV (wraz z~dodatkowymi modułami) oraz Dlib. Wykorzystując krzyżową kompilację udało się je dostosować do użytku w~projekcie.
+
+\par
+
+Wybrane algorytmy zostały przetestowane pod kątem skuteczności oraz złożoności czasowej. Badania były prowadzone zarówno przetwarzając statyczne zdjęcia, jak i~kolejne klatki obrazu na żywo z~kamery. Dla każdego zdjęcia zostały przygotowane i~opisane ręcznie takie informacje jak: położenie twarzy czy oczu, co pozwoliło na powtarzalne wyniki liczbowe testów. Na podstawie przeprowadzonych badań wybierano najlepsze metody na potrzeby projektu. Okazały się nimi:
+
+\begin{itemize}
+    \item do detekcji twarzy - Histogram zorientowanych gradientów +~maszyna wektorów nośnych
+    \item do detekcji facemarków - Kazemi
+    \item do detekcji oczu - Eye Aspect Ratio
+    \item do detekcji źrenic - CDF
+\end{itemize}
+
+\par
+
+Niektóre z metod były optymalizowane i~dostrajane z~użyciem autorskich rozwiązań, które pozwoliły na uzyskanie lepszych rezultatów niż surowe implementacje. Zaproponowane zmiany wpływały głównie na skuteczność detekcji.
+
+\par
+
+Finalnie, udało się zrealizować założony cel pracy tworząc aplikację na urządzenia z~systemem Android, która analizując twarz użytkownika reaguje w~zadany sposób na jego gesty. Celem demonstracyjnym przygotowano dwa scenariusze - informowanie użytkownika, że udało się prawidłowo wykryć jego mrugnięcie oraz prostą galerię zdjęć, w~której kolejne obrazy możemy przeglądać poruszając oczami w~odpowiednią stronę. 
+
+\subsection{Zdobyta wiedza i wyciągnięte wnioski}
+
+
+Czas poświęcony na prace dyplomową pozwolił poznać wiele aspektów zarówno z~dziedziny przetwarzania obrazów, jak i~tworzenia oprogramowania na systemy Android. 
+
+\par
+
+Przystępując do pracy dyplomowej autor nie miał nigdy wcześniej styczności z~wytwarzaniem oprogramowania na ten system operacyjny, co wiązało się z~koniecznością pozyskania wiedzy całkowicie od podstaw w~tym segmencie. Chociaż zdobyte podczas prac nad projektem umiejętności pozwalają już na pisanie aplikacji na ten system operacyjny, to ilość wiedzy, która jest jeszcze do zdobycia jest ogromna.
+
+\par
+
+Integracja wybranych bibliotek ze środowiskiem Android obciążona była wieloma problemami związanymi z~krzyżową kompilacją z ich języków natywnych do Javy. Dodatkowo wymagały one poznania i~wykorzystania komponentu JNI, który pozwolił wprowadzić elementy języka C++ w~projekcie. Praca nad projektem wymagała również poznania i~zaznajomienia się z~możliwościami oferowanymi przez wybrane biblioteki oraz z~ich działaniem. Niewątpliwie są to bardzo popularne rozwiązania na rynku, więc zdobyta wiedza może być wykorzystana podczas dalszego rozwoju autora w~dziedzinie przetwarzania obrazu. 
+
+\par
+
+Mimo, że finalnie udało się uzyskać wystarczające wyniki czasowe na testowanym urządzeniu to można wysnuć tezę, że urządzenia mobilne z~systemem Android nie są jeszcze w pełni gotową platformą na analizę obrazu w czasie rzeczywistym. Wykorzystywany sprzęt w~czasie rozpoczęcia prac był jednym z~najnowocześniejszych i najwydajniejszych modeli dostępnych na rynku. A~tego powodu można przypuszczać, że na przeciętnym urządzeniu ilość osiąganych klatek na sekundę mogłaby nie być wystarczająca. Dodatkowo bardzo dużym problemem jest brak kompatybilności niektórych rozwiązań z~kartami graficznymi urządzeń mobilnych, czego konsekwencją jest wykonywanie algorytmów przez jednostki obliczeniowe. Z~tego powodu niemożliwe było wykorzystanie np.~sieci konwolucyjnych, które na kartach graficznych działają z~bardzo dużą częstotliwością. Jednakże rynek urządzeń mobilnych rozwija się bardzo szybko i~w~najbliższej przyszłości wydajne modele będą standardem, co pozwoli na powszechne stosowanie przetwarzania obrazu na żywo. Możliwe też, że wykonanie takich algorytmów będzie przeniesione do zyskującej ogromną popularność chmury, a wtedy mocne urządzenia mobilne nie będą nawet warunkiem koniecznym.
+
+
+
+
+
+\subsection{Możliwość rozwoju i dalszych badań}
+
+Aplikacja i~projekt pozostawia możliwość dalszego rozwoju. Zarówno przez implementację ~porównanie kolejnych algorytmów do detekcji opisanych już elementów, jak i~przez dodawanie analizy innych fragmentów twarzy i~nie tylko.
+
+\par
+
+Inne metody mogą okazać się zarówno bardziej skuteczne, jak również i~szybsze. Możliwe jest, że w~zależności od sytuacji różne rozwiązania dadzą znacznie odmienne wyniki. Z~tego względu można pokusić się o~dostosowanie wyboru algorytmu zależnie od warunków, celem osiągnięcia jak najlepszych rezultatów. Dzięki zaproponowanej architekturze oraz zastosowaniu wzorca projektowego \textit{wstrzykiwanie zależności} zmiana jednego algorytmu danej detekcji na inny jest bardzo prosta, co pozwoli na szybkie wykorzystanie nowych rozwiązań.
+
+\par
+
+Detekcję źrenic można spróbować oprzeć na sieciach neuronowych i~uczeniu maszynowym zamiast na klasycznych metodach przetwarzania obrazu. Może się okazać, że kosztem wydajności zyskamy większą skuteczność.
+
+\par
+
+Jednym z~pomysłów na nowe elementy może być wykrywanie uśmiechu i~emocji użytkownika. Aplikacja reagowałaby na zadowolenie czy zmiany humoru. W~dobie powszechnych mediów społecznościowych mogłoby to być wykorzystane celem automatycznego opiniowania zdjęć, na które użytkownik patrzy w zależności od tego czy się uśmiecha lub czy jest radosny.
