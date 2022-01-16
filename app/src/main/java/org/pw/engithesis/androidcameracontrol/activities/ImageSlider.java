@@ -15,7 +15,18 @@ import org.pw.engithesis.androidcameracontrol.interfaces.Observer;
 
 public class ImageSlider extends AppCompatActivity implements Observer {
 
-    int[] images = {R.drawable.face_test_500x500_28, R.drawable.face_test_500x500_71, R.drawable.face_test_500x500_62, R.drawable.face_test_500x500_59, R.drawable.face_test_500x500_33};
+    int[] images = {
+            R.drawable.slider_img_1,
+            R.drawable.slider_img_2,
+            R.drawable.slider_img_3,
+            R.drawable.slider_img_4,
+            R.drawable.slider_img_5,
+            R.drawable.slider_img_6,
+            R.drawable.slider_img_7,
+            R.drawable.slider_img_8,
+            R.drawable.slider_img_9,
+            R.drawable.slider_img_10
+    };
     ViewPager viewPager;
     TextView moveMsgInfo;
     FaceAnalyser faceAnalyser;

@@ -6,10 +6,10 @@ import org.opencv.core.Rect;
 import org.pw.engithesis.androidcameracontrol.Utility;
 
 public class EyePupilDetectionProjection extends EyePupilDetectionAlgorithm {
-    private static final double generalProjectionParameter = 0.6;
+    private static final double generalProjectionParameter = 0.990;
     private static final double MIN_SPACE_BETWEEN_EXTREMA = 0.10;
 
-    private final ProjectionFunctions projectionFunction = ProjectionFunctions.General;
+    private final ProjectionFunctions projectionFunction = ProjectionFunctions.Variance;
     private byte[] pixels;
     private int width;
     private int height;
