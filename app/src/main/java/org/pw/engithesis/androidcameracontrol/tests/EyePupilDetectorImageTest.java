@@ -16,7 +16,7 @@ import java.util.Locale;
 
 
 public class EyePupilDetectorImageTest extends ImageTest {
-    private static final boolean SHOW_IMAGES = false;
+    private static final boolean SHOW_IMAGES = true;
     private static final double REPEAT_TEST = 1.0;
 
     private final EyePupilDetector pupilDetector = new EyePupilDetector();
