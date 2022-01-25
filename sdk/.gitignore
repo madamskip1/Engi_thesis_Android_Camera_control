@@ -1,0 +1,6 @@
+#OpenCV SDK
+.cxx/
+build/
+
+.cxx/*
+build/*

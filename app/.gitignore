@@ -1,6 +1,3 @@
 /build
-/src/main/res/drawable/eye_test_*
-/src/main/res/drawable/pupil_test_*
 /src/main/res/drawable/face_test_300x300_*
-/src/main/res/drawable/face_test_cropped_from*
 /release
