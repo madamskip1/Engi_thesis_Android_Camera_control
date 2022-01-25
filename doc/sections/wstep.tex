@@ -5,7 +5,7 @@
 
 \subsection{Cel pracy}
 
-Celem niniejszej pracy dyplomowej było zaprojektowanie i~implementacja aplikacji na~urządzenia z systemem Android, która wykorzystując analizę twarzy miała reagować na~gesty użytkownika. By~to~osiągnąć należało zaimplementować i~przetestować wybrane metody przetwarzania obrazów do detekcji twarzy i~wybranych jej fragmentów. Następnie, na~podstawie wyników testów wybrać najlepsze, które miały zostać wykorzystane do~sterowania prostą aplikacją w systemie Android prezentującą działanie detektorów i~ich przykładowe zastosowanie.
+Celem niniejszej pracy dyplomowej było zaprojektowanie i~implementacja aplikacji na~urządzenia z systemem Android, która wykorzystując analizę twarzy miała reagować na~gesty użytkownika. By~to~osiągnąć należało zaimplementować i~przetestować wybrane metody przetwarzania obrazu do detekcji twarzy i~wybranych jej fragmentów. Następnie, na~podstawie wyników testów wybrać najlepsze, które miały zostać wykorzystane do~sterowania prostą aplikacją prezentującą działanie detektorów i~ich przykładowe zastosowanie.
 
 
 
@@ -15,19 +15,19 @@ W~dzisiejszych czasach coraz większą popularność zyskuje wirtualna rzeczywis
 
 \par
 
-Dla ludzi o~różnych nieprawidłowościach ruchowych kończyn górnych użytkowanie w~codziennym życiu takich urządzeń jak komputer czy telefon prawdopodobnie jest problematyczne. Zapewnienie im~możliwości sterowania interfejsami tych narzędzi za~pomocą gestów np. twarzy lub komendami głosowymi może być pożądaną przez nich alternatywą. 
+Dla ludzi o~różnych nieprawidłowościach ruchowych kończyn górnych użytkowanie w~codziennym życiu takich urządzeń jak komputer czy telefon jest prawdopodobnie problematyczne. Zapewnienie im~możliwości sterowania interfejsami tych narzędzi za~pomocą gestów np. twarzy lub komendami głosowymi może być pożądaną przez nich alternatywą. 
 
 \par
 
-W dziedzinie sterowania głosem istnieją bardzo dobrze rozwinięte systemy takie jak Siri, Alexa czy asystent Google. Powszechne stosowane są w~urządzeniach przenośnych i~systemach inteligentnego domu. Natomiast analiza obrazu i~gestów nie jest już tak szeroko rozpowszechniona, a~również niesie duże możliwości w aspekcie bezdotykowego sterowania urządzeniami.  
+W dziedzinie sterowania głosem istnieją bardzo dobrze rozwinięte systemy takie jak Siri, Alexa czy asystent Google. Powszechne stosowane są w~urządzeniach przenośnych i~systemach inteligentnego domu. Natomiast analiza obrazu i~gestów nie jest już tak szeroko rozpowszechniona, a~również niesie duże możliwości w aspekcie bezdotykowego sterowania interfejsem aplikacji i urządzeń.  
 
 \par
 
-Zostało stworzonych już wiele gier wykorzystujących wirtualną rzeczywistość, w~której kamera podąża za~ruchami głowy gracza, a~interakcja ze światem gry wykonywana jest przez gesty rękami. Konstruktorzy takich rozwiązań cały czas dążą do jeszcze większej immersyjności. Wykorzystanie emocji czy analizy twarzy gracza pozwoliłaby mu się mocniej zanurzyć w~świat wirtualny, a~granica między rzeczywistością jeszcze bardziej by~się zacierała. 
+Zostało stworzonych już wiele gier wykorzystujących wirtualną rzeczywistość, w~której kamera podąża za~ruchami gracza, a~interakcja ze światem gry wykonywana jest przez gesty rękami. Konstruktorzy takich rozwiązań cały czas dążą do jeszcze większej immersyjności. Wykorzystanie emocji czy analizy twarzy gracza pozwoliłaby mu się mocniej zanurzyć w~świat wirtualny, a~granica między rzeczywistością jeszcze bardziej by~się zacierała. 
 
 \par
 
-Czytanie artykułów czy przeglądanie galerii zdjęć na urządzeniu mobilnym wymaga ciągłych ruchów palcem po~ekranie. Byłoby wielkim uproszczeniem jakby tekst pisany przesuwał się automatycznie wraz ze~zmianą położenia oczu w czasie czytania kolejnych linii. 
+Czytanie artykułów czy przeglądanie galerii zdjęć na urządzeniu mobilnym wymaga ciągłej obsługi ekranu palcem. Byłoby wielkim uproszczeniem jakby tekst pisany przesuwał się automatycznie wraz ze~zmianą położenia oczu w czasie czytania kolejnych linii. 
 
 
 \subsection{Etapy pracy}
@@ -45,12 +45,16 @@ Wybór rozwiązań był nie tylko zależny od ich zalet typowo funkcjonalnych (s
 
 \par
 
-Następnie należało przetestować i~porównać ze sobą algorytmy w~odpowiednio podzielnych grupach. Zbierane były dane o~ich skuteczności oraz szybkości działania. Badania były prowadzone z~użyciem zbioru zdjęć, a~także na podstawie obrazu na~żywo z~kamery. Drugi przypadek miał bardzo istotny wpływ na~końcowy dobór algorytmów, ponieważ projekt z~założenia miał działać w~czasie rzeczywistym na~urządzeniach mobilnych. Na podstawie tak przeprowadzonych testów z~każdej grupy wybierana była jedna z~metod, która później była wykorzystywana w~finalnej wersji projektu.
+Następnie należało przetestować i~porównać ze sobą algorytmy w~odpowiednio podzielnych grupach. Zbierane były dane o~ich skuteczności oraz szybkości działania. Badania były prowadzone z~użyciem zbioru zdjęć, a~także na podstawie obrazu na~żywo z~kamery. Drugi przypadek miał bardzo istotny wpływ na~końcowy dobór algorytmów, ponieważ projekt z~założenia miał działać w~czasie rzeczywistym na~urządzeniach mobilnych. Na podstawie tak przeprowadzonych testów z~każdej grupy wybierana była jedna z~metod, która wykorzystywana jest w~finalnej wersji projektu.
 
 \par
 
-Następnym etapem było stworzenie aplikacji wykorzystującej przygotowany zestaw algorytmów. Demonstruje ona zarówno ich przykładowe zastosowanie w~kontekście sterowania interfejsem programu, ale także prezentuje na żywo analizę twarzy oraz pozwala wykonać opisane badania na~zestawie zdjęć.
+Kolejnym etapem było stworzenie aplikacji wykorzystującej przygotowany zestaw algorytmów. Demonstruje ona zarówno ich przykładowe zastosowanie w~kontekście sterowania interfejsem programu, ale także prezentuje na żywo analizę twarzy oraz pozwala wykonać opisane badania na~zestawie zdjęć.
 
 \par
 
 Końcowo, celem weryfikacji prawidłowego działania projektu przetestowano gotową aplikację w różnych warunkach codziennego użytkowania urządzenia.
+
+\par
+
+Gotowe rozwiązanie wraz z prezentacją działania zostało umieszczone na repozytorium, do którego odnośnik wraz z opisem zawartości znajduje się w załączniku 1. 

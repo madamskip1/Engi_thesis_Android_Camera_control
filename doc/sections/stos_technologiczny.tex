@@ -4,22 +4,22 @@
 
 \subsection{System operacyjny Android}
 
-Docelowym systemem operacyjnym, na który przygotowywany był projekt jest Android. Opiera się on na~jądrze Linux przystosowanym do~urządzeń mobilnych. Aktualnie stosowany jest też w~wielu innych urządzeniach elektronicznych takich jak telewizory, systemy audi czy nawet komputery pokładowe w samochodach.  
+Docelowym systemem operacyjnym, na który przygotowywany był projekt jest Android. Opiera się on na~jądrze Linux przystosowanym do~urządzeń mobilnych. Aktualnie stosowany jest też w~wielu innych urządzeniach elektronicznych takich jak telewizory, systemy audio czy nawet komputery pokładowe w samochodach.  
 
 \subsection{Biblioteki}
 
 \subsubsection{OpenCV}
 
-Otwarta biblioteka widzenia komputerowego (ang. Open Source Computer Vision Library) \cite{opencv} - jedna z~najbardziej rozpowszechnionych bibliotek służąca do~przetwarzania obrazu i~widzenia komputerowego. Napisana z~użyciem języka C/C++ co zapewnia jej szybkie działanie i~możliwość wykorzystania niskopoziomowych mechanizmów. Z rozwiązań tego pakietu można korzystać na wielu systemach operacyjnych, a~dzięki wiązaniom do popularnych języków, kod może być pisany również w Javie czy Pythonie. Dzięki zastosowaniu takich mechanizmów sprzętowych jak CUDA \cite{nvidia_cuda} część obliczeń jest przenoszona z~jednostek arytmetycznych na akceleratory graficzne.
+Otwarta biblioteka widzenia komputerowego (ang. Open Source Computer Vision Library) \cite{opencv} - jedna z~najbardziej rozpowszechnionych bibliotek służąca do~przetwarzania obrazu i~widzenia komputerowego. Napisana z~użyciem języka C/C++ co zapewnia jej szybkie działanie i~możliwość wykorzystania niskopoziomowych mechanizmów. Z rozwiązań tego pakietu można korzystać na wielu systemach operacyjnych, a~dzięki wiązaniom do popularnych języków, kod może być pisany również w Javie czy Pythonie. Zastosowanie takich mechanizmów sprzętowych jak CUDA \cite{nvidia_cuda} pozwala przenosić część obliczeń z~jednostek arytmetycznych na akceleratory graficzne.
 
 
 \subsubsection{OpenCV-contrib} \label{section:opencv_contrib}
 
-Zbiorcza nazwa dla dodatkowych modułów \cite{opencv_contrib} biblioteki OpenCV. Nie są one zawarte w~wersji stabilnej API głównej pakietu. Jednak są to rozwiązania, które po szeregu testów i~pewnym okresie przejściowym mogą zostać włączone do podstawowego modułu. Znajdują się tam rozwiązania do~rozpoznawania twarzy \cite{opencvcontribface}, sieci konwolucyjnych czy detekcji obiektów. 
+Zbiorcza nazwa dla dodatkowych modułów \cite{opencv_contrib} biblioteki OpenCV. Nie są one zawarte w~wersji stabilnej API głównego pakietu. Jednak są to rozwiązania, które po szeregu testów i~pewnym okresie przejściowym mogą zostać włączone do podstawowego modułu. Znajdują się tam rozwiązania do~rozpoznawania twarzy \cite{opencvcontribface}, sieci konwolucyjnych czy detekcji obiektów. 
 
 \subsubsection{Dlib}
 
-Wieloplatformowy zestaw narzędzi \cite{dlib} napisany z~wykorzystaniem języka C++. Początkowo głównym obszarem zastosowań było uczenie maszynowe, lecz z~czasem zaczęto rozwijać także sektor sieciowy, przetwarzania obrazów czy operacje numeryczne. Rozpowszechniona jest na~licencji otwartego oprogramowania i~stale rozwijana. 
+Wieloplatformowy zestaw narzędzi \cite{dlib} napisany z~wykorzystaniem języka C++. Początkowo głównym obszarem zastosowań biblioteki było uczenie maszynowe, lecz z~czasem zaczęto rozwijać także sektor sieciowy, przetwarzania obrazów czy operacje numeryczne. Rozpowszechniona jest na~licencji otwartego oprogramowania i~stale rozwijana. 
 
 \subsubsection{CameraX}
 
@@ -39,4 +39,4 @@ Dodatkowo, szablony aplikacji Android napisane są z~użyciem języka znacznikó
 
 \subsection{JNI} \label{section:jni}
 
-Natywny interfejs programistyczny dla języka Java (ang. Java Native Interface) \cite{jni} -  jest to~interfejs pozwalający uruchamiać natywne programy i~biblioteki w innym języku i~przeznaczone na inne systemy w~wirtualnej maszynie Java. W~projekcie pracy dyplomowej pozwala to~wykorzystać bibliotekę Dlib, która nie posiada gotowych wiązań do Javy. W~tym przypadku kod wywołujący metody tego pakietu jest napisany w~języku C++, który następnie wywoływany jest przez obiekty natywne w~maszynie wirtualnej. 
+Natywny interfejs programistyczny dla języka Java (ang. Java Native Interface) \cite{jni} -  jest to~interfejs pozwalający uruchamiać natywne programy i~biblioteki w innym języku i~przeznaczone na inne systemy w~wirtualnej maszynie Java. W~projekcie pracy dyplomowej pozwala to~wykorzystać bibliotekę Dlib, która nie posiada gotowych wiązań do Javy. W~tym przypadku kod wywołujący metody tego pakietu napisany jest w~języku C++, który następnie wywoływany jest przez obiekty natywne w~maszynie wirtualnej. 

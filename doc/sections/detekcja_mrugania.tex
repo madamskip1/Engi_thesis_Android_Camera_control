@@ -2,7 +2,7 @@
 
 \section{Detekcja mrugania}
 
-Celem stwierdzenia czy wystąpiło mrugniecie zostało zaimplementowane proste rozwiązanie polegające na analizie określonej ilości klatek wstecz. Wykorzystywany jest fakt czy w~danej klatce oczy były zamknięte czy otwarte i~zmianę tego stanu system informuje o~ewentualnym wystąpieniu zdarzenia. 
+Celem stwierdzenia czy wystąpiło mrugniecie zostało zaimplementowane proste rozwiązanie polegające na analizie określonej ilości klatek wstecz. Wykorzystywany jest fakt czy w~danej klatce oczy były zamknięte czy otwarte, a~w~momencie zmiany tego stanu system informuje o~ewentualnym wystąpieniu danego zdarzenia. 
 
 \subsection{Algorytm detekcji mrugania}
 
@@ -27,9 +27,9 @@ Celem stwierdzenia czy wystąpiło mrugniecie zostało zaimplementowane proste r
 
 
 
-\subsection{Testowania detekcji mrugania na obrazie na żywo z~kamery} \label{section:test_eye_blink}
+\subsection{Testowanie detekcji mrugania na obrazie na żywo z~kamery} \label{section:test_eye_blink}
 
-Przeprowadzone zostały testy detekcji ruchu oczu na obrazie na żywo. w~każdych warunkach zostały wykonane trzy testy powtórzone dwukrotnie:
+Przeprowadzone zostały testy detekcji ruchu oczu na obrazie na żywo. W~każdych warunkach zostały wykonane trzy testy powtórzone dwukrotnie:
 
 \begin{itemize}
     \item mrugnięcie lewym okiem
@@ -37,8 +37,8 @@ Przeprowadzone zostały testy detekcji ruchu oczu na obrazie na żywo. w~każdyc
     \item mrugnięcie oboma oczami na raz
 \end{itemize}
 
-Poszczególne czynności w~ramach jednego testu wykonane był 10 razy. 
+Poszczególne czynności w~ramach jednego testu wykonane były 10 razy. 
 
 \input{tables/eye_blink_live_accuracy}
 
-Skuteczność detekcji mrugania okazała się bardzo dobra, lepsza niż oczekiwana. w~przypadku testu gdy czynność została wykonana oboma oczami na raz została wykryta ona za każdym razem. w~pozostałych przypadkach osiągała wynik na poziomie średnio~$92\%$ skuteczności. Takie rezultaty wydają się być całkowicie wystarczające i~zadowalające z~perspektywy pracy dyplomowej. 
+Skuteczność detekcji mrugania okazała się bardzo dobra, lepsza niż oczekiwana. W~przypadku testu gdy czynność została wykonana oboma oczami na raz została wykryta za każdym razem. W~pozostałych przypadkach osiągała wynik na poziomie średnio~$92\%$ skuteczności. Takie rezultaty wydają się być całkowicie wystarczające i~zadowalające z~perspektywy pracy dyplomowej. 

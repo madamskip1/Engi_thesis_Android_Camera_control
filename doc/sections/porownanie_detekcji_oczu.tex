@@ -10,7 +10,7 @@ Testowanie detekcji oczu wykorzystując statyczne zdjęcia odbywa się na obraza
 
 \subsubsection{Oczekiwany wynik}
 
-Podobnie jak w~przypadku testowania detekcji twarzy na statycznych zdjęciach, tak~w~przypadku wykrywania oczu akceptowalny obszar został opisany dwoma prostokątami - minimalny i~maksymalnym. Przykład takiego oznaczenia widoczny jest na rys.~\ref{fig:expected_eyes_region}. Oczekiwany obszar został dobrany w~następujący sposób:
+Podobnie jak w~przypadku testowania detekcji twarzy na statycznych zdjęciach, tak również w~przypadku wykrywania oczu akceptowalny obszar został opisany dwoma prostokątami - minimalny i~maksymalnym. Przykład takiego oznaczenia widoczny jest na rysunku~\ref{fig:expected_eyes_region}. Oczekiwany obszar został dobrany w~następujący sposób:
 
 \begin{itemize}
     \item prostokąt wewnętrzny obejmuje jedynie widoczną część gałki ocznej
@@ -19,8 +19,8 @@ Podobnie jak w~przypadku testowania detekcji twarzy na statycznych zdjęciach, t
 
 \begin{figure}[!h]
     \begin{center}
-        \includegraphics[scale=0.6]{img/pupil_section/expected_eyes_region.png}
-        \caption{Przybliżony obszar oczu, który jest oczekiwanym wynikiem algorytmu}
+        \includegraphics[scale=0.6]{img/eye_section/expected_eyes_region.png}
+        \caption{Przybliżony obszar oczu, który jest oczekiwanym wynikiem algorytmu.}
         \label{fig:expected_eyes_region}
     \end{center}
 \end{figure}
@@ -39,11 +39,11 @@ Na początku porównywana była skuteczność zaprezentowanych metod. Chociaż w
 
 \par
 
-W~przypadku metody opartej o~znaczniki twarzy, niewykryte oczy zarówno otwarte jak i~zamknięte mogą oznaczać źle określenie położenia lub złą klasyfikacje do jednej z tych grup. Przykładowo oko otwarte mające $EAR$ mniejszy niż ustalony próg klasyfikowane było jako zamknięte, co skutkowało oznaczeniem jako błędna detekcja. 
+W~przypadku metody opartej o~znaczniki twarzy, niewykryte oczy zarówno otwarte jak i~zamknięte mogą oznaczać źle określone położenie lub złą klasyfikacje do jednej z tych grup. Przykładowo oko otwarte mające EAR mniejszy niż ustalony próg klasyfikowane było jako zamknięte, co skutkowało oznaczeniem jako błędna detekcja. 
 
 \input{tables/eye_section/eye_detection_accuracy}
 
-Najlepsze wyniki uzyskała metoda oparta na punktach charakterystycznych twarzy w~trójkanałowej przestrzeni barw. Udało się jej wykryć średnio $87\%$ wszystkich oczu. A~w~przypadku przestrzeni RGB aż~$86 \%$ z~nich perfekcyjnie. Ta druga statystyka jest dużo lepsza niż w~przypadku metod Haar które uzyskały raptem~$57\%$. Algorytm wykorzystujący znaczniki był skuteczniejszy od drugiej metody o~około~$10\%$ jeśli weźmie się pod uwagę wykryte oczy. 
+Najlepsze wyniki uzyskała metoda oparta na punktach charakterystycznych twarzy w~trójkanałowej przestrzeni barw. Udało się jej wykryć średnio $87\%$ wszystkich oczu, a~w~przypadku przestrzeni RGB aż~$86 \%$ z~nich perfekcyjnie. Ta druga statystyka jest dużo lepsza niż w~przypadku metody Haar, która uzyskała raptem~$57\%$. Algorytm wykorzystujący znaczniki był skuteczniejszy od drugiej metody o~około~$10\%$ jeśli weźmie się pod uwagę wykryte oczy. 
 
 \par
 
@@ -51,7 +51,7 @@ Detekcja oczu przy pomocy znaczników i~EAR zwracała bardzo dobrze dopasowany r
 
 \par
 
-Największy problem klasyfikatorom kaskadowym używanym do wykrywania oczu sprawiły zdjęcia, na których osoba miała przekrzywioną pod kątem względem pionu głowę. Wynika to zapewne z samej natury algorytmu, ponieważ taki sam problem występował w~przypadku wykorzystania jej do detekcji twarzy. Metoda Haar lepiej radziła sobie z~jasnym oświetleniem niż ta oparta na znacznikach. Cienie padające na obszar oczu również nie wpływały na obniżenie skuteczności detekcji. Miała ona problem z~wykryciem oczu w~przypadku gdy były one częściowo zasłonięte np.~włosami.Jeśli osoba na zdjęciu nosiła okulary to w~większości przypadków detekcja była na dobrym poziomie. Problem pojawiał się w~momencie gdy na szkłach występowały refleksy świetlne. Metodzie tej udało się prawidłowo wykryć większą liczbę przymkniętych oczu niż w~przypadku drugiej metody. Wynikało to z~faktu, że~klasyfikatory kaskadowe zwracała również lokalizację oczu całkowicie zamknięte. W~ramach projektu jest to skutek co najmniej niepożądany, z tego względu w~wynikach uznawany był za błędny. 
+Największy problem klasyfikatorom kaskadowym używanym do wykrywania oczu sprawiły zdjęcia, na których osoba miała przekrzywioną pod kątem względem pionu głowę. Wynika to zapewne z samej natury algorytmu, ponieważ taki sam problem występował w~przypadku wykorzystania go do detekcji twarzy. Metoda Haar lepiej radziła sobie z~jasnym oświetleniem niż ta oparta na znacznikach. Cienie padające na obszar oczu również nie wpływały na obniżenie skuteczności detekcji. Miała ona problem z~wykryciem oczu w~przypadku gdy były one częściowo zasłonięte np.~włosami.Jeśli osoba na zdjęciu nosiła okulary to w~większości przypadków detekcja była na dobrym poziomie. Problem pojawiał się w~momencie gdy na szkłach występowały refleksy świetlne. Metodzie tej udało się prawidłowo wykryć większą liczbę przymkniętych oczu niż w~przypadku drugiej metody. Wynikało to z~faktu, że~klasyfikatory kaskadowe zwracała również lokalizację oczu całkowicie zamknięte. W~ramach projektu jest to skutek co najmniej niepożądany, z tego względu w~wynikach uznawany był za błędny. 
 
 
 
@@ -74,6 +74,8 @@ Dla detekcji oczu z~użyciem znaczników twarzy zostały przedstawione dwa wynik
 
 W~przypadku czasów zawierających algorytm wykrywania punktów charakterystycznych test był przeprowadzony dla dwóch przestrzeni barw. Natomiast, na szybkość przekształcenia facemarków w~obszar oka nie wpływa liczba kanałów, ponieważ nie operuje on na pikselach, tylko na zwróconych punktach kartezjańskich. Z~tego powodu przedstawiony jest tylko jeden wynik.
 
+\vspace{4mm}
+
 \input{tables/eye_section/eye_detection_speed}
 
 \par
@@ -82,7 +84,7 @@ Wyniki bezdyskusyjnie pokazują dużo większą szybkość detekcji oczu z~użyc
 
 \par
 
-Tworzenia obszarów z~facemarków osiągnęło czas rzędu~$10^{-5}s$, co~w~porównaniu do pozostałych algorytmów wykorzystywanych w projekcie jest praktycznie natychmiastowe. Tak bliski zeru czas przetwarzania sprawia, że~nie ma on żadnego wpływu na ilość klatek na sekundę podczas odbierania obrazu na żywo z~kamery.
+Tworzenie obszarów ze~znaczników osiągnęło czas rzędu~$10^{-5}s$, co~w~porównaniu do pozostałych algorytmów wykorzystywanych w projekcie jest praktycznie natychmiastowe. Tak bliski zeru czas przetwarzania sprawia, że~nie ma on żadnego wpływu na ilość klatek na sekundę podczas odbierania obrazu na żywo z~kamery.
 
 \par
 
@@ -93,7 +95,7 @@ Przestrzeń barw nie miała znaczącego wpływu na czas detekcji, a~wyniki w~prz
 
 \subsection{Testowanie na obrazie z~kamery na żywo}
 
-Detekcja oczu została przetestowana również na obrazie z~kamery na żywo. Warunki przeprowadzenia eksperymentu zostały opisane w~rozdz.~\hyperref[{section:face_detection_test_live}]{\ref{section:face_detection_test_live}}.
+Detekcja oczu została przetestowana również na obrazie z~kamery na żywo. Warunki przeprowadzenia eksperymentu zostały opisane w~rozdziale~\hyperref[{section:face_detection_test_live}]{\ref{section:face_detection_test_live}}.
 
 \subsubsection{Badanie skuteczność detekcji}
 
@@ -101,7 +103,7 @@ Obserwując na żywo detekcje oczu autor projektu był w~stanie wysnuć kilka wn
 
 \vspace{4mm}
 
-Przede wszystkim oba działały bardzo stabilnie. Nie występowało nieuzasadnione gubienie obszaru oczu podczas statycznego położenia głowy. W~metodzie Haar występował problem przy mocnym skręceniu głowy w~bok. Zwracany był wtedy często błędny i~bardzo powiększony obszar dalszego oka. Natomiast detekcja oczu na podstawie znaczników miała problemu z~mocno przymkniętymi oczami. Wskaźnik EAR sygnalizował wtedy je jako zamknięte przez co algorytm nie zwracał ich regionu.
+Przede wszystkim oba działały bardzo stabilnie. Nie występowało nieuzasadnione gubienie obszaru oczu podczas statycznego położenia głowy i urządzenia. W~metodzie Haar występował problem przy mocnym skręceniu głowy w~bok. Zwracany był wtedy często błędny i~bardzo powiększony obszar dalszego oka. Natomiast detekcja oczu na podstawie znaczników miała problemu z~mocno przymkniętymi oczami. Wskaźnik EAR sygnalizował wtedy je jako zamknięte przez co algorytm nie zwracał ich regionu.
 
 \par
 
@@ -110,11 +112,11 @@ Subiektywnie oceniając obie metody dają zadowalające i~wystarczające rezulta
 
 \subsubsection{Badanie szybkość detekcji} \label{section:eye_speed_live}
 
-Ze względu na praktycznie zerowy obciążenie podczas przekształcania znaczników w~obszar twarzy (patrz rozdz.~\hyperref[{section:eye_detection_speed_img}]{\ref{section:eye_detection_speed_img}}), wyniki dla facemarków zostały skopiowane z~rezultatów uzyskanych przez algorytm Kazemi podczas porównania metod nakładania punktów charakterystycznych na obraz z~kamery na żywo w~rozdz.~\hyperref[{section:facemark_speed_live}]{\ref{section:facemark_speed_live}}.
+Ze względu na praktycznie zerowy obciążenie podczas przekształcania znaczników w~obszar twarzy (rozdz.~\hyperref[{section:eye_detection_speed_img}]{\ref{section:eye_detection_speed_img}}), wyniki dla facemarków zostały skopiowane z~rezultatów uzyskanych przez algorytm Kazemi podczas porównania metod nakładania punktów charakterystycznych na obraz z~kamery na żywo w~rozdziale~\hyperref[{section:facemark_speed_live}]{\ref{section:facemark_speed_live}}.
 
 \par
 
-Ponownie detekcja twarzy odbywała się przy zastosowaniu algorytmu \textit{HOG} dostarczając obraz RGB.
+Ponownie detekcja twarzy odbywała się przy zastosowaniu algorytmu HOG dostarczając obraz RGB.
 
 \input{tables/eye_section/eye_detection_speed_live}
 
@@ -124,8 +126,8 @@ Wyniki przeprowadzonych badań przedstawiają znaczną przewagę szybkościową 
 
 \subsection{Wybór algorytmu detekcji oczu}
 
-Porównanie dwóch algorytmów detekcji oczu bezdyskusyjnie pokazało wyższość metody opartej na znacznikach nad klasyfikatorem kaskadowym Haar. Punkty charakterystyczne uzyskały lepszy procentowo wynik prawidłowych detekcji, a~dodatkowo w~teście na statycznych zdjęciach prawie wszystkie były perfekcyjne. Próby szybkościowe jednoznacznie wskazały na facemarki, które były $4$ razy szybsze od Haar, a~jeśli brać pod uwagę jedynie czas tworzenia obszarów to ponad tysiąckrotnie i~ich przetwarzanie jest niezauważalne w~perspektywie pozostałych detekcji.
+Porównanie dwóch algorytmów detekcji oczu bezdyskusyjnie pokazało wyższość metody opartej na znacznikach nad klasyfikatorem kaskadowym Haar. Punkty charakterystyczne uzyskały lepszy procentowo wynik prawidłowych detekcji, a~dodatkowo w~teście na statycznych zdjęciach prawie wszystkie były perfekcyjne. Próby szybkościowe jednoznacznie wskazały na znaczniki, które były $4$ razy szybsze od Haar, a~jeśli brać pod uwagę jedynie czas tworzenia obszarów to ponad tysiąckrotnie i~ich przetwarzanie jest niezauważalne z~perspektywy pozostałych detekcji.
 
 \vspace{5mm}
 
-Na podstawie przeprowadzonych testów zostały wybrane znaczniki twarzy do detekcji oczu i~to ten algorytm jest wykorzystywany w~projekcie i~pracy dyplomowej.
+Na podstawie przeprowadzonych testów znaczniki twarzy zostały wybrane do detekcji oczu i~to ten algorytm jest wykorzystywany w~projekcie i~pracy dyplomowej.

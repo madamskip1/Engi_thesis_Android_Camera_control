@@ -1,10 +1,28 @@
 \newpage
 \section{Porównanie detekcji źrenic}
 
+Podobnie jak w pozostałych detekcjach, tak i w przypadku wykrywania źrenic algorytmy zostały porównane i wybrany jeden - najlepszy.
 
 \subsection{Testowanie na statycznych zdjęciach}
 
 \subsubsection{Oczekiwany wynik}
+
+Oczekiwany rezultat detekcji źrenic został opisany dwoma parametrami:
+\begin{itemize}
+    \item \textbf{Środek źrenicy} - punkt kartezjański
+    \item \textbf{Obszar tęczówki} - prostokątny obszar 
+\end{itemize}
+
+Przykładowe zdjęcie oka wraz z naniesionymi elementami pokazane jest na rysunku \ref{fig:expected_pupil}.
+
+
+\begin{figure}[!h]
+    \begin{center}
+        \includegraphics[scale=1.0]{img/pupil_section/pupil_expected.png}
+        \caption{Przybliżona lokalizacja źrenicy i obszar tęczówki, które są oczekiwanym wynikiem algorytmu.}
+        \label{fig:expected_pupil}
+    \end{center}
+\end{figure}
 
 \subsubsection{Zbierane dane}
 
@@ -20,7 +38,7 @@ Podczas testów zbierane były następujące dane:
 
 \par
 
-\textit{Uwaga 1.} Błąd dla danego zdjęcia obliczany był następującym wzorem
+\textit{Uwaga 1.} Błąd (wykrycia punktu kartezjańskiego źrenicy) dla danego zdjęcia obliczany był następującym wzorem
 
 \begin{align}
     b(P_1, P_2) = \frac{dist(P_1, P_2)}{hypot(w, h)} * 100\%
@@ -52,7 +70,7 @@ Ze względu, że metoda PF może wykorzystywać różne funkcje projekcji do swo
     \item Ogólna z~wariancją liniową
 \end{itemize}
 
-W~przypadku funkcji ogólnej dodatkowo zostało przeprowadzone przeszukiwanie celem ustalenia najlepszego współczynnika $\alpha$ dla poszczególnych opcji. Badana była wielkość tego parametru w~przedziale $[0.01, 0.99]$ ze skokiem $0.01$ (wykluczono wartości $0.00$ oraz $1.00$ bo odpowiadają one odpowiednio funkcji całkowej i~funkcji wariancji).
+W~przypadku funkcji ogólnej dodatkowo zostało przeprowadzone przeszukiwanie celem ustalenia najlepszego współczynnika $\alpha$ dla poszczególnych opcji. Badana była wielkość tego parametru w~przedziale $[0.01, 0.99]$ ze skokiem $0.01$ (wykluczono wartości $0.00$ oraz $1.00$, ponieważ odpowiadają one odpowiednio funkcji całkowej i~funkcji wariancji).
 
 \par
 
@@ -68,7 +86,7 @@ W przypadku funkcji ogólnej z~wariancją kwadratową najlepszy rezultat dał pa
 
 \input{tables/pupil_section/pupil_projection_accuracy}
 
-Najlepszą skuteczność wykazała funkcja wariancji kwadratowej oraz ogólna kwadratowa. Wykryły ona najwięcej punktów wewnątrz tęczówki - $72\%$ oraz uzyskały najmniejszy średni błąd - $13.51\%$. Ze względu na opisaną wyżej degradacje, której przyczyną jest współczynnik $\alpha$ z~tej pary wybrana została funkcja wariancji, która musi wykonać mniej obliczeń w~czasie swojego działania. Dlatego ta wersja funkcji była wykorzystywana w~dalszej części badań.
+Najlepszą skuteczność wykazały funkcje wariancji kwadratowej oraz ogólna kwadratowa. Wykryły one najwięcej punktów wewnątrz tęczówki - $72\%$ oraz uzyskały najmniejszy średni błąd - $13.51\%$. Ze względu na opisaną wyżej degradacje, której przyczyną jest współczynnik $\alpha$ z~tej pary wybrana została funkcja wariancji, która musi wykonać mniej obliczeń w~czasie swojego działania. Dlatego ta wersja funkcji była wykorzystywana w~dalszej części badań.
 
 \subsubsection{Badanie skuteczności detekcji}
 
@@ -80,15 +98,15 @@ Najlepszą skuteczność wykazała funkcja wariancji kwadratowej oraz ogólna kw
 \input{tables/pupil_section/pupil_accuracy}
 
 
-W przypadku progowania przy pomocy dystrybuanty na prawidłową detekcje wpływ miała jakość wycinka zdjęcia podawanego na wejście metody. w~przypadku gdy duża była jego ostrość, a~oko zajmowało subiektywnie duży obszar to algorytm radził sobie bardzo dobrze. Metoda uzyskiwała dobre wyniki zarówno w~przypadku gdy tęczówka oka była ciemna, jak i~jasna. Negatywny wpływ na skuteczność detekcji miało występowanie na wycinku zdjęcia brwi, a~w~szczególności gdy były one w~ciemnym odcieniu lub nałożony był na nie mocny makijaż. Podobnie intensywna barwa rzęs skutkowała obniżeniem dokładności wskazywania lokalizacji źrenicy. Lepsze rezultaty metoda uzyskiwała gdy na wycinku znajdowała się tylko i~wyłącznie gałka oczna. w~przypadku gdy źrenica miała jasny odcień wynikający np. z~dużego natężenia padającego światła to uzyskiwane rezultaty nie były zadowalające. Jeśli algorytmowi udało się wskazać punkt należący do tęczówki, to w~większości przypadków wynikiem był jej środek oraz źrenica. w~ogólności, skuteczność tej metody opierała się w~dużej mierze na występaniu ciemnych punktów innych niż tęczówka i~źrenica.
+W przypadku progowania przy pomocy dystrybuanty na prawidłową detekcje wpływ miała jakość wycinka zdjęcia podawanego na wejście metody. W~przypadku gdy duża była jego ostrość, a~oko zajmowało subiektywnie duży obszar to algorytm radził sobie bardzo dobrze. Metoda uzyskiwała dobre wyniki zarówno w~przypadku gdy tęczówka oka była ciemna, jak i~jasna. Negatywny wpływ na skuteczność detekcji miało występowanie na wycinku zdjęcia brwi, a~w~szczególności gdy były one w~ciemnym odcieniu lub nałożony był na nie mocny makijaż. Podobnie intensywna barwa rzęs skutkowała obniżeniem dokładności wskazywania lokalizacji źrenicy. Lepsze rezultaty metoda uzyskiwała gdy na wycinku znajdowała się tylko i~wyłącznie gałka oczna. W~przypadku gdy źrenica miała jasny odcień wynikający np. z~dużego natężenia padającego światła to uzyskiwane rezultaty nie były zadowalające. Jeśli algorytmowi udało się wskazać punkt należący do tęczówki, to w~większości przypadków wynikiem był jej środek oraz źrenica. W~ogólności, skuteczność tej metody opierała się w~dużej mierze na występowaniu ciemnych punktów innych niż tęczówka i~źrenica.
 
 \par
 
-Metoda projekcji lepsze rezultaty detekcji wykazywała na obszarach oczu o~małym kontraście i~ostrości. Gorsza jakość miała pozytywny wpływ na jej działanie. Częstym zjawiskiem było wskazanie tylko jednej składowej poprawnie - poziomej lub pionowej. Algorytm ten w~części przypadków wskazywał rzęsy zamiast źrenic. Prawidłowe detekcji występowały przy bardzo wyraźnych przejściach między białą częścią oka, a~tęczówką. Jeśli region źrenicy był ciemniejszy niż reszta obszaru oka to detekcja uzyskiwała lepsze rezultaty. Występowanie ramek okularów przeszkadzały w~prawidłowym wskazaniu szukanego punktu.
+Metoda projekcji lepsze rezultaty detekcji wykazywała na obszarach oczu o~małym kontraście i~ostrości. Gorsza jakość zdjęć miała pozytywny wpływ na jej działanie. Częstym zjawiskiem było wskazanie tylko jednej składowej poprawnie - poziomej lub pionowej. Algorytm ten w~części przypadków wskazywał rzęsy zamiast źrenic. Prawidłowe detekcje występowały przy bardzo wyraźnych przejściach między białą częścią oka, a~tęczówką. Jeśli region źrenicy był ciemniejszy niż reszta obszaru oka to detekcja uzyskiwała lepsze rezultaty. Występowanie ramek okularów przeszkadzało w~prawidłowym wskazaniu szukanego punktu.
 
 \par
 
-Analiza krawędzi całkowicie nie radziła sobie z~detekcją w~przypadku gdy występowało dużo wyraźnych konturów innych niż tęczówka lub źrenica. Dobre rezultaty osiągane były jeśli obszar oka był jasny i~naświetlony. w~przeciwieństwie do projekcji metoda ta lepiej radziła sobie przy wycinkach dobrej jakości i~o dużej ostrości. Porównując ten algorytm do dwóch pozostałych jego zachowanie wydawało się dużo bardziej losowe, ponieważ w~wielu przypadkach trudno było wskazać powody zwróconej złej lokalizacji. Wyniki procentowe jak i~subiektywne odczucia wskazują jednoznacznie, że metoda oparta na analizie krawędzi radziła sobie najgorzej.
+Analiza krawędzi całkowicie nie radziła sobie z~detekcją w~przypadku gdy występowało dużo wyraźnych konturów innych niż tęczówka lub źrenica. Dobre rezultaty osiągane były jeśli obszar oka był jasny i~naświetlony. W~przeciwieństwie do projekcji metoda ta lepiej radziła sobie przy wycinkach dobrej jakości i~o dużej ostrości. Porównując ten algorytm do dwóch pozostałych jego zachowanie wydawało się dużo bardziej losowe, ponieważ w~wielu przypadkach trudno było wskazać powody zwróconej złej lokalizacji. Wyniki procentowe jak i~subiektywne odczucia wskazują jednoznacznie, że metoda oparta na analizie krawędzi radziła sobie znacznie najgorzej.
 
 
 
@@ -102,41 +120,41 @@ Najszybszym okazał się algorytm oparty na funkcji projekcji. Przetworzenie jed
 
 \par
 
-Wyniki zdają się oddawać naturę poszczególnych metod, ponieważ projekcja wymaga maksymalnie dwóch przejść całej macierzy obrazu. Natomiast algorytm oparty na analizie krawędzi wykorzystuje filtry oraz \textit{Canny}, dlatego ma największą złożoność czasową.
+Wyniki zdają się oddawać naturę poszczególnych metod, ponieważ projekcja wymaga maksymalnie dwóch przejść całej macierzy obrazu. Natomiast algorytm oparty na analizie krawędzi wykorzystuje filtry oraz metodę Canny, dlatego ma największą złożoność czasową.
 
 \par
 
-Wszystkie metody są bardzo szybkie (rząd wielkości $10^{-5}s$) i~nawet najwolniejsza z~nich mogłaby być wykonana prawie 18 tyś. razy na sekundę. Przekłada się to na zerowe obciążenie całej aplikacji, która wykrywając jedynie twarz osiąga raptem $16$ klatek na sekundę dla barw RGB (patrz rozdz.~\ref{section:face_speed_live}). z~tego powodu podczas wyboru najlepszego algorytmu detekcji źrenic nie była brana pod uwagę szybkość poszczególnych metod, a~jedynie ich skuteczność.
+Wszystkie metody są bardzo szybkie (rząd wielkości $10^{-5}s$) i~nawet najwolniejsza z~nich mogłaby być wykonana prawie 18 tyś. razy na sekundę. Przekłada się to na zerowe obciążenie całej aplikacji, która wykrywając jedynie twarz osiąga raptem $16$ klatek na sekundę dla barw RGB (rozdział~\ref{section:face_speed_live}). Z~tego powodu podczas wyboru najlepszego algorytmu detekcji źrenic nie była brana pod uwagę szybkość poszczególnych metod, a~jedynie ich skuteczność.
 
 
 
 
 \subsection{Testowanie na obrazie z~kamery}
 
-Przetestowanie skuteczności detekcji na obrazie z~kamery i~przedstawienie ich w~postaci liczbowej byłoby bardzo trudne. z~tego powodu algorytm został przebadany poprzez obserwacje zachowania detekcji na podglądzie na żywo. Badania były przeprowadzone w~takich samych warunkach jak pozostałe elementy systemu. Wyniki są subiektywnym odczuciem autora projektu i~przedstawione w~formie opisowej. 
+Przetestowanie skuteczności detekcji na obrazie z~kamery i~przedstawienie ich w~postaci liczbowej byłoby bardzo trudne. Z~tego powodu algorytm został przebadany poprzez obserwacje zachowania detekcji na podglądzie na żywo. Testy były przeprowadzone w~takich samych warunkach jak pozostałe elementy systemu. Wyniki są subiektywnym odczuciem autora projektu i~przedstawione w~formie opisowej. 
 
 \par
 
-Ze względu na wyniki szybkościowe detekcji źrenic (patrz rozdz.~\ref{section:test_pupil_speed_img}), które jednoznacznie wykazały marginalny czas przetwarzania wszystkich algorytmów, testy czasowe na obrazie z~kamery na żywo zostały uznane za niepotrzebne i~pominięte.
+Ze względu na wyniki szybkościowe detekcji źrenic (rozdział~\ref{section:test_pupil_speed_img}), które jednoznacznie wykazały marginalny czas przetwarzania wszystkich algorytmów, testy czasowe na obrazie z~kamery na żywo zostały uznane za niepotrzebne i~pominięte.
 
 \subsubsection{Badanie skuteczność detekcji}
 
-Podobnie jak w~testach przeprowadzonych na statycznych zdjęciach CDF uzyskał subiektywnie najlepsze rezultaty. We wszystkich scenariuszach sprawdził się wystarczająco. Nawet w~momencie gdy nie wykrywał dobrze środka źrenicy to wskazania znajdowały się w~obszarze tęczówki. Pracował stabilnie zarówno w~centralnym położeniu oka jak i~zwróconym w~bok. 
+Podobnie jak w~testach przeprowadzonych na statycznych zdjęciach algorytm CDF uzyskał subiektywnie najlepsze rezultaty. We wszystkich scenariuszach sprawdził się wystarczająco. Nawet w~momencie gdy nie wykrywał dobrze środka źrenicy to wskazania znajdowały się w~obszarze tęczówki. Pracował stabilnie zarówno w~centralnym położeniu oka jak i~przy wzroku zwróconym w~bok. 
 
 \par 
 
-Algorytm PF radził sobie dobrze tylko połowicznie. Najlepsze rezultaty osiągnął w~przypadku światła padającego zza użytkownika. Wtedy zarówno centralne jak i~boczne położenie był prawidłowo wykrywane. w~pozostałych badaniach dobre wyniki osiągał gdy oczy był skierowane w~bok, a~w~przypadku spojrzenia wprost przed siebie lokalizacja podawana była chaotycznie. Test w~ciemnym pomieszczeniu potwierdził, że metoda dobrze radzi sobie przy małym kontraście i~jasności. 
+Algorytm PF radził sobie dobrze tylko połowicznie. Najlepsze rezultaty osiągnął w~przypadku światła padającego zza użytkownika. Wtedy zarówno centralne jak i~boczne położenie był prawidłowo wykrywane. W~pozostałych badaniach dobre wyniki osiągał gdy oczy był skierowane w~bok, a~w~przypadku spojrzenia wprost przed siebie lokalizacja podawana była chaotycznie. Test w~ciemnym pomieszczeniu potwierdził, że metoda dobrze radzi sobie przy małym kontraście i~jasności. 
 
 \par
 
-Analiza krawędzi w~przypadku obrazu na żywo w~ogóle się nie sprawdziła. w~żadnych warunkach detekcja nie była wystarczająca na potrzeby pracy dyplomowej. Przez większość czasu zwracaną lokalizacją były rogi obszaru oczu.
+Analiza krawędzi w~przypadku obrazu na żywo w~ogóle się nie sprawdziła. W~żadnych warunkach detekcja nie była wystarczająca na potrzeby pracy dyplomowej. Przez większość czasu zwracaną lokalizacją były rogi obszaru oczu.
 
 
  
 
 \subsection{Wybór algorytmu detekcji źrenic}
 
-Najskuteczniejsza okazała się metoda oparta na progowaniu z~użyciem dystrybuanty. w~teście na zbiorze danych~$83\%$ wykrytych punktów znajdowało się wewnątrz tęczówki. Subiektywnie, najlepsze i~wystarczające rezultaty uzyskała również w~badaniu obrazu na żywo z~kamery.
+Najskuteczniejsza okazała się metoda oparta na progowaniu z~użyciem dystrybuanty. W~teście na zbiorze danych~$83\%$ wykrytych punktów znajdowało się wewnątrz tęczówki. Subiektywnie, najlepsze i~wystarczające rezultaty uzyskała również w~badaniu obrazu na żywo z~kamery.
 
 \par
 
@@ -144,4 +162,4 @@ Szybkość wszystkich algorytmów stała na tak wysokim i~marginalnym poziomie, 
 
 \par
 
-Z powodu wykrywalności źrenic rozwiązanie CDF zostało wybrane jako podstawowe i~używany w~projekcie.
+Z powodu wykrywalności źrenic rozwiązanie CDF zostało wybrane jako najlepsze i podstawowe w~projekcie.

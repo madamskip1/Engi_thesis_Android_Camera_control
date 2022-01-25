@@ -2,37 +2,37 @@
 
 \section{Detekcja twarzy} \label{section:face_detection}
 
-W~przetwarzaniu cyfrowym obrazu stosujemy technikę od ogółu do szczegółu. Przykładowo chcąc uzyskać barwę nadwodzia najpierw musimy wykryć samochód itp. W~pracy dyplomowej by~uzyskać dane dotyczące oczy czy znaczników potrzebujemy najpierw informacji o~tym czy twarz występuje na zdjęciu i~ewentualnie gdzie się ona na~nim znajduje. Dlatego pierwszym etapem przetwarzania na~potrzeby projektu jest detekcja ludzkiej twarzy. Z~dostarczonego obrazu uzyskujemy informację o~jej położeniu, a~w~następnych etapach operować tylko na wycinku zdjęcia. 
+W~przetwarzaniu cyfrowym obrazu stosujemy technikę od ogółu do szczegółu. Przykładowo chcąc uzyskać barwę nadwodzia najpierw musimy wykryć samochód itp. W~pracy dyplomowej by~uzyskać dane dotyczące oczy czy znaczników potrzebujemy najpierw informacji o~tym czy twarz występuje na zdjęciu i~ewentualnie gdzie się ona na~nim znajduje. Dlatego pierwszym etapem przetwarzania na~potrzeby projektu jest detekcja ludzkiej twarzy. Z~dostarczonego obrazu uzyskujemy informację o~jej położeniu, a~w~następnych etapach możemy operować tylko na wycinku zdjęcia. 
 
 \subsection{Algorytmy detekcji twarzy}
 
 Na~potrzeby projektu zostało zaimplementowane użycie pięciu algorytmów, których celem jest wykrycie twarzy na zdjęciu. Krótki opis poszczególnych metod znajduje się w~następnych podrozdziałach.
 
 \subsubsection{Klasyfikator kaskadowy} \label{section:face_casacde_classifier}
-\textit{Cascade Classifier} to~jedno z podejść do~zadania klasyfikacji obiektów. Kaskadowość tego rozwiązania przejawia się tym, że składa się on z~łańcucha mniejszych klasyfikatorów. Z~danych wejściowych jednego może korzystać następnym jako dodatkowe źródło informacji i~użyć je do własnej klasyfikacji. Z~tego powodu kolejne elementy są bardziej zaawansowane i~operują na większym zestawie danych. Dzięki swojej kaskadowej naturze modele takie mogą być lepiej trenowane i~dawać lepsze rezultaty niż klasyfikatory typu monolity.
+\textit{Cascade Classifier} to~jedno z podejść do~zadania klasyfikacji obiektów. Kaskadowość tego rozwiązania przejawia się tym, że składa się on z~łańcucha mniejszych klasyfikatorów. Z~danych wejściowych jednego mogą korzystać następne jako dodatkowe źródło informacji i~użyć je do własnej klasyfikacji. Z~tego powodu kolejne elementy są bardziej zaawansowane i~operują na większym zestawie danych. Dzięki swojej kaskadowej naturze modele takie mogą być lepiej trenowane i~dawać lepsze rezultaty niż klasyfikatory typu monolit.
 
 \vspace{5mm}
 
-Do ładowania i~przetwarzania kaskadowych klasyfikatorów w~projekcie używany jest moduł \textit{CascadeClassifier} \cite{cascade_opencv} biblioteki \textit{OpenCV}. 
+Do ładowania i~przetwarzania kaskadowych klasyfikatorów w~projekcie używany jest moduł \textit{CascadeClassifier} \cite{cascade_opencv} biblioteki OpenCV. 
 
 \paragraph{Haar}
 
-Jednym z najbardziej znanych modeli klasyfikacji kaskadowej jest \textit{Haar}, który został opisany po~raz pierwszy w~2001 roku \cite{haar_proceeding}. Może on być używany do~klasyfikacji różnych obiektów, ale~autorzy skupiali się głównie na detekcji twarzy. Algorytm \cite{haar_towards} \cite{haar_pyimage} \cite{OBUKHOV2011517} bazuje na~podzieleniu zdjęcia na~regiony i~wykorzystaniu w~każdej z~nich pięciu cech krawędzi (patrz \hyperref[{fig:haar_features}]{\textit{rysunek \ref{fig:haar_features}}}). Algorytm porównując jasność pikseli w~białej i~czarnej części stwierdza czy istnieją krawędzie lub linie. Cechy składające się tylko z~dwóch regionów odpowiadają za~wykrycie pionowych i~poziomych krawędzi. Zestaw trzech za~wykrycie linii. Natomiast kwadratowa cecha za~zmiany przekątne. W~dzisiejszych czasach \textit{Haar} nie jest już tak często stosowany jak jeszcze parę lat temu.
+Jednym z najbardziej znanych modeli klasyfikacji kaskadowej jest \textit{Haar}, który został opisany po~raz pierwszy w~2001 roku \cite{haar_proceeding}. Może on być używany do~klasyfikacji różnych obiektów, ale~autorzy skupiali się głównie na detekcji twarzy. Algorytm \cite{haar_towards} \cite{haar_pyimage} \cite{OBUKHOV2011517} bazuje na~podzieleniu zdjęcia na~regiony i~wykorzystaniu w~każdym z~nich pięciu cech krawędzi (\hyperref[{fig:haar_features}]{rys.~\ref{fig:haar_features}}). Algorytm porównując jasność pikseli w~białej i~czarnej części stwierdza czy istnieją krawędzie lub linie. Cechy składające się tylko z~dwóch regionów odpowiadają za~wykrycie pionowych i~poziomych krawędzi. Zestaw trzech za~detekcje linii. Natomiast kwadratowa cecha za~zmiany przekątne. W~dzisiejszych czasach Haar nie jest już tak często stosowany jak jeszcze parę lat temu.
 
 \begin{figure}[!h]
     \begin{center}
         \includegraphics[scale=0.2]{img/face_section/haar_features.png}
-        \caption{Obliczane cechy w modelu Haar. Źródło: \cite{haar_towards}}
+        \caption{Cechy krawędzi modelu Haar. Źródło: \cite{haar_towards}}
         \label{fig:haar_features}
     \end{center}
 \end{figure}
 
-Na potrzeby pracy dyplomowej Wykorzystywany jest model \textit{Haarcascade Frontalface Default} \cite{haar_frontal} autorstwa Rainera Lienharta.
+Na potrzeby pracy dyplomowej wykorzystywany jest model \textit{Haarcascade Frontalface Default} \cite{haar_frontal} autorstwa Rainera Lienharta.
 
 
 
 \paragraph{Local binary patterns}
-Metoda ta porównuje piksele z~ośmioma swoimi najbliższymi sąsiadami w~ustalonej kolejności. Jeśli jasność głównego piksela jest większa niż porównywanego to~na~odpowiedniej pozycji 8-bitowej liczby wstawia~1, inaczej~0. Następnie z~uzyskanych w ten sposób liczb tworzy histogram używany jako deskryptor cech. Takie dane mogą być użyte do uczenia maszynowego. \cite{comp_haar_lbp}
+Metoda ta porównuje piksele z~ośmioma swoimi najbliższymi sąsiadami w~ustalonej kolejności. Jeśli jasność głównego piksela jest większa niż porównywanego to~na~odpowiedniej pozycji 8-bitowego ciągu wstawiana jest wartość~1, inaczej~0. Następnie z~uzyskanych w ten sposób liczb tworzony jest histogram używany jako deskryptor cech. Takie dane mogą być użyte do uczenia maszynowego. \cite{comp_haar_lbp}
 
 \par
 
@@ -44,25 +44,25 @@ W projekcie stosowany jest model \textit{LBP Cascade Frontalface} \cite{lbp_xml}
 
 
 \subsubsection{Histogram zorientowanych gradientów}
-Metoda \textit{HOG (Histograms of Oriented Gradients)} \cite{hog_article} została opracowana kilkanaście lat temu przez Navneet Dalal i~Bill Triggs celem detekcji ludzkiego ciała. Aktualnie, mimo upływu lat, jest wciąż szeroko wykorzystywana do klasyfikacji obrazów czy wykrywania twarzy.
+Metoda \textit{HOG (Histograms of Oriented Gradients)} \cite{hog_article} została opracowana kilkanaście lat temu przez Navneet Dalal i~Bill Triggs celem detekcji ludzkiego ciała. Aktualnie, mimo upływu lat wciąż jest szeroko wykorzystywana do klasyfikacji obrazów czy wykrywania twarzy.
 
 \par
 
-Uzyskanie histogramu HOG składa się z~kilku etapów. Metoda \cite{hog_wprowadzenie} \cite{learnopencv_HOG} \cite{guide_hog} ta bazuje na~obliczeniu gradientów poziomych i~pionowych. Możliwe jest to~poprzez filtrowanie za pomocą odpowiedniego jądra lub przez operator Sobela \cite{feature_extraction}. Dla tak wyodrębnionych gradientów oblicza się ich długość i~kierunek (kąt). Następnie dzielimy zdjęcie na~obszary o wielkości $8x8$. Dla każdego regionu tworzymy jednowymiarowy wektor o~9~komórkach, w~których będzie zapisany histogram HOG. Pola wektora odzwierciedlają kierunek gradientu i~odpowiadają kolejnym wielokrotnościom kąta $\measuredangle 20 ^{\circ}$. Wypełniamy go~dodając do~pól odpowiadającym danemu kątowi wartość gradientu kolejnych pikseli. Jeśli kierunek znajduje się pomiędzy dwoma kątami to~wartość dzieli się zależnie od~różnicy między dwiema komórkami. Celem wyeliminowania wpływu jasności i~oświetlenia przeprowadza się normalizację wartości. Gdy obliczy się już histogram dla każdego regionu, łączy się je w~wektor deskryptora cech HOG. Tak uzyskany wektor możemy wykorzystać jako dane uczące algorytmów klasyfikujących. W przypadku metody HOG często wykorzystuje się \textit{maszynę wektorów nośnych (SVM)} \cite{svm_toward_science}.
+Uzyskanie histogramu HOG składa się z~kilku etapów. Metoda \cite{hog_wprowadzenie} \cite{learnopencv_HOG} \cite{guide_hog} ta bazuje na~obliczeniu gradientów poziomych i~pionowych. Możliwe jest to~poprzez filtrowanie za pomocą odpowiedniego jądra lub wykorzystując operator Sobela \cite{feature_extraction}. Dla tak wyodrębnionych gradientów oblicza się ich długość i~kierunek (kąt). Następnie dzielimy zdjęcie na~obszary o wielkości $8x8$. Dla każdego regionu tworzymy jednowymiarowy wektor o~9~komórkach, w~których będzie zapisany histogram HOG. Pola wektora odzwierciedlają kierunek gradientu i~odpowiadają kolejnym wielokrotnościom kąta $\measuredangle 20 ^{\circ}$. Wypełniamy go~dodając do~pól odpowiadającym danemu kątowi wartość gradientu kolejnych pikseli. Jeśli kierunek znajduje się pomiędzy dwoma kątami to~wartość dzieli się zależnie od~różnicy między dwiema komórkami. Celem wyeliminowania wpływu jasności i~oświetlenia przeprowadza się normalizację wartości. Gdy obliczy się już histogram dla każdego regionu, łączy się je w~wektor deskryptora cech HOG. Tak uzyskany wektor możemy wykorzystać jako dane uczące algorytmów klasyfikujących. W przypadku metody HOG często wykorzystuje się \textit{maszynę wektorów nośnych (SVM)} \cite{svm_toward_science}.
 
 \vspace{5mm}
 
-Metoda \textit{HOG} wykorzystywana w~projekcie zaimplementowana jest w bibliotece \textit{dlib}, która uczona była z~użyciem liniowego \textit{SVM}.
+Metoda HOG wykorzystywana w~projekcie zaimplementowana jest w bibliotece dlib, która uczona była z~użyciem liniowego SVM.
 
 
 
-\subsubsection{CNN + MMOD}
+\subsubsection{Konwolucyjne sieci neuronowe}
 
-Konwolucyjne sieci neuronowe (CNN) uczą się jakie cechy obrazu pozwalają sklasyfikować widoczne na~nim obiekty. Za pomocą operacji splotowych, nakładając odpowiednie filtr są wstanie je uwypuklić i~uzyskać istotne informacje. To właśnie w warstwie konwolucyjnej używane są odpowiednie jądra przekształceń. Sieć przez trening sama dobiera optymalne filtry oraz ich wartości. Dodatkowo występują warstwy próbkowania (downsampling), których celem jest~zmniejszenie wielkości obrazu przez pominięcie części pikseli. Pomaga to~uprościć sieć, ale~kosztem utraty pewnej ilości informacji. Czasem zamiast pomijać piksele brane są wartości uśredniane lub maksymalne z~pewnego sąsiedztwa. \cite{jak_cnn}
+\textit{Konwolucyjne sieci neuronowe (CNN)} uczą się jakie cechy obrazu pozwalają sklasyfikować widoczne na~nim obiekty. Za pomocą operacji splotowych, nakładając odpowiednie filtr są wstanie je uwypuklić i~uzyskać istotne informacje. To właśnie w warstwach konwolucyjnych używane są odpowiednie jądra przekształceń. Sieć poprzez trening sama dobiera optymalne filtry oraz ich wartości. Dodatkowo występują warstwy próbkowania (ang. \textit{downsampling} - próbkowanie w dół), których celem jest~zmniejszenie wielkości obrazu przez pominięcie części pikseli. Pomaga to~uprościć sieć, lecz kosztem utraty pewnej ilości informacji. Czasem zamiast pomijać piksele brane są wartości uśredniane lub maksymalne z~pewnego sąsiedztwa. \cite{jak_cnn}
 
 \vspace{5mm}
 
-W bibliotece \textit{dlib} sieć CNN często jest zestawiona z~metodą \textit{Max-Margin Object Detection (MMMOD)} \cite{mmod}. Służy ona do~optymalizacji i~zwiększenia prędkości detekcji obiektów.
+W bibliotece dlib sieć CNN często jest zestawiona z~metodą \textit{Max-Margin Object Detection (MMMOD)} \cite{mmod}. Służy ona do~optymalizacji i~zwiększenia prędkości detekcji obiektów.
 
 \par
 
@@ -73,28 +73,28 @@ Taka implementacja CNN+MMOD dostępna w dlib stosowana jest w~pracy dyplomowej.
 \subsubsection{Głębokie sieci neuronowe}
 
 
-Głębokie sieci neuronowe (DNN) różnią się od~klasycznych tym, że~mają większą liczbę warstw ukrytych. Taki algorytm tworzy plamki o~ustalonej wielkości ze~zdjęć wejściowych, a~następnie przepuszcza je przez kolejne warstwy sieci celem wykrycia pożądanych obiektów. Na wyjściu podaje prawdopodobieństwo, że~na~obrazie znajduje się interesujący nas element.
+\textit{Głębokie sieci neuronowe (DNN)} różnią się od~klasycznych tym, że~mają większą liczbę warstw ukrytych. Taki algorytm tworzy plamki o~ustalonej wielkości ze~zdjęć wejściowych, a~następnie przepuszcza je przez kolejne warstwy sieci celem wykrycia pożądanych obiektów. Na wyjściu podaje prawdopodobieństwo okręslające z jaką pewnością na obrazie znajduje się interesujący nas element.
 
 \par
 
-W projekcie wykorzystywany do~tego jest jeden z~modułów biblioteki \textit{OpenCV} zawierający implementację DNN \cite{opencv_dnn}
+W projekcie wykorzystywany do~tego jest jeden z~modułów biblioteki OpenCV zawierający implementację DNN \cite{opencv_dnn}
 
 \par
 
-Jednym z~modeli dostępnych do~detekcji twarzy przy pomocy głębokich sieci neuronowych są modele Caffe (\textit{Convolutional Architecture for Fast Feature Embedding}) \cite{jia2014caffe}. W~projekcie używany jest wzorzec caffe \textit{res10{\_}300x300{\_}ssd{\_}iter{\_}140000{\_}fp16} \cite{caffemodel_res10}.
+Jednym z~modeli dostępnych do~detekcji twarzy przy pomocy głębokich sieci neuronowych są modele \textit{Caffe} (\textit{Convolutional Architecture for Fast Feature Embedding}) \cite{jia2014caffe}. W~projekcie używany jest wzorzec caffe \textit{res10{\_}300x300{\_}ssd{\_}iter{\_}140000{\_}fp16} \cite{caffemodel_res10}.
 
 
 \subsection{Filtrowanie zwracanych obszarów twarzy}
 \label{section:face_detection_filter}
 
-Użyte algorytmy mogą dawać w wyniku błędnie określone obszary twarzy. Z~tego względu zwraca tablica obszarów poddawana jest filtrowaniu.
+Użyte algorytmy mogą dawać w wyniku błędnie określone obszary twarzy. Z~tego względu zwracana tablica obszarów poddawana jest filtrowaniu.
 
 \par
 
 Proces ten składa się z następujących etapów:
 
 \begin{itemize}
-    \item Na początku odrzucane są obszary, których środek znajduje się poza ustalonym pionowym obszarem (przyjąłem przedział [0.25, 0.75] szerokości). Wynika to~z~założeń, że~osoba używająca urządzenia mobilnego, korzysta z~niego patrząc na~wprost, a~nie z~boku. Natomiast odchylenie od pionu to indywidualne preferencje - dlatego nie określony jest poziomy obszaru. (patrz \hyperref[{fig:face_boundary}]{\textit{Rysunek \ref{fig:face_boundary}}})
+    \item Na początku odrzucane są obszary, których środek znajduje się poza ustalonym pionowym obszarem (przyjęty został przedział [0.25, 0.75] szerokości). Wynika to~z~założeń, że~osoba używająca urządzenie mobilne korzysta z~niego patrząc na~wprost, a~nie z~boku. Natomiast odchylenie od pionu to indywidualne preferencje - dlatego nie jest określony poziomy obszaru. (\hyperref[{fig:face_boundary}]{rys.~\ref{fig:face_boundary}})
 
     \begin{figure}[!h]
         \begin{center}
@@ -102,11 +102,11 @@ Proces ten składa się z następujących etapów:
             \hspace{8mm}
             \subfigure[Po filtrowaniu]{\label{fig:face_boundary_after}\includegraphics[scale=0.3]{img/face_section/face_filter_boundary_2.png}}
         \end{center}
-        \caption{Działanie filtrowania detekcji twarzy w oparciu o położenie twarzy w centralnej części zdjęcia.}
+        \caption{Działanie pierwszego etapu filtrowania detekcji twarzy w oparciu o jej położenie na zdjęciu.}
         \label{fig:face_boundary}
     \end{figure}
     
-    \item Kolejnym etapem jest odrzucenie tych detekcji, które wychodzą zbyt daleko poza zdjęcie. Jeśli którykolwiek z~boków prostokąta wystaje pionowo/poziomo o~odległość większą niż $10\%$ odpowiednio wysokości/szerokości to zostaje odrzucony. (patrz \hyperref[{fig:face_out}]{\textit{rys. \ref{fig:face_out}}})
+    \item Kolejnym etapem jest odrzucenie tych detekcji, które wychodzą zbyt daleko poza zdjęcie. Jeśli którykolwiek z~boków prostokąta wystaje pionowo/poziomo o~odległość większą niż $10\%$ odpowiednio wysokości/szerokości to zostaje odrzucony (\hyperref[{fig:face_out}]{rys.~\ref{fig:face_out}}).
     
     \begin{figure}[!h]
         \begin{center}
@@ -114,11 +114,11 @@ Proces ten składa się z następujących etapów:
             \hspace{8mm}
             \subfigure[Po filtrowaniu]{\label{fig:face_out_after}\includegraphics[scale=0.25]{img/face_section/face_filter_out_after.png}}
         \end{center}
-        \caption{Działanie filtrowania detekcji twarzy w oparciu o odległość wykrytego obszaru poza zdjęcie.}
+        \caption{Działanie drugiego etapu filtrowania detekcji twarzy w oparciu o odległość wykrytego obszaru poza zdjęciem.}
         \label{fig:face_out}
     \end{figure}
     
-    \item Z~pozostałych obszarów wybierany jest ten, który zajmuje największą powierzchnię. Taki wybór umotywowany jest własnymi obserwacjami autora o~zachowaniu się algorytmów detekcji twarzy oraz tym, że~głowa użytkownika telefonu na obrazie z kamery przedniej zajmuje większą część płaszczyzny, ponieważ korzystając z~urządzenia nie trzymamy go bardzo daleko od siebie. (patrz \hyperref[{fig:face_size}]{\textit{Rysunek \ref{fig:face_size}}})
+    \item Z~pozostałych obszarów wybierany jest ten, który zajmuje największą powierzchnię. Taki wybór umotywowany jest własnymi obserwacjami autora na temat zachowania się algorytmów detekcji twarzy oraz tym, że~głowa użytkownika telefonu na obrazie z kamery przedniej zajmuje większą część płaszczyzny, ponieważ korzystając z~urządzenia nie trzymamy go bardzo daleko od siebie. (\hyperref[{fig:face_size}]{rys.~\ref{fig:face_size}})
     
     \begin{figure}[!h]
         \begin{center}
@@ -126,7 +126,7 @@ Proces ten składa się z następujących etapów:
             \hspace{8mm}
             \subfigure[Po filtrowaniu]{\label{fig:face_size_after}\includegraphics[scale=0.3]{img/face_section/face_filter_size_2.png}}
         \end{center}
-        \caption{Działanie filtrowania detekcji twarzy w oparciu o wielkość wykrytego obszaru. Źródło zdj.: \cite{readheadPortrait1}}
+        \caption{Działanie ostatniego etapu filtrowania detekcji twarzy w oparciu o wielkość wykrytego obszaru. Źródło zdj.: \cite{readheadPortrait1}}
         \label{fig:face_size}
     \end{figure}
     

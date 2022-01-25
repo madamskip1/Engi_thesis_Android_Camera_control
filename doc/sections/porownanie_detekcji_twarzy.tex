@@ -2,16 +2,16 @@
 
 \section{Porównanie algorytmów detekcji twarzy}
 
-W rozdziale \hyperref[{section:face_detection}]{\textit{\ref{section:face_detection}.Detekcja twarzy}} przedstawionych zostało kilka metod, które zostały zaimplementowane w~projekcie. Ze~względu, że~dla prawidłowego i~akceptowalnego działania aplikacji potrzebna jest odpowiednia skuteczność i~szybkość detekcji twarzy, wszystkie metody zostały przetestowane i~porównane (z wyłączeniem \textit{CNN MMOD} - patrz rozdz. \hyperref[{section:no_cnn}]{\textit{\ref{section:no_cnn}}}). Na podstawie wyników została wybrana jedna, która używana jest w~finalnej części projektu.
+W rozdziale \hyperref[{section:face_detection}]{\ref{section:face_detection}} przedstawiono kilka metod, które zostały zaimplementowane w~projekcie. Ze~względu, że~dla prawidłowego i~akceptowalnego działania aplikacji potrzebna jest odpowiednia skuteczność oraz szybkość detekcji twarzy wszystkie metody zostały przetestowane i~porównane (z wyłączeniem CNN MMOD - patrz rozdz. \hyperref[{section:no_cnn}]{\ref{section:no_cnn}}). Na podstawie wyników została wybrana jedna, która używana jest w~finalnej części projektu.
 
 
-\subsection{Odrzucenie algorytmu CNN+MMOD} \label{section:no_cnn}
+\subsection{Odrzucenie algorytmu CNN} \label{section:no_cnn}
 
-Ze względu na bardzo wolne działanie algorytmu dlib opartego na konwolucyjnych sieciach neuronowych MMOD został on wykluczony z~testów. Czas przetwarzania jednego zdjęcia 500x500 wynosił kilka sekund, co całkowicie uniemożliwia działanie aplikacji w~czasie rzeczywistym. Bardzo niska prędkość detekcji prawdopodobnie wynika z~niemożności skorzystania z~obliczeń na karcie graficznej na urządzeniach mobilnych. Metoda ta jest bardzo szybka gdy wykorzystuje do działania takie architektury jak CUDA \cite{nvidia_cuda}, natomiast dużo gorzej radzi sobie z~obliczeniami wykonywanymi na procesorach CPU.
+Ze względu na bardzo wolne działanie algorytmu opartego na konwolucyjnych sieciach neuronowych został on wykluczony z~testów. Czas przetwarzania jednego zdjęcia 500x500 wynosił kilka sekund, co całkowicie uniemożliwia działanie aplikacji w~czasie rzeczywistym. Bardzo niska prędkość detekcji prawdopodobnie wynika z~niemożności skorzystania z~obliczeń na karcie graficznej na urządzeniach mobilnych. Metoda ta jest bardzo szybka gdy wykorzystuje do działania takie architektury jak CUDA \cite{nvidia_cuda}, natomiast dużo gorzej radzi sobie z~obliczeniami wykonywanymi na procesorach CPU.
 
 \subsection{Testowanie na statycznych zdjęciach}
 
-Pierwszy etap testowania algorytmów detekcji twarzy bazował na statycznych zdjęciach z~głównego zbioru danych (patrz rozdz. \hyperref[section:dataset]{\textit{\ref{section:dataset}.Zbiór danych}}). Pozwoliło to przetestować na jednakowych danych wszystkie metody pod względem ich skuteczności wykrywania docelowych obszarów w różnych warunkach oraz uzyskać miarodajne wyniki.
+Pierwszy etap testowania algorytmów detekcji twarzy bazował na statycznych zdjęciach z~głównego zbioru danych (rozdz. \hyperref[section:dataset]{\ref{section:dataset}}). Pozwoliło to przetestować na jednakowych danych wszystkie metody pod względem ich skuteczności wykrywania docelowych obszarów w różnych warunkach oraz uzyskać miarodajne wyniki.
 
 \subsubsection{Oczekiwany wynik}
 
@@ -41,11 +41,11 @@ Dla każdego algorytmu zostały przeprowadzone testy na zestawach obrazów o~nas
     \item 500x500 skala szarości
 \end{itemize}
 
-W przypadku \textit{DNN Caffe} nie było możliwe przeprowadzenie badań dla zdjęć w~skali szarości, ponieważ wymaga on obrazu z~trzema kanałami barw.
+W przypadku DNN Caffe nie było możliwe przeprowadzenie badań dla zdjęć w~skali szarości, ponieważ wymaga on obrazu w~trójkanałowej przestrzeni barw.
 
 \par
 
-Testy wykonywane były w~trybie \textit{wydaniowym (ang. release)}, ponieważ w~trybie \textit{debuggowania} algorytm \textit{Dlib HOG} działał nawet $180$ razy wolniej. W przypadku pozostałych algorytmów tryb budowania nie miał większego wpływu na prędkość obliczeń, ale żeby wyniki były jak najbardziej miarodajne to każdy test musiały być przeprowadzony w~tych samych warunkach.
+Testy wykonywane były w~trybie \textit{wydaniowym (ang. release)}, ponieważ w~trybie \textit{debuggowania} algorytm Dlib HOG działał nawet $180$ razy wolniej. W przypadku pozostałych algorytmów tryb budowania nie miał większego wpływu na prędkość obliczeń, ale żeby wyniki były jak najbardziej miarodajne to każdy test musiał być przeprowadzony w~tych samych warunkach.
 
 
 
@@ -60,47 +60,47 @@ W~tym teście zostały zebrane i~porównane następujące dane:
     \item \textbf{Prawidłowe detekcje} - suma perfekcyjnych i~częściowo dobrych detekcji
     \item \textbf{Perfekcyjne detekcje} - jeśli wykryty obszar w~pełni znajduje się pomiędzy oczekiwanym prostokątami
     \item \textbf{Częściowo dobre detekcje} - jeśli są krawędzie, które znajdują się poza oczekiwanym obszarem, ale w~zadowalającej odległości (patrz niżej - \hyperref[{uwaga:czesciowo_dobry}]{\textit{Uwaga 1.}})
-    \item \textbf{Z 3 na 4 krawędzie perfekcyjne detekcje} - jeśli tylko jedna krawędź znajduje się poza oczekiwanym obszarem w~zadowalającej odległości (patrz niżej - \hyperref[{uwaga:3_4_perfekcyjny}]{\textit{Uwaga 2.}})
+    \item \textbf{W 3 na 4 krawędziach perfekcyjne detekcje} - jeśli tylko jedna krawędź znajduje się poza oczekiwanym obszarem w~zadowalającej odległości (patrz niżej - \hyperref[{uwaga:3_4_perfekcyjny}]{\textit{Uwaga 2.}})
     \item \textbf{Złe detekcje} - jeśli twarz nie została wykryta lub wskazany obszar jest niezadowalający
     \item \textbf{Twarze niewykryte} - jeśli całkowicie nie udało się wykryć twarzy (patrz niżej - \hyperref[{uwaga:dodatkowy_zle}]{\textit{Uwaga 3.}})
 \end{itemize}
 
-\textit{Uwaga 1.}\label{uwaga:czesciowo_dobry} Obszar uznawany jest za częściowo dobry jeśli żadna krawędź nie jest oddalona o~więcej niż $1.2x$ i maksymalnie jedna oddalona jest o~długość z przedziału $[1.1x, 1.2x]$. Odległość $x$ to szerokość lub wysokość (zależnie od krawędzie) maksymalnego oczekiwanego obszaru twarzy.
+\textit{Uwaga 1.}\label{uwaga:czesciowo_dobry} Obszar uznawany jest za częściowo dobry jeśli żadna krawędź nie jest oddalona o~więcej niż $1.2x$ i maksymalnie jedna oddalona jest o~długość z przedziału $[1.1x, 1.2x]$. Odległość $x$ to szerokość lub wysokość (zależnie od krawędzi) maksymalnego oczekiwanego obszaru twarzy.
 
 \par
 
-\textit{Uwaga 2.}\label{uwaga:3_4_perfekcyjny} Obszar zaliczany jest do grupy 3/4 perfekcyjnych detekcji, jeśli 3 krawędzie znajdują się w~oczekiwanym obszarze, a czwarta odchylona od normy w przedziale $[1.0x, 1.2x]$.
+\textit{Uwaga 2.}\label{uwaga:3_4_perfekcyjny} Obszar zaliczany jest do grupy 3/4 perfekcyjnych detekcji, jeśli 3 krawędzie znajdują się w~oczekiwanym obszarze, a czwarta odchylona jest od normy w przedziale $[1.0x, 1.2x]$.
 
 \par 
 
-\textit{Uwaga 3.}\label{uwaga:dodatkowy_zle} Dodatkowy podział złej detekcji na niewykryte twarze wynikał z~faktu, że~metody oparte o~\textit{Cascasding Classifier} na wyjściu podają obszar kwadratowy i~przy rozciągniętej lub pochylonej twarzy boczne obszary mogą być bardzo oddalone od oczekiwanej wartości, ale dalej skutecznei wykrywać twarz. 
+\textit{Uwaga 3.}\label{uwaga:dodatkowy_zle} Dodatkowy podział złej detekcji na niewykryte twarze wynikał z~faktu, że~metody oparte o~Cascasding Classifier na wyjściu podają obszar kwadratowy i~przy rozciągniętej lub pochylonej twarzy boczne obszary mogą być bardzo oddalone od oczekiwanej wartości, ale dalej skutecznie wykrywać twarz. 
 
 \vspace{10mm}
 
 \input{tables/face_section/face_detection_accuracy_rgb}
 \input{tables/face_section/face_detection_accuracy_gray}
 
-Metoda \textit{Haar Cascade} pozwoliła uzyskać średnio $\sim69/80$ $(86\%)$ dobrych detekcji. Jest to relatywnie przeciętny wynik. Na taki rezultat składa się kilka problemów tej metody. Nie radzi sobie ona dobrze z~częściowo zakrytymi twarzami lub gdy głowa jest pochylona w bok. Kolejnymi czynnikiem wpływającym negatywnie na detekcje jest światło - problem z~wykrywaniem występuje gdy zdjęcie jest zbyt jasne, twarz oświetlona lub źródło światła świeci prosto w obiektyw. Zaletą tej metody jest mała ilość zwróconych przez nią dodatkowych, błędnych obszarów, które musiały zostać odfiltrowane.
+Metoda Haar Cascade pozwoliła uzyskać średnio $\sim69/80$ $(86\%)$ dobrych detekcji. Jest to relatywnie przeciętny wynik. Na taki rezultat składa się kilka problemów tej metody. Nie radzi sobie ona dobrze z~częściowo zakrytymi twarzami lub gdy głowa jest pochylona w bok. Kolejnymi czynnikiem wpływającym negatywnie na detekcje jest światło - problem z~wykrywaniem występuje gdy zdjęcie jest zbyt jasne, twarz oświetlona lub źródło światła świeci prosto w obiektyw. Zaletą tej metody jest mała ilość zwróconych przez nią dodatkowych, błędnych obszarów, które musiały zostać odfiltrowane.
 
 \par
 
-\textit{Klasyfikator kaskadowy} bazując na modelu \textit{LBP} miał najgorsze wyniki detekcji twarzy, na poziomie $\sim60/80$ $(75 \%)$. Jednak co zwraca uwagę to fakt, że~bardzo duży odsetek twarzy nie został w~ogóle wykryty. Występują tu te same problemy co~w~\textit{Haar Cascade}, ale~dodatkowo algorytm nie radzi sobie gdy twarz zajmuje dużą część zdjęcia.
+\textit{Klasyfikator kaskadowy} bazując na modelu LBP miał najgorsze wyniki detekcji twarzy, na poziomie $\sim60/80$ $(75 \%)$. Jednak co zwraca uwagę to fakt, że~bardzo duży odsetek twarzy nie został w~ogóle wykryty. Występują tu te same problemy co~w~Haar Cascade, ale~dodatkowo algorytm nie radzi sobie gdy twarz zajmuje dużą część zdjęcia.
 
 \par
 
-Najlepszy wynik detekcji uzyskał bezdyskusyjnie \textit{DNN Caffe}. Fakt, że~w~każdym z~dwóch testów wykrył on $100 \%$ twarzy jest warty odnotowania. Co więcej, perfekcyjne detekcje były na poziomie $\sim65/80$ $(81,25 \%)$. Nie występują tu problemy takie jak w~poprzednich algorytmach. Radzi sobie on dobrze nawet w~złych warunkach oświetleniowych. Częściowe zakrycie twarzy nie wpływa w~znacznym stopniu na detekcję. Wykrywa on dobrze zarówno pochylone jak i~odwrócone twarze. Jedynym negatywnym zjawiskiem, które udało się zaobserwować w~tej metodzie to zwracanie wielu dodatkowych obszarów, które są błędne. Zastosowanie filtrowania pozwoliło jednak odrzucić wszystkie błędne wskazania.
+Najlepszy wynik detekcji uzyskał bezdyskusyjnie DNN Caffe. Fakt, że~w~każdym z~dwóch testów wykrył on $100 \%$ twarzy jest warty odnotowania. Co więcej, perfekcyjne detekcje były na poziomie $\sim65/80$ $(81,25 \%)$. Nie występują tu problemy takie jak w~poprzednich algorytmach. Radzi sobie on dobrze nawet w~złych warunkach oświetleniowych. Częściowe zakrycie twarzy nie wpływa w~znacznym stopniu na detekcję. Wykrywa on dobrze zarówno pochylone jak i~odwrócone twarze. Jedynym negatywnym zjawiskiem, które udało się zaobserwować w~tej metodzie to zwracanie wielu dodatkowych obszarów, które są błędne. Zastosowanie filtrowania pozwoliło jednak odrzucić wszystkie błędne wskazania.
 
 \par
 
-Bardzo dobre wyniki detekcji uzyskał również algorytm \textit{Dlib HOG}, w~szczególności w~przypadku zdjęć RGB 500x500 - jego skuteczność była na poziomie $78/80$ $(97,5 \%$). Zaletą tej metody jest zwracanie tylko jednego wykrytego obszaru - na żadnym z~80 zdjęć nie zwrócił ani jednego dodatkowego miejsca, które uznał za twarz. Nie wykrył on twarzy gdy była ona w~połowie zakryta. Zakładając jednak, że~aplikacja będzie analizować twarz użytkownika korzystającego z~telefonu można przyjąć, że będzie ona w~wystarczającym stopniu widoczna. W~przeciwieństwie do pozostałych metod, które zwracają obszar całej twarzy, ta wykrywa częściowo obcięty rejon - np. pomijając czoło. Nie jest to w~ogólności wadą, ponieważ te elementy nie są wykorzystywane w~projekcie pracy dyplomowej.
+Bardzo dobre wyniki detekcji uzyskał również algorytm Dlib HOG, w~szczególności w~przypadku zdjęć RGB 500x500 - jego skuteczność była na poziomie $78/80$ $(97,5 \%$). Zaletą tej metody jest zwracanie tylko jednego wykrytego obszaru - na żadnym z~80 zdjęć nie zwrócił ani jednego dodatkowego miejsca, które uznał za twarz. Nie wykrył on twarzy gdy była w~połowie zasłonięta. Zakładając jednak, że~aplikacja będzie analizować twarz użytkownika korzystającego z~telefonu można przyjąć, że będzie ona w~wystarczającym stopniu widoczna. W~przeciwieństwie do pozostałych metod, które zwracają obszar całej twarzy, ta wykrywa częściowo obcięty rejon - np. pomijając czoło. Nie jest to w~ogólności wadą, ponieważ te elementy nie są wykorzystywane w~projekcie pracy dyplomowej.
 
 \vspace{5mm}
 
-Różnica w~procencie perfekcyjnych detekcji pomiędzy \textit{DNN Caffe}, a~pozostałymi wynika z rodzaju obszarów zwracanych przez te algorytmy. Metoda oparta na głębokich sieciach neuronowych zwraca prostokąt o~dowolnym stosunku boków, natomiast reszta zwraca kwadrat. Dzięki temu \textit{DNN} lepiej dopasowuję się do kształtu twarzy niż \textit{Cascading Classifier} i~\textit{HOG}.
+Różnica w~procencie perfekcyjnych detekcji pomiędzy DNN Caffe, a~pozostałymi metodami wynika z rodzaju zwracanych przez nie obszarów. Metoda oparta na głębokich sieciach neuronowych zwraca prostokąt o~dowolnym stosunku boków, natomiast reszta zwraca kwadrat. Dzięki temu DNN lepiej dopasowuję się do kształtu twarzy niż Cascading Classifier i~HOG.
 
 \vspace{5mm}
 
-Zmiana przestrzeni barw nie wpłynęła istotnie na rezultaty poszczególnych algorytmów. Jedynie zauważalne było obniżenie skuteczności detekcji w~skali szarości w~porównaniu do RGB dla metody opartej na \textit{histogramie gradientów zorientowanych Dlib}.
+Zmiana przestrzeni barw nie wpłynęła istotnie na rezultaty poszczególnych algorytmów. Jedynie zauważalne było obniżenie skuteczności detekcji w~skali szarości w~porównaniu do RGB dla metody opartej na histogramie gradientów zorientowanych.
 
 
 
@@ -126,23 +126,24 @@ W~tym teście zostały zebrane i~porównane następujące dane:
 \input{tables/face_section/face_detection_speed_rgb}
 \input{tables/face_section/face_detection_speed_gray}
 
-Najszbyszy okazał się algorytm operujący na histogramach gradientowych. Niewiele wolniej przetwarzał algorytm kaskadowy \textit{LBP}. \textit{DNN Caffe} dla zdjęć $500x500$  był porównywalnie szybki jak \textit{Haar Cascade}, natomiast już w~przypadku $300x300$ około $2.5$ razy wolniejszy.
+Najszybszy okazał się algorytm operujący na histogramach gradientowych. Niewiele wolniej przetwarzał algorytm kaskadowy LBP. DNN Caffe dla zdjęć $500x500$  był porównywalnie szybki jak Haar Cascade, natomiast już w~przypadku $300x300$ około $2.5$ razy wolniejszy.
 
 \par
 
-Istotnym i wartym odnotowania jest fakt, że algorytm \textit{DNN} przetwarzał prawie tak samo szybko obie rozdzielczości zdjęć. Z~tego powodu sformułowano i~zbadano tezę, że~dla tej metody wielkość obrazu nie ma wpływu na szybkość przetwarzania (patrz rozdz. \ref{section:test_dnn_resolution_speed}).
+Istotnym i wartym odnotowania jest fakt, że algorytm DNN przetwarzał prawie tak samo szybko obie rozdzielczości zdjęć. Z~tego powodu sformułowano i~zbadano tezę, że~dla tej metody wielkość obrazu nie ma wpływu na szybkość przetwarzania (rozdz.~\ref{section:test_dnn_resolution_speed}).
 
 \par
-Na szybkość detekcji algorytmu \textit{HOG} niewątpliwie miało wpływ użycie go w języku C++ mimo narzutu związanego z~wywoływaniem go przez interfejs JNI (patrz rozdz. \ref{section:jni}).
+
+Na szybkość detekcji algorytmu HOG niewątpliwie miało wpływ użycie go w języku C++ mimo narzutu związanego z~wywoływaniem go przez interfejs JNI (rozdz.~\ref{section:jni}).
 
 \vspace{5mm}
 
-Zmiana detekcji z~trójkanałowej RGB na skalę szarości w~przypadku \textit{Haar} i \textit{LBP} nie skróciła czasu detekcji. W~przypadku metody z~biblioteki \textit{Dlib} algorytm przetwarzał te zdjęcia $\sim15-20 \%$ krócej niż w~wersji kolorowej.
+Zmiana detekcji z~trójkanałowej RGB na skalę szarości w~przypadku Haar i LBP nie skróciła czasu detekcji. W~przypadku metody histogramów gradientu algorytm przetwarzał te zdjęcia $\sim15-20 \%$ krócej niż w~wersji kolorowej.
 
 
 
 
-\subsubsection{Wpływ rozdzielczości na szybkość algorytm \textit{DNN Caffe}} \label{section:test_dnn_resolution_speed}
+\subsubsection{Wpływ rozdzielczości na szybkość algorytm DNN Caffe} \label{section:test_dnn_resolution_speed}
 
 Ze względu na wyniki szybkości poszczególnych metod z~poprzedniego rozdziału sformułowano tezę, że~rozdzielczość nie ma wpływu na złożoność obliczeniową algorytmu opartego o~głębokie sieci neuronowe. Celem poparcia tezy przeprowadzono dodatkowe badania na czterech wielkościach zdjęć: 
 
@@ -155,33 +156,35 @@ Ze względu na wyniki szybkości poszczególnych metod z~poprzedniego rozdziału
 
 \input{tables/face_section/face_detection_result_dnn_speed}
 
-Test ten potwierdza postawioną wcześniej tezę, że wielkość zdjęcia nie ma wpływu na szybkość działania algorytmu \textit{DNN Caffe}. Przetwarzanie każdej rozdzielczości trwało porównywalną ilość czasu, a~różnice zapewne były skutkiem obciążenia urządzenia w~danej chwili i~są pomijalne.\\
+Test ten potwierdza postawioną wcześniej tezę, że wielkość zdjęcia nie ma wpływu na szybkość działania algorytmu DNN Caffe. Przetwarzanie każdej rozdzielczości trwało porównywalną ilość czasu, a~różnice zapewne były skutkiem obciążenia urządzenia w~danej chwili i~są pomijalne.
+
+\par
 
 Takie działanie tej metody wynika prawdopodobnie z~faktu, że~tworzy ona plamki o~ustalonej wielkości niezależnie od rozdzielczości zdjęcia wejściowego. W~zaimplementowanym algorytmie jest to rozmiar 300x300. Dzięki temu ostatecznie zawsze przetwarzana jest taka sama ilość danych, co powinno skutkować w przybliżeniu stałym czasem obliczeń.
 
 
 
 
-\subsubsection{Precyzja detekcji algorytmu \textit{DNN Caffe} zależnie od sposobu filtracji}
+\subsubsection{Precyzja detekcji algorytmu DNN Caffe zależnie od sposobu filtracji}
 
 Metoda oparta na głębokich sieciach neuronowych na wyjściu zwraca wiele obszarów wraz ze wskaźnikiem pewności detekcji. Im większy współczynnik tym w~teorii większa szansa, że jest to obiekt, który chcieliśmy wykryć.
 
 \par
 
-Z tego powodu porównano autorskie filtrowanie (patrz rozdz. \hyperref[{section:face_detection_filter}]{\textit{\ref{section:face_detection_filter}}}) i~wybór detekcji z~największym procentem pewności.
+Z tego powodu porównano autorskie filtrowanie (rozdz.~\hyperref[{section:face_detection_filter}]{\ref{section:face_detection_filter}}) i~wybór detekcji z~największym procentem pewności.
 
 \par
 
-\vspace{8mm}
+\vspace{5mm}
 
 \input{tables/face_section/face_detection_result_filter}
 
-Wyniki w \hyperref[{tab:face_filter_test}]{\textit{tabeli 3.6}} pokazują, że~zaproponowana przez autora sekwencja filtrowania wykrytych obszarów daje na zbiorze danych lepsze rezultaty niż wybór najwyższego współczynnika pewności. Autorskie rozwiązanie wykryło wszystkie twarze, natomiast wybór oparty na procencie pewności nie poradził sobie z~4 zdjęciami.
+Wyniki w \hyperref[{tab:face_filter_test}]{tabeli 3.6} pokazują, że~zaproponowana przez autora sekwencja filtrowania wykrytych obszarów daje na zbiorze danych lepsze rezultaty niż wybór najwyższego współczynnika pewności. Autorskie rozwiązanie wykryło wszystkie twarze, natomiast wybór oparty na procencie pewności nie poradził sobie z~4 zdjęciami.
 
 
 \subsection{Testowanie na obrazie z kamery na żywo} \label{section:face_detection_test_live}
 
-W teście opartym na statycznych zdjęciach najlepsze okazały się algorytmy \textit{DNN} i \textit{HOG}, a dodatkowo ten drugi był również najszybszy. Z tego względu w próbie wykorzystującej obraz na żywo badane były wyłącznie te dwa algorytmy, a pozostałe odrzucone.
+W teście opartym na statycznych zdjęciach najlepsze okazały się algorytmy DNN i HOG, a dodatkowo ten drugi był również najszybszy. Z tego względu w próbie wykorzystującej obraz na żywo badane były wyłącznie te dwa algorytmy, a pozostałe odrzucone.
 
 \par
 
@@ -213,7 +216,7 @@ Sprawdzenie skuteczności algorytmów polegało na zebraniu informacji na ilu kl
 
 \input{tables/face_section/face_detection_accuracy_live}
 
-Jak widać oba algorytmy wykrywały w~każdej odebranej klatce twarz. Potwierdzają to zarówno logi jak i~subiektywna ocena podglądu obrazu na żywo. 
+Jak widać oba algorytmy wykrywały w~każdej odebranej klatce twarz. Potwierdzają to zarówno logi, jak i~subiektywna ocena podglądu obrazu na żywo. 
 
 
 
@@ -224,9 +227,9 @@ Szybkość detekcji była porównana za pomocą średniej ilości klatek na seku
 
 \input{tables/face_section/face_detection_speed_live}
 
-Podobnie jak w testach na statystycznych zdjęciach algorytm \textit{HOG} okazał się szybszy od \textit{DNN Caffe}. W~przypadku histogramu gradientów w oparciu o zdjęcie w skali szarości ilość uzyskanych klatek na sekundę była większa aż o~$37 \%$, a~w~trójkanałowej przestrzeni barw o~$15 \%$.
+Podobnie jak w testach na statystycznych zdjęciach algorytm HOG okazał się szybszy od DNN Caffe. W~przypadku histogramu gradientów w oparciu o zdjęcie w skali szarości ilość uzyskanych klatek na sekundę była większa aż o~$37 \%$, a~w~trójkanałowej przestrzeni barw o~$15 \%$.
 
 
 \subsection{Wybór algorytmu detekcji twarzy}
 
-Na podstawie wyników zdecydowano się w~ramach projektu na wykorzystanie algorytmu \textit{dlib HOG} do detekcji twarzy. W~testach skuteczności okazał się on prawie tak samo skuteczny jak \textit{DNN Caffe}, ale zdecydowanie od niego szybszy, co~w~przypadku urządzeń mobilnych jest ważnym czynnikiem.
+Na podstawie wyników zdecydowano się w~ramach projektu na wykorzystanie algorytmu HOG do detekcji twarzy. W~testach skuteczności okazał się on prawie tak samo skuteczny jak DNN Caffe, ale zdecydowanie od niego szybszy, co~w~przypadku urządzeń mobilnych jest ważnym czynnikiem.

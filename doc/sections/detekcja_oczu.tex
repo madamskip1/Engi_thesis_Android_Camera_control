@@ -7,15 +7,16 @@ W~tej pracy dyplomowej dużą role odgrywają oczy i~ich wpływ na sterowanie ap
 
 \subsection{Algorytmy detekcji oczu}
 
-Na potrzeby tego etapu zostały zastosowane dwie metody opierające się na algorytmach opisanych wcześniej - klasyfikatory kaskadowe oraz znacznikach twarzy.
+Na potrzeby tego etapu zostały zastosowane dwie metody opierające się na algorytmach opisanych wcześniej - klasyfikatorach kaskadowych oraz znacznikach twarzy.
+
 
 \subsubsection{Klasyfikator kaskadowy Haar}
 
-Metody detekcji oparte na klasyfikatorach kaskadowych zostały opisane w rozdz.~\hyperref[{section:face_casacde_classifier}]{\textit{\ref{section:face_casacde_classifier}}} przy okazji wykrywania twarzy. Do detekcji oczu z~użyciem tego algorytmu został wykorzystany model autorstwa Shameem Hameed \cite{eye_haar_model}.
+Metody detekcji oparte na klasyfikatorach kaskadowych zostały opisane w rozdziale~\hyperref[{section:face_casacde_classifier}]{\ref{section:face_casacde_classifier}} przy okazji wykrywania twarzy. Do detekcji oczu z~użyciem tego algorytmu został wykorzystany model autorstwa Shameem Hameed \cite{eye_haar_model}.
 
 \subsubsection{Znaczniki twarzy wokół oczu}
 
-Opisane w rozdz.~\hyperref[section:landmarks]{\ref{section:landmarks}} algorytmy facemarków nanoszą punkty charakterystyczne na obraz twarzy. Znajdują się one m.in. wokół oczu. Fakt ten można wykorzystać do detekcji ich obszaru. Celem uzyskania takiego wyniku należy wyznaczyć prostokąt, który będzie otaczał wszystkie sześć znaczników danego oka. \cite{detect_eye_facemarks}
+Opisane w rozdziale~\hyperref[section:landmarks]{\ref{section:landmarks}} algorytmy facemarków nanoszą punkty charakterystyczne na obraz twarzy. Znajdują się one m.in. wokół oczu. Fakt ten można wykorzystać do detekcji ich obszaru. Celem uzyskania takiego wyniku należy wyznaczyć prostokąt, który będzie otaczał wszystkie sześć znaczników danego oka. \cite{detect_eye_facemarks}
 
 \par
 
@@ -27,21 +28,24 @@ Przykład takiego działania widoczny jest na rysunku~\ref{fig:facemarki_to_dete
         \hspace{8mm}
         \subfigure[Naniesiony prostokąt otaczający znaczniki wokół oka]{\label{fig:facemarki_to_detect_eyes_rect}\includegraphics[scale=0.25]{img/eye_section/eye_facemarks_rect.png}}
     \end{center}
-    \caption{Wykorzystanie znaczników twarzy do detekcji obszaru oczu}
+.    \caption{Wykorzystanie znaczników twarzy do detekcji obszaru oczu}
     \label{fig:facemarki_to_detect_eyes}
 \end{figure}
 
-Wykorzystywany jest tu też wskaźnik \textit{EAR} (patrz rozdz.~\hyperref[{section:EARsection}]{\textit{\ref{section:EARsection}}}) do wykrycia czy oko jest zamknięte czy otwarte.
+Wykorzystywany jest tu też wskaźnik EAR (rozdz.~\hyperref[{section:EARsection}]{\ref{section:EARsection}}) do wykrycia czy oko jest zamknięte czy otwarte.
 
 \par
 
-Skuteczność detekcji oczu przy pomocy tej metody zależy w~dużym stopniu od dokładności algorytmu odwzorowującego punkty charakterystyczne twarzy. Ewentualne niedoskonałości można niwelować zwiększając wielkość prostokąta o~pewną tolerancję z~danej strony. Taki współczynnik w projekcie został testowo ustalony, a~przebieg badań i~wyników został opisany w rozdz.~\hyperref[{section:facemark_eye_size}]{\textit{\ref{section:facemark_eye_size}}}.
+Skuteczność detekcji oczu przy pomocy tej metody zależy w~dużym stopniu od dokładności algorytmu odwzorowującego punkty charakterystyczne twarzy. Ewentualne niedoskonałości można niwelować zwiększając wielkość prostokąta o~pewną tolerancję z~danej strony. Taki współczynnik w projekcie został testowo ustalony, a~przebieg badań i~wyników został opisany w rozdziale~\hyperref[{section:facemark_eye_size}]{\ref{section:facemark_eye_size}}.
 
 
 
 \subsection{Filtrowanie wyników detekcji oczu metodą Haar}
 
-Ze względu, że algorytmu Haar może zwracać większą ilość prawdopodobnych obszarów, w~których spodziewa się on wykryć pożądany obiekt, wprowadzone zostało filtrowanie wyników detekcji oczu. \\
+Ze względu, że algorytm Haar może zwracać większą ilość prawdopodobnych obszarów, w~których spodziewa się on wykryć pożądany obiekt, wprowadzone zostało filtrowanie wyników detekcji oczu. 
+
+\par
+
 Algorytm filtrowania składa się z dwóch etapów:
 
 \begin{itemize}
@@ -54,7 +58,7 @@ Dodatkowo pozwoliło to na łatwe zidentyfikowanie który obszar to które oko i
 
 \par
 
-Przykładowy rezultat takiego filtrowania pokazany jest na \hyperref[{fig:eye_filter}]{\textit{rysunku~\ref{fig:eye_filter}}}. 
+Przykładowy rezultat takiego filtrowania pokazany jest na \hyperref[{fig:eye_filter}]{rysunku~\ref{fig:eye_filter}}. 
 
 
 \begin{figure}[!h]
@@ -63,7 +67,7 @@ Przykładowy rezultat takiego filtrowania pokazany jest na \hyperref[{fig:eye_fi
         \hspace{8mm}
         \subfigure[Po filtrowaniu]{\label{fig:eye_filter_after}\includegraphics[scale=1.0]{img/eye_section/eye_filter_after.png}}
     \end{center}
-    \caption{Efekt filtrowania obszarów detekcji oczu}
+    \caption{Efekt filtrowania obszarów detekcji oczu metodą klasyfikatorów kaskadowych Haar.}
     \label{fig:eye_filter}
 \end{figure}
 
@@ -73,7 +77,7 @@ Dla metody opartej na Haar zdecydowano się dodatkowo zawęzić płaszczyznę pr
 
 \par
 
-Ustalenie jaki obszar da najlepszy rezultat odbyło się przez testowe sprawdzanie kombinacji trzech parametrów oznaczających jaka część wykrytej twarzy zostaje obcięta z~poszczególnej strony. Mogą one przyjmować wartości w~następujących przedziałach:
+Ustalenie jaki obszar da najlepszy rezultat odbyło się przez testowe sprawdzanie kombinacji trzech parametrów oznaczających jaka część wykrytej twarzy zostaje obcięta z~poszczególnych stron. Mogły one przyjmować wartości w~następujących przedziałach:
 
 \begin{itemize}
     \item Góra: $[0.0,$ $0.2]$
@@ -81,11 +85,11 @@ Ustalenie jaki obszar da najlepszy rezultat odbyło się przez testowe sprawdzan
     \item Boki: $[0.0,$ $0.2]$
 \end{itemize}
 
-Każdy parametr mógł osiągać wartości będące wielokrotnością $0.05$ w~poszczególnych przedziałach.
+Każdy parametr przyjmował kolejne wartości będące wielokrotnością $0.05$ w~poszczególnych przedziałach.
 
 \par
 
-Ze względu na dużą ilość kombinacji ($225$) nie zostaną podane wyniki, a~jedynie najlepsza kombinacja:
+Ze względu na dużą ilość kombinacji ($225$) nie zostały podane wyniki, a~jedynie najlepsza kombinacja:
 
 \begin{itemize}
     \item Góra: $0.05$
@@ -97,7 +101,7 @@ Algorytm Haar uzyskał lepszą skuteczność detekcji wykorzystując dodatkowe o
 
 \input{tables/eye_section/face_crop}
 
-Przykład takiego obcięcia z wybranymi parametrami widoczny jest na \hyperref[{fig:eye_crop}]{\textit{rysunku~\ref{fig:eye_crop}}}.
+Przykład takiego obcięcia z wybranymi parametrami widoczny jest na \hyperref[{fig:eye_crop}]{rysunku~\ref{fig:eye_crop}}.
 
 \begin{figure}[!h]
     \begin{center}
@@ -105,7 +109,7 @@ Przykład takiego obcięcia z wybranymi parametrami widoczny jest na \hyperref[{
         \hspace{8mm}
         \subfigure[Obszar po obcięciu]{\label{fig:eye_crop_after}\includegraphics[scale=0.6]{img/eye_section/eye_cropped_eyes.png}}
     \end{center}
-    \caption{Obcięcie obszaru detekcji oczu zgodnie z dobranymi wcześniej parametrami}
+    \caption{Obcięcie obszaru detekcji oczu zgodnie z dobranymi wcześniej parametrami.}
     \label{fig:eye_crop}
 \end{figure}
 
@@ -117,7 +121,7 @@ Wprowadzenie takiej modyfikacji pozwoliło odrzucić część błędnie ustalany
         \hspace{8mm}
         \subfigure[Wykrywanie oczu z dodatkowym obcięciem obszaru]{\label{fig:eye_detect_crop_after}\includegraphics[scale=0.45]{img/eye_section/eye_detect_after_crop_1.png}}
     \end{center}
-    \caption{Odrzucenie błędnych rezultatów detekcji oczu po dodatkowym obcięciu obszaru. Źródło pierwszego zdj.:\cite{readheadPortrait2}}
+    \caption{Odrzucenie błędnych rezultatów detekcji oczu metodą Haar po dodatkowym obcięciu obszaru. Źródło pierwszego zdj.:\cite{readheadPortrait2}}
     \label{fig:eye_detect_crop}
 \end{figure}
 
@@ -138,7 +142,7 @@ Ustalenie jakie zwiększenie zwracanego regionu da najlepsze rezultaty detekcji 
 
 \par
 
-Ze względu na dużą ilość kombinacji ($1331$) nie zostaną podane wyniki, a~jedynie wybrana najlepsza kombinacja:
+Ze względu na dużą ilość kombinacji ($1331$) nie zostały podane wyniki, a~jedynie wybrana najlepsza kombinacja:
 
 \begin{itemize}
     \item Góra: $0.7$
@@ -149,4 +153,4 @@ Ze względu na dużą ilość kombinacji ($1331$) nie zostaną podane wyniki, a~
 
 \input{tables/eye_section/eye_facemark_size}
 
-Zmiana wielkości zwracanego obszaru oczu nie zwiększył znacząco liczby dobrych detekcji. Natomiast największy zysk widoczny jest w~perfekcyjnych detekcjach. Dzięki takiemu dostosowaniu udało się osiągnąć prawie $100\%$ wskaźnik perfekcyjnych względem prawidłowych detekcji. Pozwoli to uzyskać lepiej wykryty obszar oczu, co może mieć przełożenie na skuteczność detekcji źrenic.
+Zmiana wielkości zwracanego obszaru oczu nie zwiększył znacząco liczby dobrych detekcji. Natomiast największy zysk widoczny jest w~perfekcyjnych detekcjach. Dzięki takiemu dostosowaniu udało się osiągnąć prawie $100\%$ wskaźnik perfekcyjnych względem prawidłowych detekcji. Pozwoli to uzyskać lepiej dobraną wielkość obszaru oczu, co może mieć przełożenie na skuteczność detekcji źrenic.
