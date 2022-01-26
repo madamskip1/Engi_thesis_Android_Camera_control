@@ -16,6 +16,7 @@ public class FacemarksDetector {
     private final FacemarksAlgorithm facemarksAlgorithm;
     private Point[] facemarks;
 
+    // Kazemi is default facemarks' detector
     public FacemarksDetector() {
         this(new FacemarksKazemi());
     }

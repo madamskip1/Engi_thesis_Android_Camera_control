@@ -16,10 +16,9 @@ public class FileLogger {
     private static final String DEFAULT_FILE_NAME = "AndroidCameraControlLog.txt";
     private static final Boolean DEFAULT_APPEND = true;
     private static final Boolean DEFAULT_WRITE_DATE_AND_TIME = true;
-
-    private FileWriter fileWriter;
     private final String _fileName;
     private final Boolean _append;
+    private FileWriter fileWriter;
     private Boolean _writeDateAndTime;
 
     public FileLogger() {

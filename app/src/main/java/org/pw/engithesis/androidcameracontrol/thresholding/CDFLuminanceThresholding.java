@@ -29,7 +29,7 @@ public class CDFLuminanceThresholding extends ImageThresholding {
     @Override
     protected void beforeThresholding() {
         reset();
-        countPixelsLuminance();
+        calcPixelsLuminance();
         calcCDF();
     }
 
@@ -45,7 +45,7 @@ public class CDFLuminanceThresholding extends ImageThresholding {
         return cumulativeDistributionOfLuminance[luminance];
     }
 
-    private void countPixelsLuminance() {
+    private void calcPixelsLuminance() {
         int numPixels = (int) matToThreshold.total();
         byte[] pixels = new byte[numPixels];
         matToThreshold.get(0, 0, pixels);

@@ -41,8 +41,7 @@ public class Utility {
         drawCircle(mat, point, new Scalar(200, 200, 200), 1, 40);
     }
 
-    public static void drawCircle(Mat mat, Point point, Scalar color, int radius, int thickness)
-    {
+    public static void drawCircle(Mat mat, Point point, Scalar color, int radius, int thickness) {
         Imgproc.circle(mat, point, radius, color, thickness);
     }
 

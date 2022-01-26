@@ -42,21 +42,21 @@ public class BlinkActivity extends AppCompatActivity implements Observer {
     }
 
     private void addBox() {
-        Button button = prepareButton();
+        Button button = createButton();
         blinkMsgBox.addView(button);
         new Handler(Looper.getMainLooper()).postDelayed(() -> blinkMsgBox.removeView(button), 5000);
     }
 
-    private Button prepareButton() {
+    private Button createButton() {
         Button button = new Button(this);
         String buttonText = "Mrugnięto o " + getTime() + ".";
         button.setText(buttonText);
-        button.setBackgroundColor(ContextCompat.getColor(this, ((buttonsCounter % 2 == 0) ? android.R.color.holo_blue_light : android.R.color.holo_green_dark)));
+        button.setBackgroundColor(ContextCompat.getColor(this, getButtonColor(buttonsCounter)));
         buttonsCounter++;
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.setMargins(10, 10, 10, 20);
-        button.setLayoutParams(params);
+        LinearLayout.LayoutParams buttonLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        buttonLayoutParams.setMargins(10, 10, 10, 20);
+        button.setLayoutParams(buttonLayoutParams);
 
         return button;
     }
@@ -66,5 +66,9 @@ public class BlinkActivity extends AppCompatActivity implements Observer {
         DateFormat dateFormat = new SimpleDateFormat("'['HH:mm:ss:SSS']'", new Locale("pl", "PL"));
 
         return dateFormat.format(date);
+    }
+
+    private int getButtonColor(int buttonsCounter) {
+        return (buttonsCounter % 2 == 0) ? android.R.color.holo_blue_light : android.R.color.holo_green_dark;
     }
 }

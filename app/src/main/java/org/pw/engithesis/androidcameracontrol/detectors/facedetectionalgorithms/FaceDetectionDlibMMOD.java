@@ -7,11 +7,11 @@ import org.pw.engithesis.androidcameracontrol.R;
 import org.pw.engithesis.androidcameracontrol.RawResourceManager;
 
 public class FaceDetectionDlibMMOD implements FaceDetectionAlgorithm {
-    private final long nativeDetectorAddr;
-
     static {
         System.loadLibrary("dlib_natives");
     }
+
+    private final long nativeDetectorAddr;
 
     public FaceDetectionDlibMMOD() {
         RawResourceManager model = new RawResourceManager(R.raw.mmod_human_face_detector, "mmod_human_face_detector.dat");
