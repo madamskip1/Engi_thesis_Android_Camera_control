@@ -275,6 +275,16 @@ set_target_properties(opencv_video PROPERTIES
 list(APPEND _IMPORT_CHECK_TARGETS opencv_video )
 list(APPEND _IMPORT_CHECK_FILES_FOR_opencv_video "${_IMPORT_PREFIX}/sdk/native/staticlibs/arm64-v8a/libopencv_video.a" )
 
+# Import target "opencv_face" for configuration "Release"
+set_property(TARGET opencv_face APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
+set_target_properties(opencv_face PROPERTIES
+        IMPORTED_LINK_INTERFACE_LANGUAGES_RELEASE "CXX"
+        IMPORTED_LOCATION_RELEASE "${_IMPORT_PREFIX}/sdk/native/staticlibs/arm64-v8a/libopencv_face.a"
+        )
+
+list(APPEND _IMPORT_CHECK_TARGETS opencv_face)
+list(APPEND _IMPORT_CHECK_FILES_FOR_opencv_face "${_IMPORT_PREFIX}/sdk/native/staticlibs/arm64-v8a/libopencv_face.a")
+
 # Import target "opencv_gapi" for configuration "Release"
 set_property(TARGET opencv_gapi APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
 set_target_properties(opencv_gapi PROPERTIES

@@ -16,7 +16,7 @@ set(CMAKE_IMPORT_FILE_VERSION 1)
 set(_targetsDefined)
 set(_targetsNotDefined)
 set(_expectedTargets)
-foreach(_expectedTarget libcpufeatures libjpeg-turbo libtiff libwebp libopenjp2 libpng IlmImf tbb ippiw libprotobuf quirc ittnotify ade ocv.3rdparty.android_mediandk opencv_core opencv_flann opencv_imgproc opencv_ml opencv_photo opencv_dnn opencv_features2d opencv_imgcodecs opencv_videoio opencv_calib3d opencv_highgui opencv_objdetect opencv_stitching opencv_video opencv_gapi opencv_java)
+foreach(_expectedTarget libcpufeatures libjpeg-turbo libtiff libwebp libopenjp2 libpng IlmImf tbb ippiw libprotobuf quirc ittnotify ade ocv.3rdparty.android_mediandk opencv_core opencv_flann opencv_imgproc opencv_ml opencv_photo opencv_dnn opencv_features2d opencv_imgcodecs opencv_videoio opencv_calib3d opencv_highgui opencv_objdetect opencv_stitching opencv_video opencv_face opencv_gapi opencv_java)
   list(APPEND _expectedTargets ${_expectedTarget})
   if(NOT TARGET ${_expectedTarget})
     list(APPEND _targetsNotDefined ${_expectedTarget})
@@ -226,6 +226,14 @@ add_library(opencv_video STATIC IMPORTED)
 set_target_properties(opencv_video PROPERTIES
   INTERFACE_LINK_LIBRARIES "opencv_core;opencv_flann;opencv_imgproc;opencv_dnn;opencv_features2d;opencv_calib3d;opencv_core;opencv_flann;opencv_imgproc;opencv_dnn;opencv_features2d;opencv_calib3d;\$<LINK_ONLY:dl>;\$<LINK_ONLY:m>;\$<LINK_ONLY:log>;\$<LINK_ONLY:ippiw>;\$<LINK_ONLY:ippicv>"
 )
+
+# Create imported target opencv_face
+add_library(opencv_face STATIC IMPORTED)
+
+set_target_properties(opencv_face PROPERTIES
+        INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:opencv_core>;\$<LINK_ONLY:opencv_flann>;\$<LINK_ONLY:opencv_imgproc>;\$<LINK_ONLY:opencv_photo>;\$<LINK_ONLY:opencv_features2d>;\$<LINK_ONLY:opencv_calib3d>;\$<LINK_ONLY:opencv_objdetect>;opencv_core;opencv_flann;opencv_imgproc;opencv_photo;opencv_features2d;opencv_calib3d;opencv_objdetect;\$<LINK_ONLY:dl>;\$<LINK_ONLY:m>;\$<LINK_ONLY:log>;\$<LINK_ONLY:ippiw>;\$<LINK_ONLY:ippicv>"
+        )
+
 
 # Create imported target opencv_gapi
 add_library(opencv_gapi STATIC IMPORTED)
